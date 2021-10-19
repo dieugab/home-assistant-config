@@ -1,0 +1,41 @@
+  # Bridge for Media Players
+- name: HASS Bridge Media
+  port: 51827
+  mode: bridge
+  filter:
+    include_domains:
+      - media_player
+    exclude_entities:
+      - media_player.sony_bravia_tv
+      - media_player.apple_tv
+      - media_player.homepod_mini
+  entity_config:
+    media_player.playstation_4:
+      feature_list:
+        - feature: on_off
+    media_player.xbox_one_s:
+      feature_list:
+        - feature: on_off
+    media_player.ikea_symfonisk:
+      feature_list:
+        - feature: play_pause
+    media_player.sonos_roam:
+      feature_list:
+        - feature: play_pause
+    media_player.sonos_arc:
+      feature_list:
+        - feature: play_pause
+
+  # Bridge for switches displayed as outlets
+- name: HASS Bridge Outlets
+  port: 51829
+  mode: bridge
+  filter:
+    include_entities:
+      - switch.keuken_smart_plug
+      - switch.wasmachine
+  entity_config:
+    switch.keuken_smart_plug:
+      type: outlet
+    switch.wasmachine:
+      type: outlet

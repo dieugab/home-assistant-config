@@ -1,0 +1,28 @@
+    # Woonkamer group
+  - platform: group
+    name: Woonkamer Groep
+    entities:
+      - light.woonkamer_lamp
+      - light.woonkamer_eettafel_lamp
+      - light.filament_lamps
+      - light.play_lichtbalk
+#      - light.globe_lamp
+#      - light.edison_lamp
+#      - light.tarnaby_lamp
+#      - light.play_lichtbalk_l
+#      - light.play_lichtbalk_m
+#      - light.play_lichtbalk_r
+
+    # Slaapkamer nachtkastjes (not for use in HomeKit)
+  - platform: group
+    name: Slaapkamer Nachtkastjes
+    entities:
+      - light.slaapkamer_nachtkastje_l
+      - light.slaapkamer_nachtkastje_r
+
+    # Keuken Afzuigkap (not for use in HomeKit)
+  - platform: group
+    name: Keuken Afzuigkap
+    entities:
+      - light.keuken_afzuigkap_l
+      - light.keuken_afzuigkap_r

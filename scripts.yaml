@@ -1,0 +1,1046 @@
+fan_oscillating:
+  alias: Fan - Oscillating
+  sequence:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.whisper_flex_oscillating
+      option: '{{ oscillating }}'
+  - service: scene.turn_on
+    data_template:
+      entity_id: "{% if states(\"input_select.whisper_flex_oscillating\") == 'True'\
+        \ %}\n  scene.flex_horizontal_oscillation\n{% elif states(\"input_select.whisper_flex_oscillating\"\
+        ) == 'False' %}\n  scene.flex_horizontal_off\n{% endif %}"
+  mode: single
+  icon: mdi:axis-z-rotate-clockwise
+fan_off:
+  alias: Fan - Off
+  sequence:
+  - service: fan.turn_off
+    target:
+      entity_id:
+      - fan.tuya_whisper_flex
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: scene.turn_on
+    target:
+      entity_id: scene.flex_off
+  - wait_template: '{{ is_state(''switch.whisper_flex_ultimate'', ''off'') }}'
+    continue_on_timeout: false
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.whisper_flex_oscillating
+    data:
+      option: 'False'
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.whisper_flex_direction
+    data:
+      option: reverse
+  mode: restart
+  icon: mdi:fan-off
+fan_auto_mode:
+  alias: Fan - Auto Mode
+  sequence:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '22.9'
+        below: '24.1'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          percentage: 10
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '24'
+        below: '24.6'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          percentage: 20
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '24.5'
+        below: '25.1'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          percentage: 30
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '25'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          percentage: 40
+    default:
+    - service: notify.mobile_app_iphone_a14
+      data:
+        message: Het is {{ states.sensor.slaapkamer_temperature_multi_sensor.state
+          }}°C in de slaapkamer, de ventilator blijft uit
+        title: homeOS
+  mode: single
+  icon: mdi:fan-auto
+fan_direction:
+  alias: Fan - Direction
+  sequence:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.whisper_flex_direction
+      option: '{{ direction }}'
+  - service: scene.turn_on
+    data_template:
+      entity_id: "{% if states(\"input_select.whisper_flex_direction\") == 'forward'\
+        \ %}\n  scene.flex_vertical_oscillation\n{% elif states(\"input_select.whisper_flex_direction\"\
+        ) == 'reverse' %}\n  scene.flex_vertical_off\n{% endif %}"
+  mode: single
+  icon: mdi:horizontal-rotate-counterclockwise
+sonos_sleep_sounds:
+  alias: Sonos - Sleep Sounds
+  sequence:
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_roam
+    data:
+      volume_level: 0.2
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.sonos_roam
+        state: playing
+      sequence: []
+    default:
+    - service: media_player.select_source
+      data_template:
+        source: '{{ ["Deep Sleep Meditation", "Peaceful Piano"] | random }}'
+      target:
+        entity_id: media_player.sonos_roam
+  mode: single
+  icon: mdi:alarm-note
+mode_privacy:
+  alias: Mode - Privacy
+  sequence:
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.keuken_rolgordijnen
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.begane_grond_adaptive_lighting
+      - switch.aqara_g2h
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.keuken_control
+  - service: light.turn_on
+    target:
+      entity_id: light.keuken_groep
+  - service: light.turn_on
+    target:
+      entity_id: light.keuken_groep
+    data:
+      brightness_pct: 100
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.edison_lamp
+      - light.tarnaby_lamp
+      - light.globe_lamp
+      - light.play_lichtbalk
+    data:
+      brightness_pct: 10
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.woonkamer_eettafel_lamp
+      - light.woonkamer_lamp
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_arc
+    data:
+      volume_level: 0.15
+  - service: media_player.select_source
+    data_template:
+      source: '{{ ["The Beauty in All", "This Is Rhye", "This Is FKJ"] | random }}'
+    target:
+      entity_id: media_player.sonos_arc
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.woonkamer_gordijn
+          state: open
+        - condition: state
+          entity_id: cover.achterdeur_gordijn
+          state: open
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.woonkamer_gordijn
+          - cover.achterdeur_gordijn
+    default:
+    - service: script.dummy
+  mode: single
+  icon: mdi:heart-circle
+mode_cinema:
+  alias: Mode - Cinema
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.apple_tv
+    data:
+      command: wakeup
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.keuken_rolgordijnen
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.begane_grond_adaptive_lighting
+      - switch.woonkamer_plug
+  - service: light.turn_on
+    target:
+      entity_id: light.play_lichtbalk
+    data:
+      brightness_pct: 10
+      kelvin: 6500
+  - service: light.turn_on
+    target:
+      entity_id: light.woonkamer_eettafel_lamp
+    data:
+      brightness_pct: 20
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.filament_lamps
+      - light.woonkamer_lamp
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.woonkamer_gordijn
+          state: open
+        - condition: state
+          entity_id: cover.achterdeur_gordijn
+          state: open
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.woonkamer_gordijn
+          - cover.achterdeur_gordijn
+    default:
+    - service: script.dummy
+  mode: single
+  icon: mdi:movie-roll
+scenes_woonkamer:
+  alias: Scenes - Woonkamer
+  sequence:
+  - service: scene.turn_on
+    data_template:
+      entity_id: "{% if states(\"input_select.woonkamer_scenes\") == 'Woonkamer Lounge'\
+        \ %}\n  scene.woonkamer_lounge\n{% elif states(\"input_select.woonkamer_scenes\"\
+        ) == 'Woonkamer Visite' %}\n  scene.woonkamer_visite\n{% elif states(\"input_select.woonkamer_scenes\"\
+        ) == 'Woonkamer Overdag' %}\n  scene.woonkamer_overdag\n{% elif states(\"\
+        input_select.woonkamer_scenes\") == 'Woonkamer Helder' %}\n  scene.woonkamer_helder\n\
+        {% endif %}"
+  mode: restart
+  icon: mdi:palette-swatch
+sonos_alarm:
+  alias: Sonos - Alarm
+  sequence:
+  - service: sonos.snapshot
+    data:
+      entity_id: media_player.ikea_symfonisk, media_player.sonos_roam, media_player.sonos_arc
+  - service: media_player.volume_set
+    data:
+      volume_level: 1
+    target:
+      entity_id:
+      - media_player.sonos_roam
+      - media_player.ikea_symfonisk
+      - media_player.sonos_arc
+  - service: media_player.play_media
+    data:
+      media_content_id: http://192.168.2.55:8123/local/alarm_warning.mp3
+      media_content_type: music
+    target:
+      entity_id:
+      - media_player.sonos_roam
+      - media_player.ikea_symfonisk
+      - media_player.sonos_arc
+  mode: single
+  icon: mdi:alarm-bell
+dummy:
+  alias: No action
+  sequence:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 1
+  mode: restart
+  icon: mdi:debug-step-over
+action_manual_backup:
+  alias: Action - Manual Backup
+  sequence:
+  - service: hassio.addon_stdin
+    data:
+      addon: 15d21743_samba_backup
+      input:
+        command: trigger
+        backup_name: Manual-backup v{version} | {date}
+  mode: single
+  icon: mdi:cog-clockwise
+action_mark_task_as_done:
+  alias: Action - Mark task as Done
+  sequence:
+  - service: input_datetime.set_datetime
+    data_template:
+      entity_id: '{{task_id}}'
+      date: '{{ now().strftime("%Y-%m-%d") }}'
+  fields:
+    task:
+      description: Task to complete
+  mode: single
+  icon: mdi:calendar-check-outline
+action_sleep_apple_tv:
+  alias: Action - Sleep Apple TV
+  sequence:
+  - condition: state
+    entity_id: media_player.sony_bravia_tv
+    state: playing
+  - service: remote.send_command
+    target:
+      entity_id: remote.apple_tv
+    data:
+      command:
+      - home_hold
+      - select
+      delay_secs: 1
+  mode: single
+  icon: mdi:remote-tv
+action_all_lights_off:
+  alias: Action - All lights off
+  sequence:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.gang_lamp
+      - light.toilet_lamp
+      - light.trapkast_lamp
+      - light.keuken_groep
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_groep
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.woonkamer_plug
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.overloop_lamp
+      - light.badkamer_lamp
+      - light.kledingkamer_groep
+      - light.studiekamer_groep
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: Away
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: On vacation
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.slaapkamer_groep
+    default:
+    - service: script.dummy
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.zolder_groep
+  mode: single
+  icon: mdi:lightbulb-group-off
+purifier_set_preset_mode:
+  alias: Purifier - Set Preset Mode
+  sequence:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.smartmi_p1_preset_modes
+      option: '{{ preset_mode }}'
+  mode: single
+  icon: mdi:fan-plus
+purifier_set_speed:
+  alias: Purifier - Set Speed
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.smartmi_p1_percentage
+    data_template:
+      option: '{{ percentage }}'
+  mode: single
+  icon: mdi:fan-speed-1
+action_easy_entry:
+  alias: Action - Easy Entry
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.woonkamer_eettafel_lamp
+      - light.filament_lamps
+      - light.play_lichtbalk
+  - service: switch.turn_on
+    target:
+      entity_id: switch.woonkamer_plug
+  - service: cover.open_cover
+    target:
+      entity_id: cover.achterdeur_gordijn
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.achterdeur_sensor
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.voordeur_sensor
+      from: 'off'
+      to: 'on'
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.achterdeur_sensor
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+        milliseconds: 0
+    - platform: state
+      entity_id: binary_sensor.voordeur_sensor
+      from: 'on'
+      to: 'off'
+  - service: cover.close_cover
+    target:
+      entity_id: cover.achterdeur_gordijn
+  mode: single
+  icon: mdi:elevator-passenger
+fan_set_preset_mode:
+  alias: Fan - Set Preset Mode
+  sequence:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.whisper_flex_preset_modes
+      option: '{{ preset_mode }}'
+  - service: scene.turn_on
+    data_template:
+      entity_id: "{% if preset_mode == 'Normal Mode' %}\n  scene.flex_normal_mode\n\
+        {% elif preset_mode == 'Sleep Mode' %}\n  scene.flex_sleep_mode\n{% elif preset_mode\
+        \ == 'Nature Mode' %}\n  scene.flex_nature_mode\n{% endif %}"
+  mode: single
+  icon: mdi:fan-plus
+fan_set_speed:
+  alias: Fan - Set Speed
+  sequence:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.whisper_flex_percentage
+      value: '{{ percentage }}'
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: fan.tuya_whisper_flex
+        state: 'off'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id:
+          - fan.tuya_whisper_flex
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+    default: []
+  - service: fan.set_percentage
+    target:
+      entity_id: fan.tuya_whisper_flex
+    data_template:
+      percentage: "{% if states(\"input_number.whisper_flex_percentage\") == '10.0'\
+        \ %}\n  1\n{% elif states(\"input_number.whisper_flex_percentage\") == '20.0'\
+        \ %}\n  2\n{% elif states(\"input_number.whisper_flex_percentage\") == '30.0'\
+        \ %}\n  3\n{% elif states(\"input_number.whisper_flex_percentage\") == '40.0'\
+        \ %}\n  4\n{% elif states(\"input_number.whisper_flex_percentage\") == '50.0'\
+        \ %}\n  5\n{% elif states(\"input_number.whisper_flex_percentage\") == '60.0'\
+        \ %}\n  6\n{% elif states(\"input_number.whisper_flex_percentage\") == '70.0'\
+        \ %}\n  7\n{% elif states(\"input_number.whisper_flex_percentage\") == '80.0'\
+        \ %}\n  8\n{% elif states(\"input_number.whisper_flex_percentage\") == '90.0'\
+        \ %}\n  9\n{% elif states(\"input_number.whisper_flex_percentage\") == '100.0'\
+        \ %}\n  10\n{% endif %}"
+  mode: single
+  icon: mdi:fan-speed-1
+mode_party:
+  alias: Mode - Party
+  sequence:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.keuken_control
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_ruimten
+      lights: light.keuken_groep
+  - service: light.turn_on
+    target:
+      entity_id: light.woonkamer_groep
+  - service: switch.turn_off
+    target:
+      entity_id: switch.begane_grond_adaptive_lighting
+  mode: single
+  icon: mdi:account-supervisor-circle
+action_curtains_closed:
+  alias: Action - Curtains closed
+  sequence:
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.keuken_rolgordijnen
+    data:
+      position: 0
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.slaapkamer_rolgordijnen
+    data:
+      position: 0
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.woonkamer_gordijn
+          state: open
+        - condition: state
+          entity_id: cover.achterdeur_gordijn
+          state: open
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.woonkamer_gordijn
+          - cover.achterdeur_gordijn
+    default:
+    - service: script.dummy
+  mode: parallel
+  icon: mdi:curtains-closed
+  max: 10
+action_curtains_opened:
+  alias: Action - Curtains opened
+  sequence:
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.keuken_rolgordijnen
+    data:
+      position: 100
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.slaapkamer_rolgordijnen
+    data:
+      position: 100
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.woonkamer_gordijn
+          state: closed
+        - condition: state
+          entity_id: cover.achterdeur_gordijn
+          state: closed
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.woonkamer_gordijn
+          - cover.achterdeur_gordijn
+    default:
+    - service: script.dummy
+  mode: parallel
+  icon: mdi:curtains
+  max: 10
+home_state_avond:
+  alias: Home State - Avond
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state
+    data:
+      option: Avond
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+    data:
+      brightness_pct: 50
+  - service: cover.set_cover_position
+    data:
+      position: 0
+    entity_id: cover.keuken_rolgordijnen
+  - service: cover.set_cover_position
+    data:
+      position: 0
+    target:
+      entity_id:
+      - cover.slaapkamer_rolgordijnen
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.party_mode
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.woonkamer_eettafel_lamp
+          - light.play_lichtbalk
+          - light.filament_lamps
+      - service: switch.turn_on
+        target:
+          entity_id: switch.woonkamer_plug
+      - service: switch.turn_off
+        target:
+          entity_id: switch.begane_grond_adaptive_lighting
+      - condition: state
+        entity_id: cover.woonkamer_gordijn
+        state: open
+      - service: cover.close_cover
+        target:
+          entity_id: cover.woonkamer_gordijn
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: Home
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: On vacation
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.woonkamer_eettafel_lamp
+          - light.play_lichtbalk
+          - light.filament_lamps
+      - service: switch.turn_on
+        target:
+          entity_id: switch.woonkamer_plug
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.woonkamer_gordijn
+          state: open
+        - condition: state
+          entity_id: cover.achterdeur_gordijn
+          state: open
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.achterdeur_gordijn
+          - cover.woonkamer_gordijn
+    default:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: cover.woonkamer_gordijn
+        state: open
+      - condition: state
+        entity_id: cover.achterdeur_gordijn
+        state: open
+    - service: cover.close_cover
+      target:
+        entity_id:
+        - cover.achterdeur_gordijn
+        - cover.woonkamer_gordijn
+  mode: single
+  icon: mdi:weather-sunset
+home_state_nacht:
+  alias: Home State - Nacht
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state
+    data:
+      option: Nacht
+  - service: input_select.select_option
+    target:
+      entity_id:
+      - input_select.home_state_modifier
+    data:
+      option: Sleeping
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.action_sleep_apple_tv
+  - service: media_player.media_pause
+    data: {}
+    target:
+      entity_id:
+      - media_player.ikea_symfonisk
+      - media_player.sonos_arc
+      - media_player.homepod_mini
+  - service: climate.turn_off
+    data: {}
+    entity_id: climate.duux_threesixty
+  - service: script.turn_on
+    target:
+      entity_id: script.action_all_lights_off
+  mode: single
+  icon: mdi:weather-night
+home_state_ochtend:
+  alias: Home State - Ochtend
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state
+    data:
+      option: Ochtend
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: switch.party_mode
+          state: 'off'
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: Sleeping
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 100
+        entity_id: cover.keuken_rolgordijnen
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.achterdeur_gordijn
+          - cover.woonkamer_gordijn
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: Away
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: On vacation
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 100
+        target:
+          entity_id:
+          - cover.keuken_rolgordijnen
+          - cover.slaapkamer_rolgordijnen
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.achterdeur_gordijn
+          - cover.woonkamer_gordijn
+    default:
+    - service: script.dummy
+  mode: single
+  icon: mdi:weather-sunset-up
+home_state_overdag:
+  alias: Home State - Overdag
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state
+    data:
+      option: Overdag
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: Away
+        - condition: state
+          entity_id: input_select.home_state_modifier
+          state: On vacation
+      sequence:
+      - service: script.dummy
+    default:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.home_state_modifier
+      data:
+        option: Home
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.slaapkamer_control
+  - service: fan.turn_on
+    target:
+      entity_id: fan.smartmi_p1
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.sonos_roam
+        state: playing
+      sequence:
+      - service: media_player.media_pause
+        target:
+          entity_id:
+          - media_player.sonos_roam
+    default:
+    - service: script.dummy
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: fan.whisper_flex
+        state: 'on'
+      sequence:
+      - service: fan.set_preset_mode
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          preset_mode: Normal Mode
+      - service: fan.turn_off
+        target:
+          entity_id:
+          - fan.whisper_flex
+    default:
+    - service: script.dummy
+  - service: script.turn_on
+    target:
+      entity_id: script.action_curtains_opened
+  mode: single
+  icon: mdi:weather-sunny
+home_modifier_home:
+  alias: Home Modifier - Home
+  sequence:
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_ruimten
+      - switch.adaptive_lighting_sleep_mode_hue_filament
+      - switch.adaptive_lighting_sleep_mode_hue_lichtbalk
+      - switch.adaptive_lighting_sleep_mode_woonkamer
+      - switch.adaptive_lighting_sleep_mode_zolder
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.slaapkamer_radiator
+    data:
+      preset_mode: away
+  - service: climate.set_preset_mode
+    target:
+      entity_id: climate.woonkamer_centrale_verwarming
+    data:
+      preset_mode: none
+  - condition: and
+    conditions:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.home_state
+        state: Avond
+      - condition: state
+        entity_id: input_select.home_state
+        state: Nacht
+  - service: script.turn_on
+    target:
+      entity_id: script.action_easy_entry
+  mode: single
+  icon: mdi:home-circle
+home_modifier_away:
+  alias: Home Modifier - Away
+  sequence:
+  - service: alarm_control_panel.alarm_arm_away
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: away
+    target:
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.kledingkamer_radiator
+      - climate.slaapkamer_radiator
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.action_sleep_apple_tv
+  - service: media_player.media_pause
+    target:
+      entity_id:
+      - media_player.sonos_arc
+      - media_player.sonos_roam
+      - media_player.ikea_symfonisk
+      - media_player.homepod_mini
+  - service: fan.turn_off
+    target:
+      entity_id: fan.whisper_flex
+  - service: script.turn_on
+    target:
+      entity_id: script.action_all_lights_off
+  mode: single
+  icon: mdi:map-marker-circle
+home_modifier_sleeping:
+  alias: Home Modifier - Sleeping
+  sequence:
+  - service: alarm_control_panel.alarm_arm_night
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_ruimten
+      - switch.adaptive_lighting_sleep_mode_hue_filament
+      - switch.adaptive_lighting_sleep_mode_hue_lichtbalk
+      - switch.adaptive_lighting_sleep_mode_woonkamer
+      - switch.adaptive_lighting_sleep_mode_zolder
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.slaapkamer_radiator
+    data:
+      preset_mode: none
+  - service: climate.set_preset_mode
+    target:
+      entity_id: climate.woonkamer_centrale_verwarming
+    data:
+      preset_mode: away
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+    data:
+      brightness_pct: 50
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.slaapkamer_control
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.slaapkamer_lamp
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_select.smartmi_p1_preset_modes
+        state: manual
+      sequence:
+      - service: fan.set_preset_mode
+        target:
+          entity_id: fan.smartmi_p1
+        data:
+          preset_mode: Auto
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: fan.turn_off
+        target:
+          entity_id: fan.smartmi_p1
+    default:
+    - service: fan.turn_off
+      target:
+        entity_id: fan.smartmi_p1
+  - service: script.turn_on
+    target:
+      entity_id: script.sonos_sleep_sounds
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.action_curtains_closed
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '22.5'
+      - condition: state
+        entity_id: fan.whisper_flex
+        state: 'off'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+      - wait_template: '{{ is_state(''fan.tuya_whisper_flex'', ''on'') }}'
+      - service: fan.oscillate
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          oscillating: true
+      - service: fan.set_preset_mode
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          preset_mode: Sleep Mode
+    default:
+    - service: script.dummy
+  mode: restart
+  icon: mdi:bell-circle

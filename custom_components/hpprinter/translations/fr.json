@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurer l'imprimante HP",
+        "data": {
+          "host": "Hôte",
+          "name": "Nom"
+        }
+      }
+    }
+  }
+}

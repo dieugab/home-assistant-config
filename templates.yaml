@@ -1,0 +1,234 @@
+# template:
+
+#=== AVERAGE SENSORS ===#
+  - sensor:
+        # Woonkamer + Keuken temperature
+      - name: "Woonkamer CV Temperature Average"
+        unique_id: avg_cv_klima_temperature
+        device_class: temperature
+        unit_of_measurement: "°C"
+        state: >
+          {% set keuken = states('sensor.keuken_klima15_temperature_sensor') | float %}
+          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_temperature_sensor') | float %}
+          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_temperature_sensor') | float %}
+
+          {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
+
+        # Woonkamer + Keuken humidity
+      - name: "Woonkamer CV Humidity Average"
+        unique_id: avg_cv_klima_humidity
+        device_class: humidity
+        unit_of_measurement: "%"
+        state: >
+          {% set keuken = states('sensor.keuken_klima15_humidity_sensor') | float %}
+          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_humidity_sensor') | float %}
+          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_humidity_sensor') | float %}
+
+          {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
+
+
+#=== HOMEKIT SENSORS ===#
+
+  - binary_sensor:
+        # Camera motion sensor controlled by HomeKit
+      - name: Woonkamer Cam Motion Sensor
+        unique_id: cam_motion_sensor
+        device_class: motion
+        state: "{{ states('input_boolean.homekit_cam_motion_sensor') == 'on' }}"
+        availability: "{{ states('switch.aqara_g2h') == 'on' }}"
+        attributes:
+          camera_network_access: "{{ states('switch.aqara_g2h') }}"
+
+  - sensor:
+        # Air purifier AQI sensor controlled by HomeKit
+      - name: 'Smartmi P1 AQI'
+        unique_id: smartmi_p1_aqi
+        device_class: aqi
+        icon: >-
+          {% if is_state('input_select.smartmi_p1_aqi', 'Excellent') %}
+            mdi:emoticon-excited
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Good') %}
+            mdi:emoticon-happy
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Fair') %}
+            mdi:emoticon-neutral
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Inferior') %}
+            mdi:emoticon-sad
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
+            mdi:emoticon-dead
+          {% endif %}    
+        state: >-
+          {% if is_state('input_select.smartmi_p1_aqi', 'Excellent') %}
+            {{ 'Excellent' }}
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Good') %}
+            {{ 'Good' }}
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Fair') %}
+            {{ 'Fair' }}
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Inferior') %}
+            {{ 'Inferior' }}
+          {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
+            {{ 'Poor' }}
+          {% endif %}    
+
+
+#=== UPDATE SENSORS ===#
+
+  - binary_sensor:
+        # Improved Home Assistant Updater
+      - name: HA Updater
+        unique_id: updater_v2
+        device_class: update
+        state: "{{ states('sensor.latest_version') != states('sensor.current_version') }}"
+        availability: "{{ states('sensor.latest_version') != 'unknown' }}"
+        attributes:
+          current_version: "{{ states('sensor.current_version') }}"
+          latest_version: "{{ states('sensor.latest_version') }}"
+          release_notes: "{{ state_attr('binary_sensor.updater', 'release_notes') }}"
+          last_backup: "{{ state_attr('sensor.samba_backup', 'last_backup') }}"
+
+        # Improved HACS Updater
+      - name: HACS Updater
+        unique_id: hacs_updater_v2
+        device_class: update
+        state: "{{ states('sensor.hacs') != '0' }}"
+        attributes:
+          repositories: "{{ state_attr('sensor.hacs', 'repositories') }}"
+
+
+#=== RELATIVE TIME ===#
+
+  - sensor:
+        # Time since last completed remote backup
+      - name: Samba Relative Backup
+        unique_id: samba_relative_backup
+        icon: mdi:clipboard-text-clock
+        state: "{{ relative_time( strptime(state_attr('sensor.samba_backup', 'last_backup'), '%Y-%m-%d %H:%M', now()) ) }} ago"
+
+
+#=== OCCUPANCY ===#
+
+  - binary_sensor:
+        # Keuken Occupancy
+      - name: Keuken Occupancy
+        unique_id: keuken_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.keuken_motion_sensor', 'on')
+             or is_state('input_boolean.keuken_control', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.keuken_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          motion_sensor: "{{ states('binary_sensor.keuken_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.keuken_control') }}"
+
+        # Douche Occupancy
+      - name: Douche Occupancy
+        unique_id: douche_occupancy
+        device_class: occupancy
+        state: "{{ is_state('input_boolean.douche_occupancy_state', 'on') }}"
+        icon: >-
+          {% if is_state('binary_sensor.douche_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          input_boolean: "{{ states('input_boolean.douche_occupancy_state') }}"
+
+        # Badkamer Occupancy
+      - name: Badkamer Occupancy
+        unique_id: badkamer_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.badkamer_motion_sensor', 'on')
+             or is_state('input_boolean.badkamer_control', 'on')
+             or is_state('input_boolean.douche_occupancy_state', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.badkamer_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          motion_sensor: "{{ states('binary_sensor.badkamer_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.badkamer_control') }}"
+          douche_occupancy: "{{ states('input_boolean.douche_occupancy_state') }}"
+
+        # Kledingkamer Occupancy
+      - name: Kledingkamer Occupancy
+        unique_id: kledingkamer_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.kledingkamer_motion_sensor', 'on')
+             or is_state('input_boolean.kledingkamer_control', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.kledingkamer_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          motion_sensor: "{{ states('binary_sensor.kledingkamer_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.kledingkamer_control') }}"
+
+        # Studiekamer Occupancy
+      - name: Studiekamer Occupancy
+        unique_id: studiekamer_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.studiekamer_motion_sensor', 'on')
+             or is_state('input_boolean.studiekamer_control', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.studiekamer_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          motion_sensor: "{{ states('binary_sensor.studiekamer_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.studiekamer_control') }}"
+
+        # Slaapkamer Occupancy
+      - name: Slaapkamer Occupancy
+        unique_id: slaapkamer_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.slaapkamer_motion_sensor', 'on')
+             or is_state('input_boolean.slaapkamer_control', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.slaapkamer_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          motion_sensor: "{{ states('binary_sensor.slaapkamer_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.slaapkamer_control') }}"
+
+        # Zolder Occupancy
+      - name: Zolder Occupancy
+        unique_id: zolder_occupancy
+        device_class: occupancy
+        state: >-
+          {{ is_state('binary_sensor.oost_zolder_motion_sensor', 'on')
+             or is_state('binary_sensor.west_zolder_motion_sensor', 'on')
+             or is_state('input_boolean.zolder_control', 'on')
+          }}
+        icon: >-
+          {% if is_state('binary_sensor.zolder_occupancy', 'on') %}
+            mdi:account-box-multiple
+          {% else %}
+            mdi:account-box
+          {% endif %}
+        attributes:
+          oost_motion_sensor: "{{ states('binary_sensor.oost_zolder_motion_sensor') }}"
+          west_motion_sensor: "{{ states('binary_sensor.west_zolder_motion_sensor') }}"
+          control_switch: "{{ states('input_boolean.zolder_control') }}"

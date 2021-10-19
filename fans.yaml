@@ -1,0 +1,69 @@
+  - platform: template
+    fans:
+      # Template fan for Duux Whisper Flex controlled by Tuya cloud
+      whisper_flex:
+        friendly_name: "Whisper Flex"
+        unique_id: template_fan_whisper_flex
+        availability_template: "{{ states('switch.whisper_flex_ultimate') != 'unavailable' }}" #workaround: availability_template of the switch
+#        value_template: "{{ states('fan.tuya_whisper_flex') }}"
+#        percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int * 10) }}"
+        value_template: "{{ states('switch.whisper_flex_ultimate') }}" #workaround: value_template of the switch
+        percentage_template: "{{ states('input_number.whisper_flex_percentage') }}" #workaround: percentage_template of the helper
+        preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
+        oscillating_template: "{{ states('input_select.whisper_flex_oscillating') }}"
+#        direction_template: "{{ states('input_select.whisper_flex_direction') }}" #direction not used
+        turn_on:
+          service: fan.turn_on
+          target:
+            entity_id: fan.tuya_whisper_flex
+        turn_off:
+          service: script.fan_off #workaround: script wait_template set to the switch instead of fan entity
+        set_percentage:
+          service: script.fan_set_speed
+          data:
+            percentage: "{{ percentage }}"
+        set_preset_mode:
+          service: script.fan_set_preset_mode
+          data:
+            preset_mode: "{{ preset_mode }}"
+        set_oscillating:
+          service: script.fan_oscillating
+          data:
+            oscillating: "{{ oscillating }}"
+#        set_direction:
+#          service: script.fan_direction
+#          data:
+#            direction: "{{ direction }}"
+        speed_count: 10
+        preset_modes:
+          - 'Normal Mode'
+          - 'Sleep Mode'
+          - 'Nature Mode'
+
+      # Template fan for Smartmi P1 air purifier controlled by HomeKit
+      smartmi_p1:
+        friendly_name: "Smartmi P1"
+        unique_id: fan_smartmi_p1
+        value_template: "{{ states('input_boolean.air_purifier') }}"
+        percentage_template: "{{ states('input_select.smartmi_p1_percentage') }}"
+        preset_mode_template: "{{ states('input_select.smartmi_p1_preset_modes') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.air_purifier
+        turn_off:
+          service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.air_purifier
+        set_percentage:
+          service: script.purifier_set_speed
+          data:
+            percentage: "{{ percentage }}"
+        set_preset_mode:
+          service: script.purifier_set_preset_mode
+          data:
+            preset_mode: "{{ preset_mode }}"
+        speed_count: 3
+        preset_modes:
+          - 'Manual'
+          - 'Auto'

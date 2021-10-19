@@ -1,0 +1,110 @@
+#calendar:
+  - platform: entities_calendar
+    calendars:
+      - name: '07 HVC afvalkalender GFT'
+        entities:
+          - entity: sensor.hvc_gft
+            name: HVC GFT
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '01 HVC afvalkalender Papier'
+        entities:
+          - entity: sensor.hvc_papier
+            name: HVC Papier
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '04 HVC afvalkalender PMD'
+        entities:
+          - entity: sensor.hvc_pmd
+            name: HVC PMD
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '05 Tuin taken calendar'
+        entities:
+          - entity: input_datetime.task_onkruid
+            name: Onkruid verwijderd
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '02 Huis taken calendar'
+        entities:
+          - entity: input_datetime.task_afstoffen
+            name: Afgestoft
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+          - entity: input_datetime.task_dweilen
+            name: Gedweild
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+          - entity: input_datetime.task_stofzuigen
+            name: Stofgezogen
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+          - entity: input_datetime.task_stofzuiger_filter
+            name: Stofzuiger filter gewassen
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '03 Was taken calendar'
+        entities:
+          - entity: input_datetime.task_beddengoed
+            name: Beddengoed verschoond
+            start_time:
+              timestamp_in_state: true
+            end_time:
+              timestamp_in_state: true
+
+      - name: '06 Scheduler calendar'
+        entities:
+          - entity: switch.schedule_ed4adf
+            name: Air Purifier schema
+            start_time:
+              timestamp_attribute: next_trigger
+            end_time:
+              timestamp_attribute: next_trigger
+
+      - name: '08 Heater schedule'
+        entities:
+          - entity: switch.schedule_383113
+            name: Slaapkamer radiator schema
+            start_time:
+              timestamp_attribute: next_trigger
+            end_time:
+              timestamp_attribute: next_trigger
+          - entity: switch.schedule_773ce4
+            name: Woonkamer CV schema
+            start_time:
+              timestamp_attribute: next_trigger
+            end_time:
+              timestamp_attribute: next_trigger
+          - entity: switch.schedule_d421f4
+            name: Kledingkamer radiator schema
+            start_time:
+              timestamp_attribute: next_trigger
+            end_time:
+              timestamp_attribute: next_trigger
+          - entity: switch.schedule_f06e50
+            name: Duux ThreeSixty schema
+            start_time:
+              timestamp_attribute: next_trigger
+            end_time:
+              timestamp_attribute: next_trigger

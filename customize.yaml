@@ -1,0 +1,68 @@
+switch.woonkamer_plug:
+  device_class: switch
+cover.slaapkamer_l:
+  device_class: blind
+cover.slaapkamer_r:
+  device_class: blind
+cover.keuken_l:
+  device_class: blind
+cover.keuken_r:
+  device_class: blind
+cover.keuken_rolgordijnen:
+  device_class: blind
+cover.slaapkamer_rolgordijnen:
+  device_class: blind
+light.keuken_afzuigkap:
+  icon: hue:ceiling-square
+light.slaapkamer_nachtkastjes:
+  icon: mdi:lamps
+climate.tuya_threesixty: {}
+cover.woonkamer_gordijn_l:
+  device_class: curtain
+cover.woonkamer_gordijn_r:
+  device_class: curtain
+climate.woonkamer_radiator_l:
+  icon: mdi:radiator
+climate.woonkamer_radiator_r:
+  icon: mdi:radiator
+climate.keuken_radiator:
+  icon: mdi:radiator
+climate.slaapkamer_radiator:
+  icon: mdi:radiator
+light.zolder_spots:
+  icon: phu:ceiling-spot-lamp
+light.slaapkamer_groep:
+  supported_color_modes:
+  - color_temp
+light.studiekamer_groep:
+  supported_color_modes:
+  - color_temp
+light.kledingkamer_groep:
+  supported_color_modes:
+  - color_temp
+light.zolder_groep:
+  supported_color_modes:
+  - color_temp
+light.keuken_groep:
+  supported_color_modes:
+  - color_temp
+light.filament_lamps:
+  supported_color_modes:
+  - brightness
+climate.woonkamer_centrale_verwarming:
+  friendly_name: Centrale Verwarming
+  icon: mdi:thermostat
+climate.duux_threesixty:
+  icon: mdi:radiobox-marked
+sensor.auto_backup: {}
+sensor.samba_backup:
+  icon: mdi:archive-arrow-up
+light.deconz_slaapkamer_rolgordijnen: {}
+climate.kledingkamer_radiator:
+  icon: mdi:radiator
+device_tracker.shanna:
+  icon: mdi:account-search
+device_tracker.gabriel:
+  icon: mdi:account-search
+cover.woonkamer_switchbot:
+  device_class: awning

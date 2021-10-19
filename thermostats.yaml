@@ -1,0 +1,108 @@
+#=== TUYA ===#
+
+    # Duux ThreeSixty heater @ woonkamer
+  - platform: generic_thermostat
+    name: Duux ThreeSixty
+    heater: switch.threesixty
+    target_sensor: sensor.woonkamer_cv_temperature_average
+    min_temp: 18.0
+    max_temp: 30.0
+#    target_temp: 20
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    precision: 1
+
+
+#=== CLIMATE GROUPS ===#
+
+    # Centrale verwarming begane grond
+  - platform: climate_group
+    name: 'Woonkamer Centrale Verwarming'
+    temperature_unit: C
+    entities:
+    - climate.woonkamer_radiator_l
+    - climate.woonkamer_radiator_r
+    - climate.keuken_radiator
+
+
+#=== RADIATORS ===#
+
+    # Radiator @ trapopening
+  - platform: generic_thermostat
+    name: Woonkamer Radiator R
+    heater: switch.woonkamer_klima10_r
+    target_sensor: sensor.woonkamer_klima10_r_temperature_sensor
+    min_temp: 18
+    max_temp: 23
+#    target_temp: 20
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1
+    
+    # Radiator @ achterdeur
+  - platform: generic_thermostat
+    name: Woonkamer Radiator L
+    heater: switch.woonkamer_klima10_l
+    target_sensor: sensor.woonkamer_klima10_l_temperature_sensor
+    min_temp: 18
+    max_temp: 23
+#    target_temp: 20
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1
+    
+    # Radiator @ keuken
+  - platform: generic_thermostat
+    name: Keuken Radiator
+    heater: switch.keuken_klima15
+    target_sensor: sensor.keuken_klima15_temperature_sensor
+    min_temp: 18
+    max_temp: 23
+#    target_temp: 20
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1
+
+    # Radiator @ kledingkamer
+  - platform: generic_thermostat
+    name: Kledingkamer Radiator
+    heater: switch.kledingkamer_klima15
+    target_sensor: sensor.kledingkamer_klima15_temperature_sensor
+    min_temp: 18
+    max_temp: 22
+    target_temp: 21.5
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1
+
+    # Radiator @ slaapkamer
+  - platform: generic_thermostat
+    name: Slaapkamer Radiator
+    heater: switch.slaapkamer_klima15
+    target_sensor: sensor.slaapkamer_klima15_temperature_sensor
+    min_temp: 17
+    target_temp: 19
+    max_temp: 20
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1

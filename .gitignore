@@ -1,0 +1,27 @@
+# Allow-list
+!*.yaml
+!.gitignore
+!*.md
+!.HA_VERSION
+
+# Disallow files
+secrets.yaml
+known_devices.yaml
+security_system.yaml
+.ps4*
+
+#Disallow config files
+logs
+*.log
+__pycache__
+*.pyc
+home-assistant.*
+
+# Disallow folders
+.storage
+.cloud
+alarms
+blueprints
+image
+tts
+custom_components/hacs

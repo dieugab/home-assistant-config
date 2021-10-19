@@ -1,0 +1,132 @@
+- id: '1610315133223'
+  name: Woonkamer - Lounge
+  entities:
+    light.woonkamer_groep:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - brightness
+      - color_temp
+      - hs
+      color_mode: color_temp
+      brightness: 67
+      color_temp: 421
+      entity_id:
+      - light.woonkamer_hektar_lamp
+      - light.woonkamer_lamp
+      - light.woonkamer_eettafel_lamp
+      - light.globe_lamp
+      - light.edison_lamp
+      - light.wiz_tunable_e14
+      - light.play_lichtbalk_l
+      - light.play_lichtbalk_m
+      - light.play_lichtbalk_r
+      friendly_name: Woonkamer Groep
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    switch.begane_grond_adaptive_lighting:
+      friendly_name: Begane Grond - Adaptive Lighting
+      icon: mdi:weather-sunset
+      state: 'off'
+- id: '1610315145487'
+  name: Woonkamer - Visite
+  entities:
+    light.woonkamer_groep:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - brightness
+      - color_temp
+      - hs
+      color_mode: color_temp
+      brightness: 183
+      color_temp: 247
+      entity_id:
+      - light.woonkamer_hektar_lamp
+      - light.woonkamer_lamp
+      - light.woonkamer_eettafel_lamp
+      - light.globe_lamp
+      - light.edison_lamp
+      - light.wiz_tunable_e14
+      - light.play_lichtbalk_l
+      - light.play_lichtbalk_m
+      - light.play_lichtbalk_r
+      friendly_name: Woonkamer Groep
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    switch.begane_grond_adaptive_lighting:
+      friendly_name: Begane Grond - Adaptive Lighting
+      icon: mdi:weather-sunny
+      state: 'on'
+- id: '1610315156717'
+  name: Woonkamer - Overdag
+  entities:
+    light.woonkamer_groep:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - brightness
+      - color_temp
+      - hs
+      color_mode: color_temp
+      brightness: 200
+      color_temp: 340
+      entity_id:
+      - light.woonkamer_hektar_lamp
+      - light.woonkamer_lamp
+      - light.woonkamer_eettafel_lamp
+      - light.globe_lamp
+      - light.edison_lamp
+      - light.wiz_tunable_e14
+      - light.play_lichtbalk_l
+      - light.play_lichtbalk_m
+      - light.play_lichtbalk_r
+      friendly_name: Woonkamer Groep
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    switch.begane_grond_adaptive_lighting:
+      friendly_name: Begane Grond - Adaptive Lighting
+      icon: mdi:weather-sunset
+      state: 'off'
+- id: '1610315168164'
+  name: Woonkamer - Helder
+  entities:
+    light.woonkamer_groep:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - brightness
+      - color_temp
+      - hs
+      color_mode: color_temp
+      brightness: 233
+      color_temp: 229
+      entity_id:
+      - light.woonkamer_hektar_lamp
+      - light.woonkamer_lamp
+      - light.woonkamer_eettafel_lamp
+      - light.globe_lamp
+      - light.edison_lamp
+      - light.wiz_tunable_e14
+      - light.play_lichtbalk_l
+      - light.play_lichtbalk_m
+      - light.play_lichtbalk_r
+      friendly_name: Woonkamer Groep
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    switch.begane_grond_adaptive_lighting:
+      friendly_name: Begane Grond - Adaptive Lighting
+      icon: mdi:weather-sunset
+      state: 'off'

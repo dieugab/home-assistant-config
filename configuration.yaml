@@ -1,0 +1,168 @@
+#=== DEFAULT SETUP (FRONTEND, API, ETC) ===#
+default_config:
+
+
+#=== DATABASE ===#
+
+logger:
+  default: warning #critical
+#  logs:
+#    custom_components.tuya_v2: debug
+
+
+# History settings
+recorder:
+  db_url: !secret db_url
+  purge_keep_days: 7
+  exclude:
+    domains:
+      - automation
+    entity_globs:
+      - switch.adaptive*
+      - sensor.*battery*
+
+
+#=== INCLUDES ===#
+
+# Home Assistant subdirectories to include
+frontend:
+  themes: !include_dir_merge_named themes
+homeassistant:
+  customize: !include customize.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+python_script: # include pyton_scripts directory
+
+# Configuration subdirectories to include
+alarm_control_panel: !include security_system.yaml
+template: !include templates.yaml
+switch: !include switches.yaml
+climate: !include thermostats.yaml
+light: !include lights.yaml #light groups
+homekit: !include homekit.yaml
+calendar: !include calendars.yaml
+fan: !include fans.yaml
+
+
+#=== ADB ANDROID TV ===#
+
+# Sony Bravia TV
+media_player:
+  - platform: androidtv
+    host: 192.168.2.96
+    name: "Sony Bravia TV"
+    exclude_unnamed_apps: true
+    screencap: false
+    apps:
+      com.android.vending: "Google Play Store"
+      com.disney.disneyplus: "Disney+"
+      com.apple.atve.sony.appletv: "Apple TV+"
+      nl.rtl.videoland: "Videoland"
+
+#=== ALERTS ===#
+#(https://github.com/jcallaghan/home-assistant-config/issues/257)
+#alert:
+#  hvc_afhaal:
+#    name: HVC Container
+#    done_message: Container staat langs de weg
+#    entity_id: sensor.hvc_morgen
+#    state: "None"
+#    repeat: 60
+#    can_acknowledge: true
+#    skip_first: false
+#    notifiers:
+#      - mobile_app_iphone_a14
+
+
+#=== LOCK (NOTIFICATIONS) ===#
+
+lock:
+  - platform: template
+    name: Wasmachine Slot
+    value_template: >-
+      {{ is_state('sensor.wasmachine_washer_job_state', 'weightSensing')
+        or is_state('sensor.wasmachine_washer_job_state', 'wash')
+        or is_state('sensor.wasmachine_washer_job_state', 'rinse')
+        or is_state('sensor.wasmachine_washer_job_state', 'spin')
+      }}
+    lock:
+      service: switch.turn_on
+      target:
+        entity_id: switch.wasmachine
+    unlock:
+      service: switch.turn_off
+      target:
+        entity_id: switch.wasmachine
+
+
+#=== SENSORS ===#
+
+sensor:
+    # Versions
+  - platform: version
+  - platform: version
+    source: supervisor
+
+    # HVC afvalbeheer sensors
+  - platform: afvalbeheer
+    upcomingsensor: 1
+    wastecollector: HVC
+    resources:
+      - gft
+      - papier
+      - pmd
+    postcode: 8231JX
+    streetnumber: 12
+    dateobject: 1
+
+    # System monitor
+  - platform: uptime
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: memory_use
+      - type: memory_free
+      - type: processor_use
+      - type: processor_temperature
+      - type: swap_use_percent
+      - type: disk_use_percent
+      - type: last_boot
+
+
+#=== TREND SENSORS ===#
+
+binary_sensor:
+  - platform: trend
+    sensors:
+      # 3 samples checking for a 10% change in 10 minutes (10/(60x10))
+      badkamer_hygrostat_on:
+        friendly_name: Badkamer Hygrostat Detected
+        device_class: moisture
+        max_samples: 3
+        entity_id: sensor.badkamer_humidity_multi_sensor
+        sample_duration: 600
+        min_gradient: 0.20 #was 0.10, before 0.01666
+
+      # 3 samples checking for a 5% change in 10 minutes (-5/(60x5))
+      badkamer_hygrostat_off:
+        friendly_name: Badkamer Hygrostat Cleared
+        max_samples: 3 # was 2, daarvoor 4 maar verlaagd omdat het te lang aanbleef.
+        entity_id: sensor.badkamer_humidity_multi_sensor
+        sample_duration: 600 #was 300
+        min_gradient: -0.008 #was -0.01666
+
+
+#=== COVER GROUPS ===#
+
+cover:
+  - platform: group
+    name: Keuken Rolgordijnen
+    entities:
+      - cover.keuken_l
+      - cover.keuken_r
+  - platform: group
+    name: Slaapkamer Rolgordijnen
+    entities:
+      - cover.slaapkamer_l
+      - cover.slaapkamer_r
