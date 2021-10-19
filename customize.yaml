@@ -14,24 +14,6 @@ cover.woonkamer_gordijn_l:
   device_class: curtain
 cover.woonkamer_gordijn_r:
   device_class: curtain
-light.slaapkamer_groep:
-  supported_color_modes:
-  - color_temp
-light.studiekamer_groep:
-  supported_color_modes:
-  - color_temp
-light.kledingkamer_groep:
-  supported_color_modes:
-  - color_temp
-light.zolder_groep:
-  supported_color_modes:
-  - color_temp
-light.keuken_groep:
-  supported_color_modes:
-  - color_temp
-light.filament_lamps:
-  supported_color_modes:
-  - brightness
 climate.woonkamer_centrale_verwarming:
   friendly_name: Centrale Verwarming
   icon: mdi:thermostat
