@@ -3,6 +3,7 @@
     # Duux ThreeSixty heater @ woonkamer
   - platform: generic_thermostat
     name: Duux ThreeSixty
+    unique_id: duux_threesixty_thermostat
     heater: switch.threesixty
     target_sensor: sensor.woonkamer_cv_temperature_average
     min_temp: 18.0
@@ -30,6 +31,7 @@
     # Radiator @ trapopening
   - platform: generic_thermostat
     name: Woonkamer Radiator R
+    unique_id: thermostat_woonkamer_radiator_r
     heater: switch.woonkamer_klima10_r
     target_sensor: sensor.woonkamer_klima10_r_temperature_sensor
     min_temp: 18
@@ -46,6 +48,7 @@
     # Radiator @ achterdeur
   - platform: generic_thermostat
     name: Woonkamer Radiator L
+    unique_id: thermostat_woonkamer_radiator_l
     heater: switch.woonkamer_klima10_l
     target_sensor: sensor.woonkamer_klima10_l_temperature_sensor
     min_temp: 18
@@ -62,6 +65,7 @@
     # Radiator @ keuken
   - platform: generic_thermostat
     name: Keuken Radiator
+    unique_id: thermostat_keuken_radiator
     heater: switch.keuken_klima15
     target_sensor: sensor.keuken_klima15_temperature_sensor
     min_temp: 18
@@ -78,6 +82,7 @@
     # Radiator @ kledingkamer
   - platform: generic_thermostat
     name: Kledingkamer Radiator
+    unique_id: thermostat_kledingkamer_radiator
     heater: switch.kledingkamer_klima15
     target_sensor: sensor.kledingkamer_klima15_temperature_sensor
     min_temp: 18
@@ -94,6 +99,7 @@
     # Radiator @ slaapkamer
   - platform: generic_thermostat
     name: Slaapkamer Radiator
+    unique_id: thermostat_slaapkamer_radiator
     heater: switch.slaapkamer_klima15
     target_sensor: sensor.slaapkamer_klima15_temperature_sensor
     min_temp: 17
