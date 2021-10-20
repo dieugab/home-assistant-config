@@ -158,11 +158,13 @@ binary_sensor:
 cover:
   - platform: group
     name: Keuken Rolgordijnen
+    unique_id: ha_keuken_rolgordijnen
     entities:
       - cover.keuken_l
       - cover.keuken_r
   - platform: group
     name: Slaapkamer Rolgordijnen
+    unique_id: ha_slaapkamer_rolgordijnen
     entities:
       - cover.slaapkamer_l
       - cover.slaapkamer_r
