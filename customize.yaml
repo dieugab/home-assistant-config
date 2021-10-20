@@ -1,19 +1,7 @@
-cover.slaapkamer_l:
-  device_class: blind
-cover.slaapkamer_r:
-  device_class: blind
-cover.keuken_l:
-  device_class: blind
-cover.keuken_r:
-  device_class: blind
 cover.keuken_rolgordijnen:
   device_class: blind
 cover.slaapkamer_rolgordijnen:
   device_class: blind
-cover.woonkamer_gordijn_l:
-  device_class: curtain
-cover.woonkamer_gordijn_r:
-  device_class: curtain
 climate.woonkamer_centrale_verwarming:
   friendly_name: Centrale Verwarming
   icon: mdi:thermostat
