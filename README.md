@@ -1,5 +1,5 @@
 # 🏡 Gabriel's homeOS
-My smarthome built on a Raspberry Pi 4 Model B (4GB) running Home Assistant OS, with a connected ConBee II.
+My smart home built on a Raspberry Pi 4 Model B (4GB) running Home Assistant OS, with a connected ConBee II.
 
 ## Overview
 🛡 Home Security - 📱 Mobile control - 💡 Smart adaptive lighting - 👋 - Motion & occupancy sensing - ⚡ Energy & solar monitoring - 🌡 Smart heating & cooling - 🔊 Multi-room audio - 🎛 Local control
@@ -36,13 +36,13 @@ Globally, Home Assistant follows a **State** path during the day, which control 
 
 These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. The following modifiers paths are most common:
 
-- `Home` ensures 🚪 security is OFF, 💡 lights are adaptibe and 🌡 heating is on
+- `Home` ensures 🚪 security is OFF, 💡 lights are adaptive and 🌡 heating is on
 - `Home` -> `Sleeping` -> `Home` ensures 🛡 security is ON, 🕯 lights are dimmed, 🌡 heating is adjusted and ⚙ bedroom automations run
 - `Home` -> `Away` -> `Home` ensures 🛡 security is ON, 🚫 lights & devices are off, ❄ heating is lowered
 - `Home` -> `Away` -> `On vacation` -> `Home` ensures ⚙ Home State automations will run as if someone's home
 
 ## Modes
-Aditionally, there are a couple of Modes which can be manually turned on depending on the situation:
+Additionally, there are a couple of Modes which can be manually turned on depending on the situation:
 - **Cinema Mode** ensures the ideal movie watching experience
-- **Party Mode** ensures no automations are run that enterfere with guests
+- **Party Mode** ensures no automations are run that interfere with guests
 - **Privacy Mode** ensures downstairs is secured against prying eyes
