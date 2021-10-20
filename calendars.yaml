@@ -1,6 +1,8 @@
-#calendar:
+#=== HVC ENTITIES CALENDARS ===#
+
   - platform: entities_calendar
     calendars:
+        # HVC GFT
       - name: '07 HVC afvalkalender GFT'
         entities:
           - entity: sensor.hvc_gft
@@ -10,6 +12,7 @@
             end_time:
               timestamp_in_state: true
 
+        # HVC Papier
       - name: '01 HVC afvalkalender Papier'
         entities:
           - entity: sensor.hvc_papier
@@ -19,6 +22,7 @@
             end_time:
               timestamp_in_state: true
 
+        #HVC PMD
       - name: '04 HVC afvalkalender PMD'
         entities:
           - entity: sensor.hvc_pmd
@@ -28,6 +32,10 @@
             end_time:
               timestamp_in_state: true
 
+
+#=== TASKS ENTITIES CALENDARS ===#
+
+        # Tasks for in the garden
       - name: '05 Tuin taken calendar'
         entities:
           - entity: input_datetime.task_onkruid
@@ -37,6 +45,7 @@
             end_time:
               timestamp_in_state: true
 
+        # Tasks for at home
       - name: '02 Huis taken calendar'
         entities:
           - entity: input_datetime.task_afstoffen
@@ -64,6 +73,7 @@
             end_time:
               timestamp_in_state: true
 
+        # Tasks for the washer
       - name: '03 Was taken calendar'
         entities:
           - entity: input_datetime.task_beddengoed
@@ -73,6 +83,10 @@
             end_time:
               timestamp_in_state: true
 
+
+#=== SCHEDULER ENTITIES CALENDARS ===#
+
+        # General schedular calendars
       - name: '06 Scheduler calendar'
         entities:
           - entity: switch.schedule_ed4adf
@@ -82,6 +96,7 @@
             end_time:
               timestamp_attribute: next_trigger
 
+        # Schedules related to home heating
       - name: '08 Heater schedule'
         entities:
           - entity: switch.schedule_383113
