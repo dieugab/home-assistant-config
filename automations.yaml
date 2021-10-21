@@ -1,6 +1,7 @@
 - id: '1610295461457'
   alias: Motion - Toilet
-  description: 'Turn on light when motion is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when motion is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - type: motion
     platform: device
@@ -42,7 +43,8 @@
   mode: restart
 - id: '1610296743694'
   alias: Motion - Gang (lux)
-  description: 'Turn on light when motion is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when motion is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - type: motion
     platform: device
@@ -89,7 +91,8 @@
   mode: restart
 - id: '1610298075630'
   alias: Motion - Overloop (lux)
-  description: 'Turn on light when motion is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when motion is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.overloop_motion_sensor
@@ -161,7 +164,7 @@
   mode: restart
 - id: '1610308330940'
   alias: Reset Control - Woonkamer
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.woonkamer_groep
@@ -183,7 +186,7 @@
   mode: single
 - id: '1610308361097'
   alias: Reset Control - Studiekamer
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.studiekamer_groep
@@ -197,7 +200,7 @@
   mode: single
 - id: '1610308456079'
   alias: Reset Control - Slaapkamer
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.slaapkamer_groep
@@ -217,7 +220,7 @@
   mode: single
 - id: '1610308504939'
   alias: Reset Control - Badkamer
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: device
     type: turned_off
@@ -245,7 +248,8 @@
   mode: single
 - id: '1610310358560'
   alias: Occupancy - Slaapkamer (state)
-  description: 'Turn on light when activity is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.slaapkamer_occupancy
@@ -292,7 +296,8 @@
   mode: restart
 - id: '1610310518317'
   alias: Occupancy - Badkamer
-  description: 'Turn on light when activity is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.badkamer_occupancy
@@ -333,7 +338,8 @@
   mode: restart
 - id: '1610311748353'
   alias: Occupancy - Zolder (state)
-  description: 'Turn on light when activity is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.zolder_occupancy
@@ -374,7 +380,7 @@
   mode: restart
 - id: '1610312001854'
   alias: deCONZ - Bureaulamp IKEA TRADFRI Button
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-button.yaml
     input:
@@ -385,7 +391,7 @@
         device_id: 118cd29a3c9f29879b92d280ef7bf7fe
 - id: '1610330780312'
   alias: Contact Sensor - Bed Occupancy State
-  description: 'Set the correct state to the Withings Sleep sensor at boot'
+  description: Set the correct state to the Withings Sleep sensor at boot
   trigger:
   - platform: homeassistant
     event: start
@@ -401,7 +407,7 @@
   mode: single
 - id: '1610533060447'
   alias: deCONZ - Woonkamer IKEA SYMFONISK Remote
-  description: 'Switch to control music playback'
+  description: Switch to control music playback
   use_blueprint:
     path: L-Carslake/deconz-ikea-symfonisk.yaml
     input:
@@ -458,7 +464,7 @@
   mode: restart
 - id: '1613053612207'
   alias: Reset Control - Zolder
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.zolder_groep
@@ -475,7 +481,8 @@
   mode: single
 - id: '1613139301090'
   alias: Occupancy - Kledingkamer (lux)
-  description: 'Turn on light when activity is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.kledingkamer_occupancy
@@ -518,7 +525,7 @@
   mode: restart
 - id: '1613139430261'
   alias: Reset Control - Kledingkamer
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.kledingkamer_groep
@@ -544,7 +551,7 @@
   mode: single
 - id: '1613407001603'
   alias: Contact Sensor - Trapkast
-  description: 'Turn on light when door is open, and turn off when door is closed'
+  description: Turn on light when door is open, and turn off when door is closed
   trigger:
   - type: opened
     platform: device
@@ -570,7 +577,7 @@
   mode: restart
 - id: '1613545624056'
   alias: Security - Alarm TRIGGERED
-  description: 'Automation to trigger the security system'
+  description: Automation to trigger the security system
   trigger:
   - type: opened
     platform: device
@@ -618,7 +625,7 @@
   mode: single
 - id: '1613546123645'
   alias: Security - Alarm DISARMED
-  description: 'Automation to disarm the security system'
+  description: Automation to disarm the security system
   trigger:
   - platform: state
     entity_id: alarm_control_panel.security_system
@@ -639,7 +646,7 @@
   mode: single
 - id: '1613724944074'
   alias: deCONZ - Security Smart Button
-  description: 'Switch to enable and disable the alarm system'
+  description: Switch to enable and disable the alarm system
   trigger:
   - device_id: 4945d96ec9acaa3fb3aef0184d00e467
     domain: deconz
@@ -721,7 +728,7 @@
   mode: restart
 - id: '1614153754568'
   alias: Security - Camera Access ENABLED
-  description: 'Automation to allow the camera on the network'
+  description: Automation to allow the camera on the network
   trigger:
   - platform: state
     entity_id: alarm_control_panel.security_system
@@ -744,7 +751,7 @@
   mode: single
 - id: '1614153848468'
   alias: Security - Camera Access DISABLED
-  description: 'Automation to disallow the camera on the network'
+  description: Automation to disallow the camera on the network
   trigger:
   - platform: state
     entity_id: alarm_control_panel.security_system
@@ -774,7 +781,7 @@
   mode: single
 - id: '1614632132577'
   alias: deCONZ - Smart Plug Waterkoker
-  description: 'Automation to turn off the kettle after heating water'
+  description: Automation to turn off the kettle after heating water
   trigger:
   - platform: numeric_state
     entity_id: sensor.keuken_smart_plug_power
@@ -787,7 +794,7 @@
   mode: single
 - id: '1615073014112'
   alias: Heater - Open Door Detection
-  description: 'Turn off central heating when the door is opened'
+  description: Turn off central heating when the door is opened
   trigger:
   - type: opened
     platform: device
@@ -827,7 +834,8 @@
   mode: single
 - id: '1615373747590'
   alias: Occupancy - Studiekamer (lux)
-  description: 'Turn on light when activity is detected, dim after inactivity and turn off after a delay'
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
   trigger:
   - platform: state
     entity_id: binary_sensor.studiekamer_occupancy
@@ -875,7 +883,7 @@
   mode: restart
 - id: '1624344647667'
   alias: TV - Switch input Xbox
-  description: 'Switch TV HDMI input Xbox when turned on'
+  description: Switch TV HDMI input Xbox when turned on
   trigger:
   - platform: state
     entity_id: media_player.xbox_one_s
@@ -895,7 +903,7 @@
   mode: single
 - id: '1625428959292'
   alias: deCONZ - Woonkamer IKEA STYRBAR Remote
-  description: 'Swith to control light(s)'
+  description: Swith to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-styrbar.yaml
     input:
@@ -921,7 +929,7 @@
           entity_id: script.scenes_woonkamer
 - id: '1626357055475'
   alias: deCONZ - Slaapkamer IKEA Shortcut Button
-  description: 'Switch to set Nacht state'
+  description: Switch to set Nacht state
   use_blueprint:
     path: Gabriel/deconz-ikea-shortcut.yaml
     input:
@@ -929,7 +937,7 @@
       press_button:
       - condition: state
         entity_id: input_select.home_state
-        state: Nacht
+        state: Avond
       - service: switch.turn_on
         target:
           entity_id: switch.nacht_state
@@ -949,7 +957,7 @@
           - light.woonkamer_hektar_lamp
 - id: '1627321581842'
   alias: deCONZ - Zolder IKEA Switch
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-button-switch.yaml
     input:
@@ -960,7 +968,7 @@
       adaptive_lighting: switch.adaptive_lighting_zolder
 - id: '1627322341754'
   alias: deCONZ - Kledingkamer Hue Remote
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml
     input:
@@ -971,7 +979,7 @@
       adaptive_lighting: switch.adaptive_lighting_ruimten
 - id: '1627322518980'
   alias: deCONZ - Studiekamer Hue Remote
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml
     input:
@@ -982,7 +990,7 @@
       adaptive_lighting: switch.adaptive_lighting_ruimten
 - id: '1627322789979'
   alias: deCONZ - Slaapkamer Hue Remote
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml
     input:
@@ -1021,7 +1029,7 @@
             entity_id: switch.overdag_state
 - id: '1629447322416'
   alias: '# Experimental - HomeKit Adaptive Lighting'
-  description: 'Work in Progress'
+  description: Work in Progress
   trigger:
   - platform: event
     event_type: homekit_state_change
@@ -1080,7 +1088,7 @@
   mode: single
 - id: '1629971132565'
   alias: Home Assistant - Startup
-  description: 'Actions to run at boot'
+  description: Actions to run at boot
   trigger:
   - platform: homeassistant
     event: start
@@ -1139,7 +1147,7 @@
   mode: single
 - id: '1630052096417'
   alias: Home State - Avond
-  description: 'Automatically set Home State to Avond when dark enough'
+  description: Automatically set Home State to Avond when dark enough
   trigger:
   - type: illuminance
     platform: device
@@ -1166,7 +1174,7 @@
   mode: single
 - id: '1630052160015'
   alias: Home State - Nacht (Vacation)
-  description: 'Automatically set Home State to Nacht on vacation'
+  description: Automatically set Home State to Nacht on vacation
   trigger:
   - platform: time
     at: '23:00'
@@ -1194,7 +1202,7 @@
   mode: single
 - id: '1630052218319'
   alias: Home State - Ochtend
-  description: 'Automatically set Home State to Ochtend at sunrise'
+  description: Automatically set Home State to Ochtend at sunrise
   trigger:
   - platform: sun
     event: sunrise
@@ -1206,7 +1214,7 @@
   mode: single
 - id: '1630052280116'
   alias: Home State - Overdag (Away)
-  description: 'Automatically set Home State to Overdag when away from home'
+  description: Automatically set Home State to Overdag when away from home
   trigger:
   - platform: time
     at: '12:00'
@@ -1226,7 +1234,7 @@
   mode: single
 - id: '1630052526059'
   alias: Heater - Update Tuya Temperature
-  description: 'Update Duux ThreeSixty temperature settings using Tuya cloud'
+  description: Update Duux ThreeSixty temperature settings using Tuya cloud
   trigger:
   - platform: event
     event_type: state_changed
@@ -1243,7 +1251,7 @@
   max: 10
 - id: '1630318612363'
   alias: Notify - HACS Update
-  description: 'Notication when there is an update in HACS'
+  description: Notication when there is an update in HACS
   trigger:
   - platform: numeric_state
     entity_id: sensor.hacs
@@ -1287,7 +1295,7 @@
   mode: single
 - id: '1630333619882'
   alias: Notify - deCONZ Update
-  description: 'Notification when there is an update for deCONZ'
+  description: Notification when there is an update for deCONZ
   trigger:
   - platform: state
     entity_id: binary_sensor.deconz_update_available
@@ -1307,7 +1315,7 @@
   mode: single
 - id: '1630659040650'
   alias: Notify - Home Assistant OS Update
-  description: 'Notification when there is an update for Home Assistant'
+  description: Notification when there is an update for Home Assistant
   trigger:
   - platform: state
     entity_id: binary_sensor.ha_updater
@@ -1355,7 +1363,7 @@
   max: 2
 - id: '1630663148251'
   alias: HomeKit - Adaptive Lighting (Ruimten)
-  description: 'Take manual control of lights when changed in HomeKit'
+  description: Take manual control of lights when changed in HomeKit
   trigger:
   - platform: event
     event_type: homekit_state_change
@@ -1477,7 +1485,7 @@
   max: 10
 - id: '1630666765937'
   alias: deCONZ - Badkamer Switch
-  description: 'Switch to control light(s)'
+  description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-FoH-switch-v2.yaml
     input:
@@ -1489,7 +1497,7 @@
       light_R: light.badkamer_lamp
 - id: '1631043092515'
   alias: Motion - Achtertuin
-  description: 'Brighten light when motion is detected, and dim after inactivity'
+  description: Brighten light when motion is detected, and dim after inactivity
   trigger:
   - platform: state
     entity_id: binary_sensor.achtertuin_motion_sensor
@@ -1529,7 +1537,7 @@
   mode: restart
 - id: '1631044148352'
   alias: Motion - Voortuin
-  description: 'Brighten light when motion is detected, and dim after inactivity'
+  description: Brighten light when motion is detected, and dim after inactivity
   trigger:
   - platform: state
     entity_id: binary_sensor.voortuin_motion_sensor
@@ -1569,7 +1577,7 @@
   mode: restart
 - id: '1632838313310'
   alias: Notify - DSM Update
-  description: 'Notification when there is an update for Synology DSM'
+  description: Notification when there is an update for Synology DSM
   trigger:
   - platform: state
     entity_id: binary_sensor.mesa_update_available
@@ -1588,7 +1596,7 @@
   mode: single
 - id: '1632844874764'
   alias: Notify - DSM Security Advisor
-  description: 'Notificaton when there is a problem with DSM Security Advisor'
+  description: Notificaton when there is a problem with DSM Security Advisor
   trigger:
   - platform: state
     entity_id: binary_sensor.mesa_security_status
@@ -1607,7 +1615,7 @@
   mode: single
 - id: '1633677187832'
   alias: Notify - [Actions]
-  description: 'Automation to run notification actions'
+  description: Automation to run notification actions
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -1676,7 +1684,7 @@
   max: 2
 - id: '1633677257665'
   alias: Notify - [Decrement Badge]
-  description: 'Automation to decrement the iOS app badge when an update has been completed'
+  description: Automation to decrement the iOS app badge when an update has been completed
   trigger:
   - platform: homeassistant
     event: start
@@ -1703,7 +1711,7 @@
   mode: single
 - id: '1633677326484'
   alias: Notify - HVC inzameling
-  description: 'Notification when the trash is being picked up the next day'
+  description: Notification when the trash is being picked up the next day
   trigger:
   - platform: time
     at: '18:00'
@@ -1747,7 +1755,7 @@
   mode: single
 - id: '1633677373376'
   alias: Notify - Backup State
-  description: 'Notificaton when a backup is started, finished or a problem occurs'
+  description: Notificaton when a backup is started, finished or a problem occurs
   trigger:
   - platform: state
     entity_id: sensor.samba_backup
@@ -1805,7 +1813,7 @@
   max: 10
 - id: '1634024007504'
   alias: Location - Shanna to Work
-  description: 'Work in Progress'
+  description: Work in Progress
   trigger:
   - platform: state
     entity_id: switch.shanna_home
@@ -1836,7 +1844,7 @@
   mode: single
 - id: '1634035599709'
   alias: Home Modifier - On vacation
-  description: 'Automatically set the Home Modifier to On vacation'
+  description: Automatically set the Home Modifier to On vacation
   trigger:
   - platform: state
     entity_id: input_select.home_state_modifier
@@ -1856,7 +1864,7 @@
   mode: single
 - id: '1634035705155'
   alias: Home Modifier - Sleeping
-  description: 'Run Sleep script when Home Modifier is set to Sleeping'
+  description: Run Sleep script when Home Modifier is set to Sleeping
   trigger:
   - platform: state
     entity_id: input_select.home_state_modifier
@@ -1871,7 +1879,7 @@
   max: 10
 - id: '1634040103630'
   alias: Home Modifier - Home
-  description: 'Run Home script when Home Modifier is set to Home'
+  description: Run Home script when Home Modifier is set to Home
   trigger:
   - platform: state
     entity_id: input_select.home_state_modifier
@@ -1889,7 +1897,7 @@
   max: 10
 - id: '1634041772121'
   alias: Home Modifier - Away
-  description: 'Run Away script when Home Modifier is set to Away'
+  description: Run Away script when Home Modifier is set to Away
   trigger:
   - platform: state
     entity_id: input_select.home_state_modifier
@@ -1905,7 +1913,7 @@
   mode: single
 - id: '1634294358210'
   alias: Reset Control - Keuken
-  description: 'Turn off control switch when light turns off'
+  description: Turn off control switch when light turns off
   trigger:
   - platform: state
     entity_id: light.keuken_groep
