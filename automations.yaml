@@ -1811,37 +1811,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1634024007504'
-  alias: Location - Shanna to Work
-  description: Work in Progress
-  trigger:
-  - platform: state
-    entity_id: switch.shanna_home
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: switch.gabriel_home
-    state: 'on'
-  - condition: time
-    after: 06:00:00
-    before: 08:00:00
-    weekday:
-    - mon
-    - tue
-    - thu
-    - fri
-  - condition: state
-    entity_id: binary_sensor.slaapkamer_occupancy
-    state: 'on'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.woonkamer_groep
-  - service: switch.turn_off
-    target:
-      entity_id: switch.woonkamer_plug
-  mode: single
 - id: '1634035599709'
   alias: Home Modifier - On vacation
   description: Automatically set the Home Modifier to On vacation
