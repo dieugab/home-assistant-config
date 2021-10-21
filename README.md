@@ -34,14 +34,14 @@ My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/pr
 - Git setup using the community guide [Sharing your configuration on Github](https://community.home-assistant.io/t/sharing-your-configuration-on-github/195144) and [Atlassian Git Cheatsheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet)
 
 ## Home State & Modifiers
-Globally, my Home Assistant config follows a **State** path during the day, which controls how certain automations and scripts run: ⛅️ `Ochtend` (morning) ⇢ ☀️ `Overdag` (day) ⇢ 🌜 `Avond` (evening) ⇢ 🌑 `Nacht` (night)
+Globally, my Home Assistant config follows a **State** path during the day, which controls how certain automations and scripts run: ⛅️ `Morning` ⇢ ☀️ `Day` ⇢ 🌜 `Evening` ⇢ 🌑 `Night`
 
 Each **Home State** is controlled by a switch and corresponding Input Select, which run scripts in the background. Roughly, the actions are as following:
 
-- ⛅️ `Ochtend` turns off outside lights, and opens all the blinds except the bedroom
-- ☀️ `Overdag` ensures the `Home` Modifier is set, opens all curtains and runs certain bedroom automations
-- 🌜 `Avond` turns on outside and living room lights, and closes all curtains
-- 🌑 `Nacht` ensures the `Sleeping` Modifier is set and turns off lights & devices
+- ⛅️ `Morning` turns off outside lights, and opens all the blinds except the bedroom
+- ☀️ `Day` ensures the `Home` Modifier is set, opens all curtains and runs certain bedroom automations
+- 🌜 `Evening` turns on outside and living room lights, and closes all curtains
+- 🌑 `Night` ensures the `Sleeping` Modifier is set and turns off lights & devices
 
 These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. The following modifiers are available:
 
