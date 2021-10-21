@@ -1,10 +1,10 @@
 # 🏡 Gabriel's homeOS
 My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) (4GB) running [Home Assistant](https://www.home-assistant.io/) OS, with a connected [ConBee II](https://www.phoscon.de/en/conbee2).
 
-![Hero shot small](https://user-images.githubusercontent.com/61377476/138247774-8cea8274-013b-4fb1-a183-bdeb83fa3047.png)
-
 ## Overview
 🚨 Home Security | 📱 Mobile control | 💡 Smart adaptive lighting | 👋 Motion & occupancy sensing | 👁 Smart curtains & blinds | ⚡ Energy & solar monitoring | 🌡 Smart heating & cooling | 🔊 Multi-room audio | 🎛 Local control
+
+![Hero shot](https://user-images.githubusercontent.com/61377476/138249250-09976edd-fd7c-42d2-b311-9d012e89a41d.png)
 
 ### Foundation
 - 🚨 Home is secured using a combination of Aqara contact sensors, Sonos speakers and HomeKit Secure Video
@@ -45,10 +45,10 @@ Each **Home State** is controlled by a switch and corresponding Input Select, wh
 
 These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. The following modifiers are available:
 
-- `Home` 🡺 `Sleeping` turns 🚨 security on, 🕯 dims lights, 🌡 adjusts heating and ⚙ runs certain bedroom automations
-- `Home` 🡺 `Away` turns 🚨 security on, 🚫 turns off lights & devices and ❄ lowers heating
-- `Away` 🡺 `On vacation` ensures ⚙ Home State automations will run as if someone's home
-- `Sleeping` | `Away` | `On vacation` 🡺 `Home` turns 🚪 security off, 💡 adapts lights and 🌡 turns on heating
+- 🏠 `Home` 🡺 💤 `Sleeping` turns security on, dims lights, adjusts heating and runs certain bedroom automations
+- 🏠 `Home` 🡺 📍 `Away` turns security on, turns off lights & devices and lowers heating
+- 📍 `Away` 🡺 ⛱️ `On vacation` ensures Home State automations will run as if someone's home
+- 💤 `Sleeping` | 📍 `Away` | ⛱️ `On vacation` 🡺 🏠 `Home` turns security off, adapts lights and turns on heating
 
 ## Modes
 Additionally, there are a couple of **Modes** which can be manually turned on depending on the situation. Turning them off runs the corresponding script actions of the currect **Home State** to ensure a smooth transition back to the status quo.
