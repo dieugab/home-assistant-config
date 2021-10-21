@@ -158,9 +158,9 @@
             data_template:
               entity_id: >
                 {% if is_state("input_select.home_state", "Day")%}
-                  switch.overdag_state
+                  switch.day_state
                 {% else %}
-                  switch.avond_state
+                  switch.evening_state
                 {% endif %}
 
       # Party Mode
@@ -180,9 +180,9 @@
             data_template:
               entity_id: >
                 {% if is_state("input_select.home_state", "Day")%}
-                  switch.overdag_state
+                  switch.day_state
                 {% else %}
-                  switch.avond_state
+                  switch.evening_state
                 {% endif %}
 
       # Cinema Mode
@@ -200,9 +200,9 @@
             data_template:
               entity_id: >
                 {% if is_state("input_select.home_state", "Day")%}
-                  switch.overdag_state
+                  switch.day_state
                 {% else %}
-                  switch.avond_state
+                  switch.evening_state
                 {% endif %}
 
 
@@ -210,10 +210,10 @@
 
   - platform: template
     switches:
-      # Switch for Ochtend script
-      ochtend_state:
-        friendly_name: Ochtend State
-        unique_id: switch_ochtend_state
+      # Switch for Morning script
+      morning_state:
+        friendly_name: Morning State
+        unique_id: switch_morning_state
         icon_template: mdi:weather-sunset-up
         value_template: >-
           {{ is_state('input_select.home_state', 'Morning')
@@ -223,20 +223,20 @@
              }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_state_ochtend
+            entity_id: script.home_state_morning
           - service: switch.turn_off
             entity_id:
-              - switch.overdag_state
-              - switch.avond_state
-              - switch.nacht_state
+              - switch.day_state
+              - switch.evening_state
+              - switch.night_state
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_state_ochtend
+            entity_id: script.home_state_morning
       
-      # Switch for Overdag script
-      overdag_state:
-        friendly_name: Overdag State
-        unique_id: switch_overdag_state
+      # Switch for Day script
+      day_state:
+        friendly_name: Day State
+        unique_id: switch_day_state
         icon_template: mdi:weather-sunny
         value_template: >-
           {{ is_state('input_select.home_state', 'Day')
@@ -246,20 +246,20 @@
              }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_state_overdag
+            entity_id: script.home_state_day
           - service: switch.turn_off
             entity_id:
-              - switch.ochtend_state
-              - switch.avond_state
-              - switch.nacht_state
+              - switch.morning_state
+              - switch.evening_state
+              - switch.night_state
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_state_overdag
+            entity_id: script.home_state_day
 
-      # Switch for Avond script
-      avond_state:
-        friendly_name: Avond State
-        unique_id: switch_avond_state
+      # Switch for Evening script
+      evening_state:
+        friendly_name: Evening State
+        unique_id: switch_evening_state
         icon_template: mdi:weather-sunset
         value_template: >-
           {{ is_state('input_select.home_state', 'Evening')
@@ -270,20 +270,20 @@
              }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_state_avond
+            entity_id: script.home_state_evening
           - service: switch.turn_off
             entity_id:
-              - switch.ochtend_state
-              - switch.overdag_state
-              - switch.nacht_state
+              - switch.morning_state
+              - switch.day_state
+              - switch.night_state
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_state_avond
+            entity_id: script.home_state_evening
 
-      # Switch for Nacht script
-      nacht_state:
-        friendly_name: Nacht State
-        unique_id: switch_nacht_state
+      # Switch for Night script
+      night_state:
+        friendly_name: Night State
+        unique_id: switch_night_state
         icon_template: mdi:weather-night
         value_template: >-
           {{ is_state('input_select.home_state', 'Night')
@@ -294,12 +294,12 @@
              }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_state_nacht
+            entity_id: script.home_state_night
           - service: switch.turn_off
             entity_id:
-              - switch.ochtend_state
-              - switch.overdag_state
-              - switch.avond_state
+              - switch.morning_state
+              - switch.day_state
+              - switch.evening_state
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_state_nacht
+            entity_id: script.home_state_night

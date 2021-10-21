@@ -940,7 +940,7 @@
         state: Evening
       - service: switch.turn_on
         target:
-          entity_id: switch.nacht_state
+          entity_id: switch.night_state
       - delay:
           hours: 0
           minutes: 0
@@ -1002,7 +1002,7 @@
       button_hue_hold:
       - service: switch.turn_on
         target:
-          entity_id: switch.nacht_state
+          entity_id: switch.night_state
       button_hue:
       - choose:
         - conditions:
@@ -1026,7 +1026,7 @@
         default:
         - service: switch.turn_on
           target:
-            entity_id: switch.overdag_state
+            entity_id: switch.day_state
 - id: '1629447322416'
   alias: '# Experimental - HomeKit Adaptive Lighting'
   description: Work in Progress
@@ -1144,93 +1144,6 @@
       - climate.slaapkamer_radiator
     data:
       preset_mode: away
-  mode: single
-- id: '1630052096417'
-  alias: Home State - Avond
-  description: Automatically set Home State to Avond when dark enough
-  trigger:
-  - type: illuminance
-    platform: device
-    device_id: 5bad195497158799dbb8f7a1c55df130
-    entity_id: sensor.woonkamer_light_sensor
-    domain: sensor
-    below: 6
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-      milliseconds: 0
-  condition:
-  - condition: time
-    after: '16:00'
-    before: 00:00:00
-  - condition: state
-    entity_id: input_select.home_state
-    state: Day
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.avond_state
-  mode: single
-- id: '1630052160015'
-  alias: Home State - Nacht (Vacation)
-  description: Automatically set Home State to Nacht on vacation
-  trigger:
-  - platform: time
-    at: '23:00'
-  condition:
-  - condition: state
-    entity_id: input_select.home_state_modifier
-    state: On vacation
-  action:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state
-    data:
-      option: Night
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id: light.woonkamer_groep
-  - service: switch.turn_off
-    target:
-      entity_id: switch.woonkamer_plug
-  mode: single
-- id: '1630052218319'
-  alias: Home State - Ochtend
-  description: Automatically set Home State to Ochtend at sunrise
-  trigger:
-  - platform: sun
-    event: sunrise
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.ochtend_state
-  mode: single
-- id: '1630052280116'
-  alias: Home State - Overdag (Away)
-  description: Automatically set Home State to Overdag when away from home
-  trigger:
-  - platform: time
-    at: '12:00'
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: input_select.home_state_modifier
-      state: Away
-    - condition: state
-      entity_id: input_select.home_state_modifier
-      state: On vacation
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.overdag_state
   mode: single
 - id: '1630052526059'
   alias: Heater - Update Tuya Temperature
@@ -1944,3 +1857,92 @@
     data:
       entity_id: light.keuken_groep
   mode: restart
+- id: '1634823925779'
+  alias: Home State - Evening
+  description: Automatically set Home State to Evening when dark enough
+  trigger:
+  - type: illuminance
+    platform: device
+    device_id: 5bad195497158799dbb8f7a1c55df130
+    entity_id: sensor.woonkamer_light_sensor
+    domain: sensor
+    below: 6
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  condition:
+  - condition: time
+    after: '16:00'
+    before: 00:00
+  - condition: state
+    entity_id: input_select.home_state
+    state: Day
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.evening_state
+  mode: single
+- id: '1634823973170'
+  alias: Home State - Night (On vacation)
+  description: Automatically set Home State to Night while Home State Modifier is
+    set to On vacation
+  trigger:
+  - platform: time
+    at: '23:00'
+  condition:
+  - condition: state
+    entity_id: input_select.home_state_modifier
+    state: On vacation
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state
+    data:
+      option: Night
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.woonkamer_groep
+  - service: switch.turn_off
+    target:
+      entity_id: switch.woonkamer_plug
+  mode: single
+- id: '1634824004562'
+  alias: Home State - Morning
+  description: Automatically set Home State to Morning at sunrise
+  trigger:
+  - platform: sun
+    event: sunrise
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.morning_state
+  mode: single
+- id: '1634824073011'
+  alias: Home State - Day (Away)
+  description: Automatically set Home State to Day while Home State Modifier is set
+    to Away
+  trigger:
+  - platform: time
+    at: '12:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.home_state_modifier
+      state: Away
+    - condition: state
+      entity_id: input_select.home_state_modifier
+      state: On vacation
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.day_state
+  mode: single
