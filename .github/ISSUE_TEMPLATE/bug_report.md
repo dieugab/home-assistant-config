@@ -21,10 +21,10 @@ If applicable, add screenshots to help explain your problem.
  - Integration: [name][version]
 
 **Details & logs**
-``
+```
 Optional example piece of YAML
-``
+```
 
-``
+```
 Error message or stack traces
-``
+```
