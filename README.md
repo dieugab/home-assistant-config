@@ -1,6 +1,8 @@
 # 🏡 Gabriel's homeOS
 My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) (4GB) running [Home Assistant](https://www.home-assistant.io/) OS, with a connected [ConBee II](https://www.phoscon.de/en/conbee2).
 
+![Hero shot small](https://user-images.githubusercontent.com/61377476/138247774-8cea8274-013b-4fb1-a183-bdeb83fa3047.png)
+
 ## Overview
 🚨 Home Security | 📱 Mobile control | 💡 Smart adaptive lighting | 👋 Motion & occupancy sensing | 👁 Smart curtains & blinds | ⚡ Energy & solar monitoring | 🌡 Smart heating & cooling | 🔊 Multi-room audio | 🎛 Local control
 
