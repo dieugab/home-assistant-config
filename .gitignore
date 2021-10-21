@@ -3,6 +3,7 @@
 !.gitignore
 !*.md
 !.HA_VERSION
+!LICENSE
 
 # Disallow files
 secrets.yaml
