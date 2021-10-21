@@ -1946,3 +1946,17 @@
     target:
       entity_id: switch.day_state
   mode: single
+- id: '1634831015939'
+  alias: Location - Shanna @ Home
+  description: Automations to run, specifically when Shanna comes home
+  trigger:
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.woonkamer_plug
+  mode: single
