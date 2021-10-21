@@ -9,6 +9,7 @@ secrets.yaml
 known_devices.yaml
 security_system.yaml
 .ps4*
+id_rsa*
 
 #Disallow config files
 logs
@@ -20,6 +21,7 @@ home-assistant.*
 # Disallow folders
 .storage
 .cloud
+.ssh/
 alarms
 blueprints
 image
