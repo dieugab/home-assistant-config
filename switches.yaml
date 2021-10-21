@@ -157,7 +157,7 @@
           - service: switch.turn_on
             data_template:
               entity_id: >
-                {% if is_state("input_select.home_state", "Overdag")%}
+                {% if is_state("input_select.home_state", "Day")%}
                   switch.overdag_state
                 {% else %}
                   switch.avond_state
@@ -179,7 +179,7 @@
           - service: switch.turn_on
             data_template:
               entity_id: >
-                {% if is_state("input_select.home_state", "Overdag")%}
+                {% if is_state("input_select.home_state", "Day")%}
                   switch.overdag_state
                 {% else %}
                   switch.avond_state
@@ -199,7 +199,7 @@
           - service: switch.turn_on
             data_template:
               entity_id: >
-                {% if is_state("input_select.home_state", "Overdag")%}
+                {% if is_state("input_select.home_state", "Day")%}
                   switch.overdag_state
                 {% else %}
                   switch.avond_state
@@ -216,7 +216,7 @@
         unique_id: switch_ochtend_state
         icon_template: mdi:weather-sunset-up
         value_template: >-
-          {{ is_state('input_select.home_state', 'Ochtend')
+          {{ is_state('input_select.home_state', 'Morning')
              and is_state('cover.keuken_rolgordijnen', 'open')
              and is_state('light.voortuin_buitenlamp', 'off')
              and is_state('light.achtertuin_buitenlamp', 'off')
@@ -239,7 +239,7 @@
         unique_id: switch_overdag_state
         icon_template: mdi:weather-sunny
         value_template: >-
-          {{ is_state('input_select.home_state', 'Overdag')
+          {{ is_state('input_select.home_state', 'Day')
              and is_state('input_boolean.air_purifier', 'on')
              and is_state('cover.slaapkamer_rolgordijnen', 'open')
              and is_state('cover.keuken_rolgordijnen', 'open')
@@ -262,7 +262,7 @@
         unique_id: switch_avond_state
         icon_template: mdi:weather-sunset
         value_template: >-
-          {{ is_state('input_select.home_state', 'Avond')
+          {{ is_state('input_select.home_state', 'Evening')
              and is_state('cover.keuken_rolgordijnen', 'closed')
              and is_state('cover.slaapkamer_rolgordijnen', 'closed')
              and is_state('light.voortuin_buitenlamp', 'on')
@@ -285,6 +285,13 @@
         friendly_name: Nacht State
         unique_id: switch_nacht_state
         icon_template: mdi:weather-night
+        value_template: >-
+          {{ is_state('input_select.home_state', 'Night')
+             and is_state('cover.keuken_rolgordijnen', 'closed')
+             and is_state('cover.slaapkamer_rolgordijnen', 'closed')
+             and is_state('light.voortuin_buitenlamp', 'on')
+             and is_state('light.achtertuin_buitenlamp', 'on')
+             }}
         turn_on:
           - service: script.turn_on
             entity_id: script.home_state_nacht

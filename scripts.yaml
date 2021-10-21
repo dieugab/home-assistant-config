@@ -616,7 +616,7 @@ home_state_avond:
     target:
       entity_id: input_select.home_state
     data:
-      option: Avond
+      option: Evening
   - service: light.turn_on
     target:
       entity_id:
@@ -715,7 +715,7 @@ home_state_nacht:
     target:
       entity_id: input_select.home_state
     data:
-      option: Nacht
+      option: Night
   - service: input_select.select_option
     target:
       entity_id:
@@ -748,7 +748,7 @@ home_state_ochtend:
     target:
       entity_id: input_select.home_state
     data:
-      option: Ochtend
+      option: Morning
   - service: light.turn_off
     target:
       entity_id:
@@ -807,7 +807,7 @@ home_state_overdag:
     target:
       entity_id: input_select.home_state
     data:
-      option: Overdag
+      option: Day
   - choose:
     - conditions:
       - condition: or
@@ -902,10 +902,10 @@ home_modifier_home:
       conditions:
       - condition: state
         entity_id: input_select.home_state
-        state: Avond
+        state: Evening
       - condition: state
         entity_id: input_select.home_state
-        state: Nacht
+        state: Night
   - service: script.turn_on
     target:
       entity_id: script.action_easy_entry
