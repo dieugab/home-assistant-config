@@ -38,16 +38,26 @@
             opening
           {% elif is_state('cover.woonkamer_switchbot', 'closing') %}
             closing
-          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') >= 90 %}
+          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') >= 95 %}
             open
-          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') <= 10 %}
+          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') <= 5 %}
             closed
           {% endif %}
         open_cover:
-          service: cover.open_cover
+          service: >-
+            {% if is_state('cover.woonkamer_gordijn', 'open') %}
+              script.dummy
+            {% else %}
+              cover.open_cover
+            {% endif %}
           entity_id: cover.woonkamer_switchbot
         close_cover:
-          service: cover.close_cover
+          service: >-
+            {% if is_state('cover.woonkamer_gordijn', 'closed') %}
+              script.dummy
+            {% else %}
+              cover.close_cover
+            {% endif %}
           entity_id: cover.woonkamer_switchbot
 
       # Template cover for SwitchBot @ backdoor curtains (experimental)
@@ -67,14 +77,24 @@
             opening
           {% elif is_state('cover.achterdeur_switchbot', 'closing') %}
             closing
-          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') >= 90 %}
+          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') >= 95 %}
             open
-          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') <= 10 %}
+          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') <= 5 %}
             closed
           {% endif %}
         open_cover:
-          service: cover.open_cover
+          service: >-
+            {% if is_state('cover.achterdeur_gordijn', 'open') %}
+              script.dummy
+            {% else %}
+              cover.open_cover
+            {% endif %}
           entity_id: cover.achterdeur_switchbot
         close_cover:
-          service: cover.close_cover
+          service: >-
+            {% if is_state('cover.achterdeur_gordijn', 'closed') %}
+              script.dummy
+            {% else %}
+              cover.close_cover
+            {% endif %}
           entity_id: cover.achterdeur_switchbot
