@@ -176,20 +176,54 @@ cover:
         unique_id: template_woonkamer_switchbot
         device_class: curtain
         friendly_name: "Woonkamer SwitchBot"
+        availability_template: "{{ states('cover.woonkamer_gordijn') != 'unavailable' }}"
         icon_template: >-
           {% if is_state('cover.woonkamer_switchbot', 'open') %}
             mdi:curtains
           {% elif is_state('cover.woonkamer_switchbot', 'closed') %}
             mdi:curtains-closed
-            {% endif %}
-        availability_template: "{{ states('cover.woonkamer_gordijn') != 'unavailable' }}"
-        value_template: "{{ states('cover.woonkamer_gordijn') }}"
+          {% endif %}
+        value_template: >-
+          {% if is_state('cover.woonkamer_gordijn', 'opening') %}
+            opening
+          {% elif is_state('cover.woonkamer_gordijn', 'closing') %}
+            closing
+          {% elif state_attr('cover.woonkamer_gordijn', 'current_position') >= 90 %}
+            open
+          {% elif state_attr('cover.woonkamer_gordijn', 'current_position') <= 10 %}
+            closed
+          {% endif %}
         open_cover:
           service: cover.open_cover
           entity_id: cover.woonkamer_gordijn
         close_cover:
           service: cover.close_cover
           entity_id: cover.woonkamer_gordijn
-#        stop_cover:
-#          service: cover.stop_cover
-#          entity_id: cover.woonkamer_gordijn
+
+      achterdeur_switchbot:
+        unique_id: template_achterdeur_switchbot
+        device_class: curtain
+        friendly_name: "Achterdeur SwitchBot"
+        availability_template: "{{ states('cover.achterdeur_gordijn') != 'unavailable' }}"
+        icon_template: >-
+          {% if is_state('cover.achterdeur_switchbot', 'open') %}
+            mdi:curtains
+          {% elif is_state('cover.achterdeur_switchbot', 'closed') %}
+            mdi:curtains-closed
+          {% endif %}
+        value_template: >-
+          {% if is_state('cover.achterdeur_gordijn', 'opening') %}
+            opening
+          {% elif is_state('cover.achterdeur_gordijn', 'closing') %}
+            closing
+          {% elif state_attr('cover.achterdeur_gordijn', 'current_position') >= 90 %}
+            open
+          {% elif state_attr('cover.achterdeur_gordijn', 'current_position') <= 10 %}
+            closed
+          {% endif %}
+        open_cover:
+          service: cover.open_cover
+          entity_id: cover.achterdeur_gordijn
+        close_cover:
+          service: cover.close_cover
+          entity_id: cover.achterdeur_gordijn
