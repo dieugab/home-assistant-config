@@ -139,6 +139,11 @@ mode_privacy:
     target:
       entity_id:
       - cover.keuken_rolgordijnen
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.woonkamer_gordijn
+      - cover.achterdeur_gordijn
   - service: switch.turn_off
     target:
       entity_id:
@@ -179,26 +184,6 @@ mode_privacy:
       source: '{{ ["The Beauty in All", "This Is Rhye", "This Is FKJ"] | random }}'
     target:
       entity_id: media_player.sonos_arc
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: numeric_state
-          entity_id: cover.woonkamer_switchbot
-          attribute: current_position
-          above: '10'
-        - condition: numeric_state
-          entity_id: cover.achterdeur_switchbot
-          attribute: current_position
-          above: '10'
-      sequence:
-      - service: cover.close_cover
-        target:
-          entity_id:
-          - cover.woonkamer_gordijn
-          - cover.achterdeur_gordijn
-    default:
-    - service: script.dummy
   mode: single
   icon: mdi:heart-circle
 mode_cinema:
@@ -213,6 +198,11 @@ mode_cinema:
     target:
       entity_id:
       - cover.keuken_rolgordijnen
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.woonkamer_gordijn
+      - cover.achterdeur_gordijn
   - service: switch.turn_off
     target:
       entity_id:
@@ -234,26 +224,6 @@ mode_cinema:
       entity_id:
       - light.filament_lamps
       - light.woonkamer_lamp
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: numeric_state
-          entity_id: cover.woonkamer_switchbot
-          attribute: current_position
-          above: '10'
-        - condition: numeric_state
-          entity_id: cover.achterdeur_switchbot
-          attribute: current_position
-          above: '10'
-      sequence:
-      - service: cover.close_cover
-        target:
-          entity_id:
-          - cover.woonkamer_gordijn
-          - cover.achterdeur_gordijn
-    default:
-    - service: script.dummy
   mode: single
   icon: mdi:movie-roll
 scenes_woonkamer:
@@ -558,26 +528,11 @@ action_curtains_closed:
       entity_id: cover.slaapkamer_rolgordijnen
     data:
       position: 0
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: numeric_state
-          entity_id: cover.woonkamer_switchbot
-          attribute: current_position
-          above: '10'
-        - condition: numeric_state
-          entity_id: cover.achterdeur_switchbot
-          attribute: current_position
-          above: '10'
-      sequence:
-      - service: cover.close_cover
-        target:
-          entity_id:
-          - cover.woonkamer_gordijn
-          - cover.achterdeur_gordijn
-    default:
-    - service: script.dummy
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.woonkamer_gordijn
+      - cover.achterdeur_gordijn
   mode: parallel
   icon: mdi:curtains-closed
   max: 10
@@ -594,26 +549,11 @@ action_curtains_opened:
       entity_id: cover.slaapkamer_rolgordijnen
     data:
       position: 100
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: numeric_state
-          entity_id: cover.woonkamer_switchbot
-          attribute: current_position
-          below: '90'
-        - condition: numeric_state
-          entity_id: cover.achterdeur_switchbot
-          attribute: current_position
-          below: '90'
-      sequence:
-      - service: cover.open_cover
-        target:
-          entity_id:
-          - cover.woonkamer_gordijn
-          - cover.achterdeur_gordijn
-    default:
-    - service: script.dummy
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.woonkamer_gordijn
+      - cover.achterdeur_gordijn
   mode: parallel
   icon: mdi:curtains
   max: 10
@@ -834,10 +774,6 @@ home_state_evening:
       - service: switch.turn_off
         target:
           entity_id: switch.begane_grond_adaptive_lighting
-      - condition: numeric_state
-        entity_id: cover.woonkamer_switchbot
-        attribute: current_position
-        above: '10'
       - service: cover.close_cover
         target:
           entity_id: cover.woonkamer_gordijn
@@ -861,32 +797,12 @@ home_state_evening:
       - service: switch.turn_on
         target:
           entity_id: switch.woonkamer_plug
-      - condition: or
-        conditions:
-        - condition: numeric_state
-          entity_id: cover.woonkamer_switchbot
-          attribute: current_position
-          above: '10'
-        - condition: numeric_state
-          entity_id: cover.achterdeur_switchbot
-          attribute: current_position
-          above: '10'
       - service: cover.close_cover
         target:
           entity_id:
           - cover.achterdeur_gordijn
           - cover.woonkamer_gordijn
     default:
-    - condition: or
-      conditions:
-      - condition: numeric_state
-        entity_id: cover.woonkamer_switchbot
-        attribute: current_position
-        above: '10'
-      - condition: numeric_state
-        entity_id: cover.achterdeur_switchbot
-        attribute: current_position
-        above: '10'
     - service: cover.close_cover
       target:
         entity_id:
