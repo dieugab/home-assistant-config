@@ -168,3 +168,28 @@ cover:
     entities:
       - cover.slaapkamer_l
       - cover.slaapkamer_r
+    
+    #Experimental
+  - platform: template
+    covers:
+      woonkamer_switchbot:
+        unique_id: template_woonkamer_switchbot
+        device_class: curtain
+        friendly_name: "Woonkamer SwitchBot"
+        icon_template: >-
+          {% if is_state('cover.woonkamer_switchbot', 'open') %}
+            mdi:curtains
+          {% elif is_state('cover.woonkamer_switchbot', 'closed') %}
+            mdi:curtains-closed
+            {% endif %}
+        availability_template: "{{ states('cover.woonkamer_gordijn') != 'unavailable' }}"
+        value_template: "{{ states('cover.woonkamer_gordijn') }}"
+        open_cover:
+          service: cover.open_cover
+          entity_id: cover.woonkamer_gordijn
+        close_cover:
+          service: cover.close_cover
+          entity_id: cover.woonkamer_gordijn
+#        stop_cover:
+#          service: cover.stop_cover
+#          entity_id: cover.woonkamer_gordijn
