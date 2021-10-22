@@ -579,16 +579,14 @@
   alias: Security - Alarm TRIGGERED
   description: Automation to trigger the security system
   trigger:
-  - type: opened
-    platform: device
-    device_id: e79781959bd436fc608d9f162c96da3c
+  - platform: state
     entity_id: binary_sensor.voordeur_sensor
-    domain: binary_sensor
-  - type: opened
-    platform: device
-    device_id: b154b2646f7ac14381629233983faf25
+    from: 'off'
+    to: to
+  - platform: state
     entity_id: binary_sensor.achterdeur_sensor
-    domain: binary_sensor
+    from: 'off'
+    to: 'on'
   condition:
   - condition: or
     conditions:
@@ -605,10 +603,6 @@
   - service: alarm_control_panel.alarm_trigger
     data: {}
     entity_id: alarm_control_panel.security_system
-  - wait_for_trigger:
-    - platform: state
-      entity_id: alarm_control_panel.security_system
-      to: triggered
   - service: script.turn_on
     target:
       entity_id: script.sonos_alarm
