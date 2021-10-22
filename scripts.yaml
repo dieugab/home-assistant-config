@@ -183,12 +183,14 @@ mode_privacy:
     - conditions:
       - condition: or
         conditions:
-        - condition: state
+        - condition: numeric_state
           entity_id: cover.woonkamer_gordijn
-          state: open
-        - condition: state
+          attribute: current_position
+          above: '10'
+        - condition: numeric_state
           entity_id: cover.achterdeur_gordijn
-          state: open
+          attribute: current_position
+          above: '10'
       sequence:
       - service: cover.close_cover
         target:
@@ -236,12 +238,14 @@ mode_cinema:
     - conditions:
       - condition: or
         conditions:
-        - condition: state
+        - condition: numeric_state
           entity_id: cover.woonkamer_gordijn
-          state: open
-        - condition: state
+          attribute: current_position
+          above: '10'
+        - condition: numeric_state
           entity_id: cover.achterdeur_gordijn
-          state: open
+          attribute: current_position
+          above: '10'
       sequence:
       - service: cover.close_cover
         target:
@@ -558,12 +562,14 @@ action_curtains_closed:
     - conditions:
       - condition: or
         conditions:
-        - condition: state
+        - condition: numeric_state
           entity_id: cover.woonkamer_gordijn
-          state: open
-        - condition: state
+          attribute: current_position
+          above: '10'
+        - condition: numeric_state
           entity_id: cover.achterdeur_gordijn
-          state: open
+          attribute: current_position
+          above: '10'
       sequence:
       - service: cover.close_cover
         target:
@@ -592,12 +598,14 @@ action_curtains_opened:
     - conditions:
       - condition: or
         conditions:
-        - condition: state
+        - condition: numeric_state
           entity_id: cover.woonkamer_gordijn
-          state: closed
-        - condition: state
+          attribute: current_position
+          below: '90'
+        - condition: numeric_state
           entity_id: cover.achterdeur_gordijn
-          state: closed
+          attribute: current_position
+          below: '90'
       sequence:
       - service: cover.open_cover
         target:
@@ -826,9 +834,10 @@ home_state_evening:
       - service: switch.turn_off
         target:
           entity_id: switch.begane_grond_adaptive_lighting
-      - condition: state
+      - condition: numeric_state
         entity_id: cover.woonkamer_gordijn
-        state: open
+        attribute: current_position
+        above: '10'
       - service: cover.close_cover
         target:
           entity_id: cover.woonkamer_gordijn
@@ -854,12 +863,14 @@ home_state_evening:
           entity_id: switch.woonkamer_plug
       - condition: or
         conditions:
-        - condition: state
+        - condition: numeric_state
           entity_id: cover.woonkamer_gordijn
-          state: open
-        - condition: state
+          attribute: current_position
+          above: '10'
+        - condition: numeric_state
           entity_id: cover.achterdeur_gordijn
-          state: open
+          attribute: current_position
+          above: '10'
       - service: cover.close_cover
         target:
           entity_id:
@@ -868,12 +879,14 @@ home_state_evening:
     default:
     - condition: or
       conditions:
-      - condition: state
+      - condition: numeric_state
         entity_id: cover.woonkamer_gordijn
-        state: open
-      - condition: state
+        attribute: current_position
+        above: '10'
+      - condition: numeric_state
         entity_id: cover.achterdeur_gordijn
-        state: open
+        attribute: current_position
+        above: '10'
     - service: cover.close_cover
       target:
         entity_id:
