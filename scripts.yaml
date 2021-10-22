@@ -184,11 +184,11 @@ mode_privacy:
       - condition: or
         conditions:
         - condition: numeric_state
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
           attribute: current_position
           above: '10'
         - condition: numeric_state
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
           attribute: current_position
           above: '10'
       sequence:
@@ -239,11 +239,11 @@ mode_cinema:
       - condition: or
         conditions:
         - condition: numeric_state
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
           attribute: current_position
           above: '10'
         - condition: numeric_state
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
           attribute: current_position
           above: '10'
       sequence:
@@ -563,11 +563,11 @@ action_curtains_closed:
       - condition: or
         conditions:
         - condition: numeric_state
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
           attribute: current_position
           above: '10'
         - condition: numeric_state
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
           attribute: current_position
           above: '10'
       sequence:
@@ -599,11 +599,11 @@ action_curtains_opened:
       - condition: or
         conditions:
         - condition: numeric_state
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
           attribute: current_position
           below: '90'
         - condition: numeric_state
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
           attribute: current_position
           below: '90'
       sequence:
@@ -835,7 +835,7 @@ home_state_evening:
         target:
           entity_id: switch.begane_grond_adaptive_lighting
       - condition: numeric_state
-        entity_id: cover.woonkamer_gordijn
+        entity_id: cover.woonkamer_switchbot
         attribute: current_position
         above: '10'
       - service: cover.close_cover
@@ -864,11 +864,11 @@ home_state_evening:
       - condition: or
         conditions:
         - condition: numeric_state
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
           attribute: current_position
           above: '10'
         - condition: numeric_state
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
           attribute: current_position
           above: '10'
       - service: cover.close_cover
@@ -880,11 +880,11 @@ home_state_evening:
     - condition: or
       conditions:
       - condition: numeric_state
-        entity_id: cover.woonkamer_gordijn
+        entity_id: cover.woonkamer_switchbot
         attribute: current_position
         above: '10'
       - condition: numeric_state
-        entity_id: cover.achterdeur_gordijn
+        entity_id: cover.achterdeur_switchbot
         attribute: current_position
         above: '10'
     - service: cover.close_cover

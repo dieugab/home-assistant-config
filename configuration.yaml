@@ -153,77 +153,81 @@ binary_sensor:
         min_gradient: -0.008 #was -0.01666
 
 
-#=== COVER GROUPS ===#
+#=== COVERS ===#
 
 cover:
+    # Cover group for kitchen shades
   - platform: group
     name: Keuken Rolgordijnen
     unique_id: ha_keuken_rolgordijnen
     entities:
       - cover.keuken_l
       - cover.keuken_r
+
+    # Cover group for bedroom shades
   - platform: group
     name: Slaapkamer Rolgordijnen
     unique_id: ha_slaapkamer_rolgordijnen
     entities:
       - cover.slaapkamer_l
       - cover.slaapkamer_r
-    
-    #Experimental
+
   - platform: template
     covers:
-      woonkamer_switchbot:
-        unique_id: template_woonkamer_switchbot
+      # Template cover for SwitchBot @ living room curtains (experimental)
+      woonkamer_gordijn:
+        unique_id: template_woonkamer_gordijn
         device_class: curtain
-        friendly_name: "Woonkamer SwitchBot"
-        availability_template: "{{ states('cover.woonkamer_gordijn') != 'unavailable' }}"
+        friendly_name: "Woonkamer Gordijn"
+        availability_template: "{{ states('cover.woonkamer_switchbot') != 'unavailable' }}"
         icon_template: >-
-          {% if is_state('cover.woonkamer_switchbot', 'open') %}
+          {% if is_state('cover.woonkamer_gordijn', 'open') %}
             mdi:curtains
-          {% elif is_state('cover.woonkamer_switchbot', 'closed') %}
+          {% elif is_state('cover.woonkamer_gordijn', 'closed') %}
             mdi:curtains-closed
           {% endif %}
         value_template: >-
-          {% if is_state('cover.woonkamer_gordijn', 'opening') %}
+          {% if is_state('cover.woonkamer_switchbot', 'opening') %}
             opening
-          {% elif is_state('cover.woonkamer_gordijn', 'closing') %}
+          {% elif is_state('cover.woonkamer_switchbot', 'closing') %}
             closing
-          {% elif state_attr('cover.woonkamer_gordijn', 'current_position') >= 90 %}
+          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') >= 90 %}
             open
-          {% elif state_attr('cover.woonkamer_gordijn', 'current_position') <= 10 %}
+          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') <= 10 %}
             closed
           {% endif %}
         open_cover:
           service: cover.open_cover
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
         close_cover:
           service: cover.close_cover
-          entity_id: cover.woonkamer_gordijn
+          entity_id: cover.woonkamer_switchbot
 
-      achterdeur_switchbot:
-        unique_id: template_achterdeur_switchbot
+      # Template cover for SwitchBot @ backdoor curtains (experimental)
+      achterdeur_gordijn:
+        unique_id: template_achterdeur_gordijn
         device_class: curtain
-        friendly_name: "Achterdeur SwitchBot"
-        availability_template: "{{ states('cover.achterdeur_gordijn') != 'unavailable' }}"
+        friendly_name: "Achterdeur Gordijn"
+        availability_template: "{{ states('cover.achterdeur_switchbot') != 'unavailable' }}"
         icon_template: >-
-          {% if is_state('cover.achterdeur_switchbot', 'open') %}
+          {% if is_state('cover.achterdeur_gordijn', 'open') %}
             mdi:curtains
-          {% elif is_state('cover.achterdeur_switchbot', 'closed') %}
+          {% elif is_state('cover.achterdeur_gordijn', 'closed') %}
             mdi:curtains-closed
           {% endif %}
         value_template: >-
-          {% if is_state('cover.achterdeur_gordijn', 'opening') %}
+          {% if is_state('cover.achterdeur_switchbot', 'opening') %}
             opening
-          {% elif is_state('cover.achterdeur_gordijn', 'closing') %}
+          {% elif is_state('cover.achterdeur_switchbot', 'closing') %}
             closing
-          {% elif state_attr('cover.achterdeur_gordijn', 'current_position') >= 90 %}
+          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') >= 90 %}
             open
-          {% elif state_attr('cover.achterdeur_gordijn', 'current_position') <= 10 %}
+          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') <= 10 %}
             closed
           {% endif %}
         open_cover:
           service: cover.open_cover
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
         close_cover:
           service: cover.close_cover
-          entity_id: cover.achterdeur_gordijn
+          entity_id: cover.achterdeur_switchbot
