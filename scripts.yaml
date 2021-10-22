@@ -471,7 +471,7 @@ action_easy_entry:
   - service: cover.close_cover
     target:
       entity_id: cover.achterdeur_gordijn
-  mode: single
+  mode: restart
   icon: mdi:elevator-passenger
 fan_set_preset_mode:
   alias: Fan - Set Preset Mode
