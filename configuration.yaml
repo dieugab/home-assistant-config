@@ -35,15 +35,15 @@ scene: !include scenes.yaml
 python_script: # include pyton_scripts directory
 
 # Configuration subdirectories to include
-alarm_control_panel: !include security_system.yaml
-template: !include templates.yaml
-switch: !include switches.yaml
-climate: !include thermostats.yaml
-light: !include lights.yaml #light groups
-homekit: !include homekit.yaml
-calendar: !include calendars.yaml
-fan: !include fans.yaml
-cover: !include covers.yaml
+alarm_control_panel: !include components/security_system.yaml
+template: !include components/templates.yaml
+switch: !include components/switches.yaml
+climate: !include components/thermostats.yaml
+light: !include components/lights.yaml
+homekit: !include components/homekit.yaml
+calendar: !include components/calendars.yaml
+fan: !include components/fans.yaml
+cover: !include components/covers.yaml
 
 
 #=== ADB ANDROID TV ===#
