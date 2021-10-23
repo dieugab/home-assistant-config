@@ -255,7 +255,7 @@ sonos_alarm:
       - media_player.sonos_arc
   - service: media_player.play_media
     data:
-      media_content_id: http://192.168.2.55:8123/local/alarm_warning.mp3
+      media_content_id: http://192.168.2.55:8123/local/zapsplat_alarms/alarm_warning.mp3
       media_content_type: music
     target:
       entity_id:
