@@ -1,6 +1,4 @@
-# template:
-
-#=== AVERAGE SENSORS ===#
+#=== CALCULATED SENSORS ===#
   - sensor:
         # Woonkamer + Keuken temperature
       - name: "Woonkamer CV Temperature Average"
@@ -104,7 +102,7 @@
         state: "{{ relative_time( strptime(state_attr('sensor.samba_backup', 'last_backup'), '%Y-%m-%d %H:%M', now()) ) }} ago"
 
 
-#=== OCCUPANCY ===#
+#=== OCCUPANCY SENSORS ===#
 
   - binary_sensor:
         # Keuken Occupancy

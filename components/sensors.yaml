@@ -1,0 +1,34 @@
+#=== VERSION SENSORS ===#
+
+  - platform: version
+  - platform: version
+    source: supervisor
+
+
+#=== RASPBERRY PI SENSORS ===#
+    
+  - platform: uptime
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: memory_use
+      - type: memory_free
+      - type: processor_use
+      - type: processor_temperature
+      - type: swap_use_percent
+      - type: disk_use_percent
+      - type: last_boot
+
+
+#=== HVC AFVALBEHEER ===#
+    
+  - platform: afvalbeheer
+    upcomingsensor: 1
+    wastecollector: HVC
+    resources:
+      - gft
+      - papier
+      - pmd
+    postcode: 8231JX
+    streetnumber: 12
+    dateobject: 1

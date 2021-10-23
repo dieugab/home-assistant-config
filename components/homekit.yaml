@@ -1,3 +1,5 @@
+#=== MANUAL HOMEKIT BRIDGES ===#
+
   # Bridge for Media Players
 - name: HASS Bridge Media
   port: 51827

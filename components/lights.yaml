@@ -1,3 +1,5 @@
+#=== LIGHT GROUPS ===#
+
     # Woonkamer group
   - platform: group
     name: Woonkamer Groep

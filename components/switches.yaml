@@ -1,4 +1,4 @@
-#=== QUALITY OF LIFE ===#
+#=== QUALITY OF LIFE SWITCHES ===#
 
   - platform: template
     switches:
@@ -137,7 +137,7 @@
           entity_id: climate.tuya_threesixty_v2
 
 
-#=== MODES ===#
+#=== MODE SWITCHERS ===#
 
   - platform: template
     switches:

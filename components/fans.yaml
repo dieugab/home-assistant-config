@@ -1,3 +1,5 @@
+#=== TEMPLATE FANS ===#
+
   - platform: template
     fans:
       # Template fan for Duux Whisper Flex controlled by Tuya cloud

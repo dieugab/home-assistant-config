@@ -1,0 +1,19 @@
+#=== LOCK (NOTIFICATIONS) ===#
+    
+    # Washer lock notification
+  - platform: template
+    name: Wasmachine Slot
+    value_template: >-
+      {{ is_state('sensor.wasmachine_washer_job_state', 'weightSensing')
+        or is_state('sensor.wasmachine_washer_job_state', 'wash')
+        or is_state('sensor.wasmachine_washer_job_state', 'rinse')
+        or is_state('sensor.wasmachine_washer_job_state', 'spin')
+      }}
+    lock:
+      service: switch.turn_on
+      target:
+        entity_id: switch.wasmachine
+    unlock:
+      service: switch.turn_off
+      target:
+        entity_id: switch.wasmachine

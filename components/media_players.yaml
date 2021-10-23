@@ -1,0 +1,13 @@
+#=== ADB ANDROID TV ===#
+
+    # Sony Bravia TV
+  - platform: androidtv
+    host: 192.168.2.96
+    name: "Sony Bravia TV"
+    exclude_unnamed_apps: true
+    screencap: false
+    apps:
+      com.android.vending: "Google Play Store"
+      com.disney.disneyplus: "Disney+"
+      com.apple.atve.sony.appletv: "Apple TV+"
+      nl.rtl.videoland: "Videoland"

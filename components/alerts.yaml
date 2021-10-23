@@ -1,0 +1,13 @@
+#=== ALERTS (WORK IN PROGRESS) ===#
+# (https://github.com/jcallaghan/home-assistant-config/issues/257)
+
+  hvc_afhaal:
+    name: HVC Container
+    done_message: Container staat langs de weg
+    entity_id: sensor.hvc_morgen
+    state: "None"
+    repeat: 60
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - mobile_app_iphone_a14

@@ -1,0 +1,20 @@
+#=== TREND SENSORS ===#
+
+  - platform: trend
+    sensors:
+      # 3 samples checking for a 10% change in 10 minutes (10/(60x10))
+      badkamer_hygrostat_on:
+        friendly_name: Badkamer Hygrostat Detected
+        device_class: moisture
+        max_samples: 3
+        entity_id: sensor.badkamer_humidity_multi_sensor
+        sample_duration: 600
+        min_gradient: 0.20 #was 0.10, before 0.01666
+
+      # 3 samples checking for a 5% change in 10 minutes (-5/(60x5))
+      badkamer_hygrostat_off:
+        friendly_name: Badkamer Hygrostat Cleared
+        max_samples: 3 # was 2, daarvoor 4 maar verlaagd omdat het te lang aanbleef.
+        entity_id: sensor.badkamer_humidity_multi_sensor
+        sample_duration: 600 #was 300
+        min_gradient: -0.008 #was -0.01666
