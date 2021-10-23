@@ -378,17 +378,6 @@
       entity_id:
       - light.zolder_groep
   mode: restart
-- id: '1610312001854'
-  alias: deCONZ - Bureaulamp IKEA TRADFRI Button
-  description: Switch to control light(s)
-  use_blueprint:
-    path: Gabriel/deconz-ikea-button.yaml
-    input:
-      remote: d1a94aabb5cec38df255cc89d96a7a99
-      adaptive_lighting:
-        entity_id: switch.adaptive_lighting_adapt_brightness_woonkamer
-      light:
-        device_id: 118cd29a3c9f29879b92d280ef7bf7fe
 - id: '1610330780312'
   alias: Contact Sensor - Bed Occupancy State
   description: Set the correct state to the Withings Sleep sensor at boot
@@ -1390,18 +1379,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1630666765937'
-  alias: deCONZ - Badkamer Switch
-  description: Switch to control light(s)
-  use_blueprint:
-    path: Gabriel/deconz-FoH-switch-v2.yaml
-    input:
-      remote: cb34eb7664bdcfd14c8d2c2eda9f46af
-      take_control:
-        entity_id: input_boolean.badkamer_control
-      adaptive_lighting: switch.adaptive_lighting_ruimten
-      light_L: light.badkamer_lamp
-      light_R: light.badkamer_lamp
 - id: '1631043092515'
   alias: Motion - Achtertuin
   description: Brighten light when motion is detected, and dim after inactivity
@@ -1954,3 +1931,27 @@
     target:
       entity_id: switch.woonkamer_plug
   mode: single
+- id: '1635024518456'
+  alias: deCONZ - Badkamer FoH Switch
+  description: Switch to control light(s)
+  use_blueprint:
+    path: Gabriel/deconz-FoH-switch.yaml
+    input:
+      remote: cb34eb7664bdcfd14c8d2c2eda9f46af
+      take_control:
+        entity_id: input_boolean.badkamer_control
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      light_L: light.badkamer_lamp
+      light_R: light.badkamer_lamp
+- id: '1635025233017'
+  alias: deCONZ - Studiekamer IKEA Switch
+  description: Switch to control light(s)
+  use_blueprint:
+    path: Gabriel/deconz-ikea-button-switch.yaml
+    input:
+      remote: d1a94aabb5cec38df255cc89d96a7a99
+      take_control:
+        entity_id:
+        - input_boolean.studiekamer_control
+      light: light.studiekamer_groep
+      adaptive_lighting: switch.adaptive_lighting_ruimten
