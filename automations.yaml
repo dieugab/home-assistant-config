@@ -918,9 +918,14 @@
     input:
       remote: 39f0032ded816ac1f3c922e48ae714d4
       press_button:
-      - condition: state
-        entity_id: input_select.home_state
-        state: Evening
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state
+          state: Evening
+        - condition: state
+          entity_id: input_select.home_state
+          state: Night
       - service: switch.turn_on
         target:
           entity_id: switch.night_state
