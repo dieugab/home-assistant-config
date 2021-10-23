@@ -1,0 +1,102 @@
+blueprint:
+  name: deCONZ - IKEA Button Switch
+  description: |
+    IKEA TRÅDFRI Button Switch (on/off & dim up/down)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: TRADFRI on/off switch
+
+    light:
+      name: Light(s)
+      description: 'The light(s) to control. For more than one, add a comma and no spaces between the full entity names. Example: light.lamp_left,light.lamp_right'
+      selector:
+        entity:
+          domain: light
+
+    take_control:
+      name: Take control switch to enable
+      description: 'Which take control switch to enable when pressing a button, keeping the lights on'
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+
+    adaptive_lighting:
+      name: Corresponding adaptive lighting switch
+      description: 'The corresponding adaptive lighting switch, which is applied when light.turn_on is fired.'
+      selector:
+        entity:
+          domain: switch
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #button on press
+      - conditions:
+           - "{{ event == 1002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: adaptive_lighting.apply
+            data:
+              lights: !input "light"
+              entity_id: !input "adaptive_lighting"
+          - service: light.turn_on
+            entity_id: !input "light"
+
+      #button on hold
+      - conditions:
+           - "{{ event == 1001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light"
+                  data:
+                    brightness_step_pct: 20
+                    transition: 1
+                - delay: 1
+
+      #button off
+      - conditions:
+           - "{{ event == 2002 }}"
+        sequence:
+          - service: light.turn_off
+            entity_id: !input "light"
+
+      #button off hold
+      - conditions:
+           - "{{ event == 2001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light"
+                  data:
+                    brightness_step_pct: -20
+                    transition: 1
+                - delay: 1

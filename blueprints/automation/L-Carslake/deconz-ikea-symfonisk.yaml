@@ -1,0 +1,90 @@
+blueprint:
+  name: deCONZ - IKEA SYMFONISK Remote
+  description: 'Control anything using IKEA TRÅDFRI SYMFONISK Remote
+
+    '
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: IKEA remote to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: SYMFONISK Sound Controller
+    button_single_press:
+      name: Controller Single Press
+      description: Action to run on controller single press
+      default: []
+      selector:
+        action: {}
+    button_double_press:
+      name: Controller Double Press
+      description: Action to run on controller double press
+      default: []
+      selector:
+        action: {}
+    button_triple_press:
+      name: Controller Triple Press
+      description: Action to run on controller triple press
+      default: []
+      selector:
+        action: {}
+    rotate_clockwise_start:
+      name: Rotation Clockwise Started
+      description: Action to run when rotation clockwise started
+      default: []
+      selector:
+        action: {}
+    rotate_clockwise_stopped:
+      name: Rotation Clockwise Stopped
+      description: Action to run when rotation clockwise stopped
+      default: []
+      selector:
+        action: {}
+    rotate_anticlockwise_start:
+      name: Rotation Anti-Clockwise Started
+      description: Action to run when rotation anti-clockwise started
+      default: []
+      selector:
+        action: {}
+    rotate_anticlockwise_stopped:
+      name: Rotation Anti-Clockwise  Stopped
+      description: Action to run when rotation anti-clockwise stopped
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/deconz-ikea-symfonisk/256135
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: deconz_event
+  event_data:
+    device_id: !input 'remote'
+action:
+- variables:
+    event: '{{ trigger.event.data.event }}'
+- choose:
+  - conditions:
+    - '{{ event == 1002 }}'
+    sequence: !input 'button_single_press'
+  - conditions:
+    - '{{ event == 1004 }}'
+    sequence: !input 'button_double_press'
+  - conditions:
+    - '{{ event == 1005 }}'
+    sequence: !input 'button_triple_press'
+  - conditions:
+    - '{{ event == 2001 }}'
+    sequence: !input 'rotate_clockwise_start'
+  - conditions:
+    - '{{ event == 2003 }}'
+    sequence: !input 'rotate_clockwise_stopped'
+  - conditions:
+    - '{{ event == 3001 }}'
+    sequence: !input 'rotate_anticlockwise_start'
+  - conditions:
+    - '{{ event == 3003 }}'
+    sequence: !input 'rotate_anticlockwise_stopped'

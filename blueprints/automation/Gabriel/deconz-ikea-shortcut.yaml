@@ -1,0 +1,52 @@
+blueprint:
+  name: deCONZ - IKEA Shortcut Button
+  description: |
+    IKEA TRÅDFRI Shortcut button (press, hold)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: TRADFRI SHORTCUT Button
+
+    press_button:
+      name: Button single press
+      description: Action(s) to run when pressing the button
+      default: []
+      selector:
+        action: {}
+
+    hold_button:
+      name: Button hold
+      description: Action(s) to run when holding the button
+      default: []
+      selector:
+        action: {}
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      # press button
+      - conditions:
+          - "{{ event == 1002 }}"
+        sequence: !input "press_button"
+
+      # hold button
+      - conditions:
+          - "{{ event == 1001 }}"
+        sequence: !input "hold_button"

@@ -1,0 +1,160 @@
+blueprint:
+  name: deCONZ - Friends of Hue Switch
+  description: |
+    Friends of Hue Wall Switch (double rocker)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Friends of Hue switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: PhilipsFoH
+          model: FOHSWITCH
+
+    take_control:
+      name: Take control switch to enable
+      description: 'Which take control switch to enable when pressing a button, keeping the lights on'
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+
+    adaptive_lighting:
+      name: Adaptive Lighting switch
+      description: 'The corresponding adaptive lighting switch, which is applied when light.turn_on is fired.'
+      selector:
+        entity:
+          domain: switch
+
+    light_L:
+      name: Light(s) left rocker
+      description: 'The light(s) to control with the left rocker'
+      selector:
+        entity:
+          domain: light
+    light_R:
+      name: Light(s) right rocker
+      description: 'The light(s) to control with the right rocker'
+      selector:
+        entity:
+          domain: light
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #left button on
+      - conditions:
+           - "{{ event == 1002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: adaptive_lighting.apply
+            data:
+              lights: !input "light_L"
+              entity_id: !input "adaptive_lighting"
+          - service: light.turn_on
+            entity_id: !input "light_L"
+
+      #left button on hold
+      - conditions:
+           - "{{ event == 1001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light_L"
+                  data:
+                    brightness_step_pct: 20
+                    transition: 1
+                - delay: 1
+
+      #left button off
+      - conditions:
+           - "{{ event == 2002 }}"
+        sequence:
+          - service: light.turn_off
+            entity_id: !input "light_L"
+
+      #left button off hold
+      - conditions:
+           - "{{ event == 2001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light_L"
+                  data:
+                    brightness_step_pct: -20
+                    transition: 1
+                - delay: 1
+
+      #right button on
+      - conditions:
+           - "{{ event == 3002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: adaptive_lighting.apply
+            data:
+              lights: !input "light_R"
+              entity_id: !input "adaptive_lighting"
+          - service: light.turn_on
+            entity_id: !input "light_R"
+
+      #right button on hold
+      - conditions:
+           - "{{ event == 3001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light_R"
+                  data:
+                    brightness_step_pct: 20
+                    transition: 1
+                - delay: 1
+
+      #right button off
+      - conditions:
+           - "{{ event == 4002 }}"
+        sequence:
+          - service: light.turn_off
+            entity_id: !input "light_R"
+
+      #right button off hold
+      - conditions:
+           - "{{ event == 4001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - repeat:
+              count: 10
+              sequence:
+                - service: light.turn_on
+                  entity_id: !input "light_L"
+                  data:
+                    brightness_step_pct: -20
+                    transition: 1
+                - delay: 1

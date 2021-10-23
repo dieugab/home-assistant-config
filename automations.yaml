@@ -950,7 +950,7 @@
       light: light.zolder_groep
       adaptive_lighting: switch.adaptive_lighting_zolder
 - id: '1627322341754'
-  alias: deCONZ - Kledingkamer Hue Remote
+  alias: deCONZ - Kledingkamer Hue Dimmer
   description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml
@@ -961,7 +961,7 @@
         entity_id: input_boolean.kledingkamer_control
       adaptive_lighting: switch.adaptive_lighting_ruimten
 - id: '1627322518980'
-  alias: deCONZ - Studiekamer Hue Remote
+  alias: deCONZ - Studiekamer Hue Dimmer
   description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml
@@ -972,7 +972,7 @@
         entity_id: input_boolean.studiekamer_control
       adaptive_lighting: switch.adaptive_lighting_ruimten
 - id: '1627322789979'
-  alias: deCONZ - Slaapkamer Hue Remote
+  alias: deCONZ - Slaapkamer Hue Dimmer
   description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-hue-remote-v2.yaml

@@ -23,8 +23,6 @@ home-assistant.*
 .storage
 .cloud
 .ssh/
-alarms
-blueprints
 image
 tts
 custom_components/hacs

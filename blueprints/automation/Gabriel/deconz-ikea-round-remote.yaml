@@ -1,0 +1,135 @@
+blueprint:
+  name: deCONZ - IKEA Round Remote
+  description: |
+    IKEA TRÅDFRI Round Remote (five buttons; left, right, up, down, power)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: IKEA remote to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: TRADFRI remote control
+
+    light:
+      name: Light(s)
+      description: The light(s) to control
+      selector:
+        target:
+          entity:
+            domain: light
+
+    adaptive_lighting:
+      name: Adaptive lighting to enable/disable
+      description: Which adaptive lighting to override
+      selector:
+        target:
+          entity:
+            domain: switch
+
+    left_arrow_button:
+      name: Left button press
+      description: Action(s) to run on left button press
+      default: []
+      selector:
+        action: {}
+    right_arrow_button:
+      name: Right button press
+      description: Action(s) to run on right button press
+      default: []
+      selector:
+        action: {}
+    on_off_hold:
+      name: On/off button hold
+      description: Action(s) to run when holding the on/off button
+      default: []
+      selector:
+        action: {}
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #button on/off toggle
+      - conditions:
+          - "{{ event == 1002 }}"
+        sequence:
+          - service: light.toggle
+            target: !input "light"
+            data:
+              transition: 1
+      #brightness up press
+      - conditions:
+          - "{{ event == 2002 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: 10
+              transition: 1
+      #brightness up hold
+      - conditions:
+          - "{{ event == 2001 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - repeat:
+              count: 5
+              sequence:
+                - service: light.turn_on
+                  target: !input "light"
+                  data:
+                    brightness_step_pct: 20
+                    transition: 1
+                - delay: 1
+      #brightness down press
+      - conditions:
+          - "{{ event == 3002 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: -10
+              transition: 1
+      #brightness down hold
+      - conditions:
+          - "{{ event == 3001 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - repeat:
+              count: 5
+              sequence:
+                - service: light.turn_on
+                  target: !input "light"
+                  data:
+                    brightness_step_pct: -20
+                    transition: 1
+                - delay: 1
+      #left button press
+      - conditions:
+          - "{{ event == 4002 }}"
+        sequence: !input "left_arrow_button"
+      #right button press
+      - conditions:
+          - "{{ event == 5002 }}"
+        sequence: !input "right_arrow_button"
+      #on/off button hold
+      - conditions:
+          - "{{ event == 1001 }}"
+        sequence: !input "on_off_hold"

@@ -1,0 +1,131 @@
+blueprint:
+  name: deCONZ - Hue Dimmer Switch (v1)
+  description: |
+    Signify Philips Hue Dimmer Switch, for use with versions released before 2021
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Hue dimmer switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: Philips
+          model: RWL021
+
+    light:
+      name: Light(s)
+      description: The light(s) to control with the remote
+      selector:
+        target:
+          entity:
+            domain: light
+          
+    take_control:
+      name: Take control switch to enable
+      description: Which take control switch to enable when pressing a button
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+
+    button_on_hold:
+      name: On button hold
+      description: Action to run when holding the on (|) button
+      default: []
+      selector:
+        action:
+    button_off_hold:
+      name: Off button hold
+      description: Action to run when holding the off (O) button
+      default: []
+      selector:
+        action:
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #button on press
+      - conditions:
+           - "{{ event == 1002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            target: !input "light"
+
+      #button on hold
+      - conditions:
+           - "{{ event == 1003 }}"
+        sequence: !input button_on_hold
+
+      #brightness up press
+      - conditions:
+           - "{{ event == 2002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: 10
+              transition: 1
+
+      #brightness up hold
+      - conditions:
+           - "{{ event == 2001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: 20
+              transition: 1
+
+      #button off press
+      - conditions:
+           - "{{ event == 4002 }}"
+        sequence:
+          - service: light.turn_off
+            target: !input "light"
+
+      #button off hold
+      - conditions:
+           - "{{ event == 4003 }}"
+        sequence: !input button_off_hold
+
+      #brightness down press
+      - conditions:
+           - "{{ event == 3002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: -10
+              transition: 1
+
+      #brightness down hold
+      - conditions:
+           - "{{ event == 3001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            target: !input "light"
+            data:
+              brightness_step_pct: -20
+              transition: 1

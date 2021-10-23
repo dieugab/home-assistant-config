@@ -1,0 +1,154 @@
+blueprint:
+  name: deCONZ - Hue Dimmer Switch (v2)
+  description: |
+    Signify Philips Hue Dimmer Switch, for use with versions released after 2021
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Hue dimmer switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: Signify Netherlands B.V.
+          model: RWL022
+
+    light:
+      name: Light(s)
+      description: 'The light(s) to control. For more than one, add a comma and no spaces between the full entity names. Example: light.lamp_left,light.lamp_right'
+      selector:
+        entity:
+          domain: light
+
+    take_control:
+      name: Take control switch to enable
+      description: 'Which take control switch to enable when pressing a button, keeping the lights on'
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+
+    adaptive_lighting:
+      name: Adaptive Lighting switch
+      description: 'The corresponding adaptive lighting switch, which is applied when light.turn_on is fired.'
+      selector:
+        entity:
+          domain: switch
+
+    button_power_hold:
+      name: Power button hold
+      description: 'Action to run when holding the power button'
+      default: []
+      selector:
+        action:
+    button_hue:
+      name: Hue button press
+      description: 'Action to run when pressing the Hue button'
+      default: []
+      selector:
+        action:
+    button_hue_hold:
+      name: Hue button hold
+      description: 'Action to run when holding the Hue button'
+      default: []
+      selector:
+        action:
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #button power press
+      - conditions:
+           - "{{ event == 1002 }}"
+           - condition: state
+             entity_id: !input "light"
+             state: 'on'
+        sequence:
+          - service: light.turn_off
+            entity_id: !input "light"
+      - conditions:
+           - "{{ event == 1002 }}"
+           - condition: state
+             entity_id: !input "light"
+             state: 'off'
+        sequence:
+          - service: adaptive_lighting.apply
+            data:
+              lights: !input "light"
+              entity_id: !input "adaptive_lighting"
+          - service: light.turn_on
+            entity_id: !input "light"
+
+      #button power hold
+      - conditions:
+           - "{{ event == 1003 }}"
+        sequence: !input button_power_hold
+
+      #brightness up press
+      - conditions:
+           - "{{ event == 2002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            entity_id: !input "light"
+            data:
+              brightness_step_pct: 10
+              transition: 1
+
+      #brightness up hold
+      - conditions:
+           - "{{ event == 2001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            entity_id: !input "light"
+            data:
+              brightness_step_pct: 20
+              transition: 1
+
+      #brightness down press
+      - conditions:
+           - "{{ event == 3002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            entity_id: !input "light"
+            data:
+              brightness_step_pct: -10
+              transition: 1
+
+      #brightness down hold
+      - conditions:
+           - "{{ event == 3001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            target: !input "take_control"
+          - service: light.turn_on
+            entity_id: !input "light"
+            data:
+              brightness_step_pct: -20
+              transition: 1
+
+      #button hue press
+      - conditions:
+           - "{{ event == 4002 }}"
+        sequence: !input button_hue
+        
+      #button hue hold
+      - conditions:
+           - "{{ event == 4003 }}"
+        sequence: !input button_hue_hold

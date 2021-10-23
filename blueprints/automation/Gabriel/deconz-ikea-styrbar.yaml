@@ -1,0 +1,107 @@
+blueprint:
+  name: deCONZ - IKEA STYRBAR Remote
+  description: |
+    IKEA TRÅDFRI STYRBAR Remote (4 buttons; left, right, up, down)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: IKEA remote to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: Remote Control N2
+
+    light:
+      name: Light(s)
+      description: The light(s) to control
+      selector:
+        target:
+          entity:
+            domain: light
+
+    adaptive_lighting:
+      name: Adaptive lighting to enable/disable
+      description: Which adaptive lighting to override
+      selector:
+        target:
+          entity:
+            domain: switch
+
+    left_arrow_button:
+      name: Left button press
+      description: Action(s) to run on left button press
+      default: []
+      selector:
+        action: {}
+    right_arrow_button:
+      name: Right button press
+      description: Action(s) to run on right button press
+      default: []
+      selector:
+        action: {}
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #brightness up press
+      - conditions:
+          - "{{ event == 1002 }}"
+        sequence:
+          - service: light.turn_on
+            target: !input "light"
+      #brightness up hold
+      - conditions:
+          - "{{ event == 1001 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - repeat:
+              count: 5
+              sequence:
+                - service: light.turn_on
+                  target: !input "light"
+                  data:
+                    brightness_step_pct: 20
+                    transition: 1
+                - delay: 1
+      #brightness down press
+      - conditions:
+          - "{{ event == 2002 }}"
+        sequence:
+          - service: light.turn_off
+            target: !input "light"
+      #brightness down hold
+      - conditions:
+          - "{{ event == 2001 }}"
+        sequence:
+          - service: switch.turn_off
+            target: !input "adaptive_lighting"
+          - repeat:
+              count: 5
+              sequence:
+                - service: light.turn_on
+                  target: !input "light"
+                  data:
+                    brightness_step_pct: -20
+                    transition: 1
+                - delay: 1
+      #left button press
+      - conditions:
+          - "{{ event == 3002 }}"
+        sequence: !input "left_arrow_button"
+      #right button press
+      - conditions:
+          - "{{ event == 4002 }}"
+        sequence: !input "right_arrow_button"
