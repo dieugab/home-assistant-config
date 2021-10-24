@@ -1,0 +1,1574 @@
+title: homeOS
+views:
+- badges: []
+  cards:
+  - cards:
+    - content: '# Switches'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - entity: switch.morning_state
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.day_state
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.evening_state
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.night_state
+        icon_height: 23px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      type: horizontal-stack
+    - entities:
+      - entity: input_select.home_state
+      state_color: false
+      style: "ha-card {\n  padding-bottom: 5px;\n}\n"
+      type: entities
+    - entities:
+      - entities:
+        - entity: binary_sensor.voordeur_sensor
+          name: Voordeur
+        entity: light.voortuin_buitenlamp
+        secondary_info: brightness
+        show_state: true
+        state_color: true
+        toggle: true
+        type: custom:multiple-entity-row
+      - entity: light.gang_lamp
+        secondary_info: brightness
+      - entity: light.toilet_lamp
+        icon: mdi:wall-sconce-round
+        secondary_info: brightness
+      - entities:
+        - entity: binary_sensor.trapkast_sensor
+          name: Trapkast
+        entity: light.trapkast_lamp
+        icon: mdi:lightbulb-on
+        secondary_info: brightness
+        show_state: true
+        state_color: true
+        toggle: true
+        type: custom:multiple-entity-row
+      state_color: true
+      type: entities
+    - entities:
+      - entities:
+        - light.keuken_afzuigkap
+        - light.keuken_lamp
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.keuken_groep
+          icon: hue:room-kitchen
+          name: Keuken
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      - entity: switch.keuken_waterkoker
+        secondary_info: last-updated
+      state_color: true
+      type: entities
+    - entities:
+      - entities:
+        - light.play_gradient_lightstrip
+        - light.woonkamer_eettafel_lamp
+        - switch.woonkamer_plug
+        - light.woonkamer_lamp
+        - light.globe_lamp
+        - light.edison_lamp
+        - light.tarnaby_lamp
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.woonkamer_groep
+          icon: hue:room-lounge
+          name: Woonkamer
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - entity: binary_sensor.achterdeur_sensor
+          name: Achterdeur
+        entity: light.achtertuin_buitenlamp
+        secondary_info: brightness
+        show_state: true
+        state_color: true
+        toggle: true
+        type: custom:multiple-entity-row
+      - entity: switch.aqara_g2h
+        icon: mdi:webcam
+        name: Security Cam
+        secondary_info: last-changed
+      state_color: true
+      type: entities
+    - entities:
+      - entities:
+        - light.slaapkamer_lamp
+        - light.woonkamer_hektar_lamp
+        - light.slaapkamer_nachtkastjes
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.slaapkamer_groep
+          icon: hue:room-bedroom
+          name: Slaapkamer
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      type: entities
+    - entities:
+      - entity: light.overloop_lamp
+        secondary_info: brightness
+      - entity: light.badkamer_lamp
+        icon: mdi:wall-sconce-round
+        secondary_info: brightness
+      state_color: true
+      type: entities
+    - entities:
+      - entities:
+        - light.kledingkamer_lamp
+        - light.kledingkamer_staande_lamp
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.kledingkamer_groep
+          icon: hue:room-closet
+          name: Kledingkamer
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - light.studiekamer_lamp
+        - light.studiekamer_bureaulamp
+        - light.play_lichtbalk
+        - light.play_lichtbalk_l
+        - light.play_lichtbalk_r
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.studiekamer_groep
+          icon: hue:room-computer
+          name: Studiekamer
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      state_color: true
+      type: entities
+    - entities:
+      - entities:
+        - light.zolder_spot_01
+        - light.zolder_spot_02
+        - light.zolder_spot_03
+        - light.zolder_spot_04
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.zolder_groep
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      type: entities
+    type: vertical-stack
+  - cards:
+    - content: '# Sensors'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - card:
+          card_mod:
+            style: "ha-card {\n  --ha-card-background: var(--alert-card-background);\n\
+              \  --card-mod-icon-color: var(--alert-icon-color);\n  --secondary-text-color:\
+              \ var(--alert-secondary-text-color);\n  border-radius: 0px;\n  color:\
+              \ var(--alert-primary-text-color);\n  border-bottom: 3px solid var(--alert-border-color);\n\
+              }\n"
+          type: entities
+        entities:
+        - entities:
+          - icon: mdi:bell-ring
+            state_color: true
+            tap_action:
+              action: call-service
+              service: timer.finish
+              service_data:
+                entity_id: timer.notification_reminder
+          entity: timer.notification_reminder
+          icon: mdi:message-text-clock
+          name: Software Update Reminder
+          secondary_info:
+            attribute: finishes_at
+            format: datetime
+            name: Notify @
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        show_empty: false
+        state_filter:
+        - active
+        type: entity-filter
+      - entities:
+        - active: '{{ is_state(''binary_sensor.remote_ui'', ''on'') }}'
+          entity: binary_sensor.remote_ui
+          icon: mdi:image-filter-drama
+          name: Home Assistant Cloud
+          secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote
+            UI connected {% else %} Remote UI disconnected {% endif %}'
+          state: ''
+          tap_action:
+            action: more-info
+          type: custom:template-entity-row
+        - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
+          entity: binary_sensor.ha_updater
+          icon: mdi:home-assistant
+          name: Home Assistant ({{states('sensor.current_version')}})
+          secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  New\
+            \ update available: {{states('sensor.latest_version')}} \n{% else %} \n\
+            \  Up-to-date \n{% endif %}"
+          state: ''
+          tap_action:
+            action: more-info
+          type: custom:template-entity-row
+        - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'')
+            }}'
+          entity: binary_sensor.deconz_update_available
+          icon: mdi:usb-flash-drive
+          name: deCONZ ({{states('sensor.deconz_version')}})
+          secondary: "{% if is_state('binary_sensor.deconz_update_available', 'on')\
+            \ %} \n  New update available: {{states('sensor.deconz_newest_version')}}\
+            \ \n{% else %}\n  Up-to-date \n{% endif %}"
+          state: ''
+          tap_action:
+            action: more-info
+          type: custom:template-entity-row
+        - entity: binary_sensor.hacs_updater
+          icon: mdi:store
+          name: Community Store
+          secondary_info:
+            entity: sensor.hacs
+            name: false
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        type: entities
+      type: custom:vertical-stack-in-card
+    - entities:
+      - entities:
+        - entity: sensor.samba_backup
+          name: Backup
+          tap_action:
+            action: call-service
+            confirmation:
+              text: Create a new backup?
+            service: script.action_manual_backup
+        entity: sensor.samba_backup
+        icon: mdi:upload-network
+        name: Remote Backup
+        secondary_info:
+          entity: sensor.samba_relative_backup
+          name: Last backup
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      type: entities
+    - entities:
+      - entities:
+        - entity: sensor.hp_tango_x_inkcartridge_black
+          name: Black
+        - entity: sensor.hp_tango_x_inkcartridge_cyanmagentayellow
+          name: Color
+        entity: binary_sensor.hp_tango_x_connectivity
+        name: Printer
+        secondary_info:
+          entity: binary_sensor.hp_tango_x_connectivity
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      - entities:
+        - entity: sensor.wasmachine_washer_job_state
+          name: Trommel
+        - entity: sensor.wasmachine_washer_machine_state
+          name: State
+        entity: switch.wasmachine
+        name: Wasmachine
+        secondary_info:
+          entity: sensor.wasmachine_washer_completion_time
+          format: relative
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      state_color: true
+      type: entities
+    - cards:
+      - entities:
+        - entity: sensor.p1_meter_active_power
+          name: P1 Energieverbruik
+        type: entities
+      - type: energy-distribution
+      type: custom:vertical-stack-in-card
+    - cards:
+      - animate: false
+        entities:
+        - color: '#F44336'
+          entity: sensor.woonkamer_cv_temperature_average
+          name: Woonkamer
+        - color: '#2196F3'
+          entity: sensor.badkamer_temperature_multi_sensor
+          name: Badkamer
+        - color: '#8BC34A'
+          entity: sensor.slaapkamer_temperature_multi_sensor
+          name: Slaapkamer
+        height: 205
+        hour24: true
+        hours_to_show: 120
+        line_width: 3
+        name: Temperature
+        points_per_hour: 0.5
+        show:
+          average: false
+          fill: true
+          labels: true
+          points: hover
+          state: true
+        smoothing: true
+        type: custom:mini-graph-card
+      - animate: false
+        entities:
+        - color: '#43A047'
+          entity: sensor.woonkamer_cv_humidity_average
+          name: Woonkamer
+        - color: '#8BC34A'
+          entity: sensor.badkamer_humidity_multi_sensor
+          name: Badkamer
+        - color: '#A5D6A7'
+          entity: sensor.slaapkamer_humidity_multi_sensor
+          name: Slaapkamer
+        height: 205
+        hour24: true
+        hours_to_show: 120
+        line_width: 3
+        name: Humidity
+        points_per_hour: 0.5
+        show:
+          average: false
+          fill: true
+          labels: true
+          points: hover
+          state: true
+        smoothing: true
+        type: custom:mini-graph-card
+      parameters:
+        centeredSlides: true
+        centeredSlidesBounds: true
+        grabCursor: true
+        pagination:
+          clickable: true
+        spaceBetween: 20
+      type: custom:swipe-card
+    type: vertical-stack
+  - cards:
+    - content: '# Controls'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - entity: climate.woonkamer_centrale_verwarming
+        name: Centrale Verwarming
+        style: "ha-card {\n  margin-bottom: 8px;\n}\n"
+        type: thermostat
+      - entities:
+        - entity: fan.whisper_flex
+          name: Whisper Flex
+          secondary_info: last-changed
+          state_color: true
+          toggle: true
+          type: custom:slider-entity-row
+        - entity: fan.smartmi_p1
+          extend_paper_buttons_row:
+            buttons:
+            - entity: sensor.smartmi_p1_aqi
+              name: AQI
+              state_styles:
+                excellent:
+                  button:
+                    color: var(--label-badge-green)
+                fair:
+                  button:
+                    color: var(--label-badge-yellow)
+                good:
+                  button:
+                    color: var(--label-badge-green)
+                inferior:
+                  button:
+                    color: var(--state-climate-heat-color)
+                poor:
+                  button:
+                    color: var(--label-badge-red)
+              style:
+                button:
+                  background-color: var(--table-row-alternative-background-color)
+                  border-radius: 10px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 6px
+          name: Smartmi P1
+          secondary_info: last-changed
+          state_color: true
+        style: "ha-card {\n  margin-top: 8px;\n}\n"
+        type: entities
+      type: custom:vertical-stack-in-card
+    - artwork: cover
+      entity: media_player.sonos_arc
+      group: false
+      hide:
+        power: true
+      info: short
+      speaker_group:
+        entities:
+        - entity_id: media_player.sonos_roam
+          name: Sonos Roam
+        - entity_id: media_player.ikea_symfonisk
+          name: Sonos Symfonisk
+        platform: sonos
+        show_group_count: true
+      toggle_power: false
+      type: custom:mini-media-player
+      volume_stateless: false
+    - artwork: cover
+      entity: media_player.homepod_mini
+      group: false
+      hide:
+        power: true
+      info: short
+      name: HomePod
+      toggle_power: false
+      type: custom:mini-media-player
+      volume_stateless: true
+    - cards:
+      - entity: media_player.sonos_roam
+        name: Roam
+        type: media-control
+      - entity: media_player.ikea_symfonisk
+        name: Symfonisk
+        type: media-control
+      columns: 2
+      square: false
+      type: grid
+    - cards:
+      - entities:
+        - entity: media_player.sony_bravia_tv
+          name: TV
+        - entity: media_player.apple_tv
+          name: "\uF8FFTV"
+        - entity: media_player.playstation_4
+          name: PS4
+        - entity: media_player.xbox_one_s
+          name: Xbox
+        state_color: true
+        type: glance
+      type: horizontal-stack
+    - entities:
+      - entity: cover.achterdeur_gordijn
+        name: Achterdeur
+      - entity: cover.woonkamer_gordijn
+        name: Woonkamer
+      - entity: cover.keuken_rolgordijnen
+        name: Keuken
+      - entity: cover.slaapkamer_rolgordijnen
+        name: Slaapkamer
+      state_color: true
+      type: glance
+    type: vertical-stack
+  - cards:
+    - content: '# Occupancy'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - entity: alarm_control_panel.security_system
+        states:
+        - arm_away
+        - arm_night
+        style: "ha-card {\n  border-radius: 0px;\n}\nh1.card-header {\n  font-size:\
+          \ 1.2em;\n  font-weight: var(--mcg-title-font-weight, 500);\n  opacity:\
+          \ 0.65;\n  padding-top: 0px;\n  padding-bottom: 25px;\n}\nmwc-button {\n\
+          \  border-radius: 5px;\n  background-color: var(--table-row-alternative-background-color);\n\
+          }\n"
+        type: alarm-panel
+      type: custom:vertical-stack-in-card
+    - cards:
+      - entities:
+        - entity: person.gabriel
+        - entity: person.shanna
+        - entity: input_select.home_state_modifier
+          name: Modifier
+        type: glance
+      - entities:
+        - buttons:
+          - entity: switch.privacy_mode
+            name: Privacy
+            style:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 10px
+                padding: 4px
+              name:
+                font-size: 14px
+          - entity: switch.party_mode
+            name: Party
+            style:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 10px
+                padding: 4px
+              name:
+                font-size: 14px
+          - entity: switch.cinema_mode
+            name: Cinema
+            style:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 10px
+                padding: 4px
+              name:
+                font-size: 14px
+          type: custom:paper-buttons-row
+        type: entities
+      type: custom:vertical-stack-in-card
+    - cards:
+      - aggregate_func: max
+        animate: false
+        entities:
+        - color: '#546E7A'
+          entity: binary_sensor.gang_motion_sensor
+          name: Gang
+        - color: '#1E88E5'
+          entity: binary_sensor.toilet_motion_sensor
+          name: Toilet
+        - color: '#FF9800'
+          entity: binary_sensor.keuken_motion_sensor
+          name: Keuken
+        - color: '#F44336'
+          entity: binary_sensor.woonkamer_cam_motion_sensor
+          name: Woonkamer
+        - color: '#795548'
+          entity: binary_sensor.voortuin_motion_sensor
+          name: Voortuin
+        - color: '#4CAF50'
+          entity: binary_sensor.achtertuin_motion_sensor
+          name: Achtertuin
+        height: 54
+        hours_to_show: 6
+        icon: mdi:page-layout-footer
+        line_width: 3
+        name: Motion downstairs
+        points_per_hour: 9
+        show:
+          fill: false
+          labels: false
+          state: true
+        smoothing: false
+        state_map:
+        - label: Clear
+          value: 'off'
+        - label: Detected
+          value: 'on'
+        type: custom:mini-graph-card
+      - aggregate_func: max
+        animate: false
+        entities:
+        - color: '#546E7A'
+          entity: binary_sensor.overloop_motion_sensor
+          name: Overloop
+        - color: '#1E88E5'
+          entity: binary_sensor.badkamer_motion_sensor
+          name: Badkamer
+        - color: '#8BC34A'
+          entity: binary_sensor.slaapkamer_motion_sensor
+          name: Slaapkamer
+        - color: '#9C27B0'
+          entity: binary_sensor.kledingkamer_motion_sensor
+          name: Kledingkamer
+        - color: '#FF5722'
+          entity: binary_sensor.studiekamer_motion_sensor
+          name: Studiekamer
+        - color: '#FFC107'
+          entity: binary_sensor.zolder_occupancy
+          name: Zolder
+        height: 55
+        hours_to_show: 6
+        icon: mdi:page-layout-body
+        line_width: 3
+        name: Motion upstairs
+        points_per_hour: 9
+        show:
+          fill: false
+          labels: false
+          state: true
+        smoothing: false
+        state_map:
+        - label: Clear
+          value: 'off'
+        - label: Detected
+          value: 'on'
+        type: custom:mini-graph-card
+      parameters:
+        centeredSlides: true
+        centeredSlidesBounds: true
+        grabCursor: true
+        pagination:
+          clickable: true
+        spaceBetween: 20
+      type: custom:swipe-card
+    - entities:
+      - entity: binary_sensor.voordeur_sensor
+        name: Voordeur
+      - entity: binary_sensor.achterdeur_sensor
+        name: Achterdeur
+      hours_to_show: 12
+      refresh_interval: 0
+      style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
+        \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+      title: Outside doors
+      type: history-graph
+    - entities:
+      - entities:
+        - binary_sensor.keuken_motion_sensor
+        - input_boolean.keuken_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.keuken_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - binary_sensor.badkamer_motion_sensor
+        - entities:
+          - binary_sensor.badkamer_hygrostat_on
+          - binary_sensor.badkamer_hygrostat_off
+          group_config:
+            secondary_info: last-changed
+            state_color: true
+          head:
+            entity: input_boolean.douche_occupancy_state
+            secondary_info: last-changed
+            state_color: true
+          type: custom:fold-entity-row
+        - input_boolean.badkamer_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.badkamer_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - binary_sensor.kledingkamer_motion_sensor
+        - input_boolean.kledingkamer_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.kledingkamer_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - binary_sensor.slaapkamer_motion_sensor
+        - input_boolean.slaapkamer_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.slaapkamer_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - binary_sensor.studiekamer_motion_sensor
+        - input_boolean.studiekamer_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.studiekamer_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      - entities:
+        - binary_sensor.oost_zolder_motion_sensor
+        - binary_sensor.west_zolder_motion_sensor
+        - input_boolean.zolder_control
+        group_config:
+          secondary_info: last-changed
+          state_color: true
+        head:
+          entity: binary_sensor.zolder_occupancy
+          secondary_info: last-changed
+          state_color: true
+        type: custom:fold-entity-row
+      type: entities
+    type: vertical-stack
+  icon: mdi:home
+  path: home
+  title: home
+- badges: []
+  cards:
+  - cards:
+    - content: '# Distribution'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - entities:
+        - entity: sensor.p1_meter_active_power
+          name: P1 Energieverbruik
+        type: entities
+      - type: energy-distribution
+      type: custom:vertical-stack-in-card
+    - type: custom:sun-card
+    - cards:
+      - type: energy-solar-consumed-gauge
+      - type: energy-grid-neutrality-gauge
+      - type: energy-carbon-consumed-gauge
+      type: horizontal-stack
+    type: vertical-stack
+  - cards:
+    - content: '# Usage'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - entities:
+        - entity: sensor.p1_meter_total_power_import_t2
+          icon: mdi:home-plus-outline
+          name: Normaaltarief
+        - entity: sensor.p1_meter_total_power_import_t1
+          icon: mdi:home-minus-outline
+          name: Daltarief
+        - entity: sensor.p1_meter_total_power_export_t2
+          icon: mdi:home-export-outline
+          name: Teruglevering
+        type: glance
+      - type: energy-usage-graph
+      type: custom:vertical-stack-in-card
+    - cards:
+      - entities:
+        - entity: sensor.inverter_gw3600dns_energy
+          icon: mdi:solar-panel
+          name: Totale Zonne-productie
+        - entity: sensor.inverter_gw3600dns
+          icon: mdi:solar-power
+          name: Huidige Zonne-productie
+        type: entities
+      - type: energy-solar-graph
+      type: custom:vertical-stack-in-card
+    type: vertical-stack
+  - cards:
+    - content: '# Sources'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - card_mod:
+        style: "ha-card {\n  padding-right: 15px;\n  padding-bottom: 20px;\n  padding-top:\
+          \ 20px;\n}\n"
+      cards:
+      - type: energy-date-selection
+      type: custom:vertical-stack-in-card
+    - cards:
+      - entity: input_text.leverancier_normaaltarief
+        name: Normaaltarief
+        type: entity
+      - entity: input_text.leverancier_daltarief
+        name: Daltarief
+        type: entity
+      columns: 2
+      square: false
+      type: grid
+    - type: energy-sources-table
+    - type: energy-devices-graph
+    type: vertical-stack
+  icon: mdi:lightning-bolt
+  path: power
+  title: Power
+- badges: []
+  cards:
+  - content: '# Controls'
+    style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+      \ !important;\n}\n"
+    type: markdown
+    view_layout:
+      position: sidebar
+  - cards:
+    - entity: climate.woonkamer_centrale_verwarming
+      name: Centrale Verwarming
+      style: "ha-card {\n  margin-bottom: 8px;\n}\n"
+      type: thermostat
+    - entities:
+      - entity: fan.whisper_flex
+        name: Whisper Flex
+        secondary_info: last-changed
+        state_color: true
+        toggle: true
+        type: custom:slider-entity-row
+      - entity: fan.smartmi_p1
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.smartmi_p1_aqi
+            name: AQI
+            state_styles:
+              excellent:
+                button:
+                  color: var(--label-badge-green)
+              fair:
+                button:
+                  color: var(--label-badge-yellow)
+              good:
+                button:
+                  color: var(--label-badge-green)
+              inferior:
+                button:
+                  color: var(--state-climate-heat-color)
+              poor:
+                button:
+                  color: var(--label-badge-red)
+            style:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+        name: Smartmi P1
+        secondary_info: last-changed
+        state_color: true
+      style: "ha-card {\n  margin-top: 8px;\n}\n"
+      type: entities
+    type: custom:vertical-stack-in-card
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: climate.woonkamer_radiator_l
+      icon: hue:room-front-door
+      name: 'CV Radiator #1'
+      secondary_info: last-updated
+    - entity: climate.woonkamer_radiator_r
+      icon: mdi:rounded-corner
+      name: 'CV Radiator #2'
+      secondary_info: last-updated
+    - entity: climate.keuken_radiator
+      icon: hue:room-kitchen
+      secondary_info: last-updated
+    state_color: true
+    type: entities
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: climate.duux_threesixty
+      secondary_info: last-updated
+    footer:
+      detail: 2
+      entity: sensor.woonkamer_cv_temperature_average
+      hours_to_show: 24
+      type: graph
+    state_color: true
+    type: entities
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: climate.slaapkamer_radiator
+      icon: hue:room-bedroom
+      name: Slaapkamer
+      secondary_info: last-updated
+    footer:
+      detail: 2
+      entity: sensor.slaapkamer_klima15_temperature_sensor
+      hours_to_show: 24
+      type: graph
+    state_color: true
+    type: entities
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: climate.kledingkamer_radiator
+      icon: hue:room-closet
+      name: Kledingkamer
+      secondary_info: last-updated
+    footer:
+      detail: 2
+      entity: sensor.kledingkamer_klima15_temperature_sensor
+      hours_to_show: 24
+      type: graph
+    state_color: true
+    type: entities
+    view_layout:
+      position: sidebar
+  - content: '# Sensors'
+    style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+      \ !important;\n}\n"
+    type: markdown
+  - entities:
+    - entity: sensor.smartmi_p1_aqi
+      name: PM10
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Air Quality Index
+    type: history-graph
+  - entities:
+    - entity: sensor.woonkamer_cv_temperature_average
+      name: Woonkamer
+    - entity: sensor.slaapkamer_temperature_multi_sensor
+      name: Slaapkamer
+    - entity: sensor.badkamer_temperature_multi_sensor
+      name: Badkamer
+    - entity: sensor.zolder_temperature_multi_sensor
+      name: Zolder
+    - entity: sensor.studiekamer_temperature_multi_sensor
+      name: Studiekamer
+    - entity: sensor.kledingkamer_temperature_multi_sensor
+      name: Kledingkamer
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Temperature
+    type: history-graph
+  - entities:
+    - entity: sensor.woonkamer_cv_humidity_average
+      name: Woonkamer
+    - entity: sensor.slaapkamer_humidity_multi_sensor
+      name: Slaapkamer
+    - entity: sensor.badkamer_humidity_multi_sensor
+      name: Badkamer
+    - entity: sensor.zolder_humidity_multi_sensor
+      name: Zolder
+    - entity: sensor.studiekamer_humidity_multi_sensor
+      name: Studiekamer
+    - entity: sensor.kledingkamer_humidity_multi_sensor
+      name: Kledingkamer
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Humidity
+    type: history-graph
+    view_layout:
+      position: main
+  - entities:
+    - entity: sensor.gang_light_sensor
+      name: Gang
+    - entity: sensor.woonkamer_light_sensor
+      name: Woonkamer
+    - entity: sensor.overloop_light_sensor
+      name: Overloop
+    - entity: sensor.zolder_light_sensor
+      name: Zolder
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Licht
+    type: history-graph
+    view_layout:
+      position: main
+  icon: mdi:thermometer-lines
+  path: temperature
+  title: Temperature
+  type: sidebar
+- badges: []
+  cards:
+  - cards:
+    - content: '# Calendar'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - cards:
+      - card:
+          card_mod:
+            style: "ha-card {\n  --ha-card-background: var(--calendar-card-background);\n\
+              \  --card-mod-icon-color: var(--text-primary-color);\n  --secondary-text-color:\
+              \ var(--text-primary-color);\n  color: var(--text-primary-color);\n\
+              \  border-radius: 0px;\n  border-bottom: 3px solid var(--calendar-border-color);\n\
+              }\n"
+          type: entities
+        entities:
+        - entity: sensor.hvc_gft
+          icon: mdi:calendar-alert
+          name: HVC gft & etensresten
+          secondary_info: Ophaalmoment morgen @ 07:30
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        - entity: sensor.hvc_papier
+          icon: mdi:calendar-alert
+          name: HVC papier & karton
+          secondary_info: Ophaalmoment morgen @ 07:30
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        - entity: sensor.hvc_pmd
+          icon: mdi:calendar-alert
+          name: HVC plastic, blik & drinkpakken
+          secondary_info: Ophaalmoment morgen @ 07:30
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        show_empty: false
+        state_filter:
+        - attribute: Days-until
+          operator: ==
+          value: 1
+        type: entity-filter
+      - entities:
+        - calendar.01_hvc_afvalkalender_papier
+        - calendar.02_huis_taken_calendar
+        - calendar.03_was_taken_calendar
+        - calendar.04_hvc_afvalkalender_pmd
+        - calendar.05_tuin_taken_calendar
+        - calendar.06_scheduler_calendar
+        - calendar.07_hvc_afvalkalender_gft
+        - calendar.08_heater_schedule
+        initial_view: dayGridMonth
+        style: "ha-card.type-calendar {\n  padding: 7px 20px 25px;\n}\n"
+        type: calendar
+      type: custom:vertical-stack-in-card
+    type: vertical-stack
+  - cards:
+    - content: '# Tasks'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - entities:
+      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days-until'', 0) }}'
+        entity: sensor.hvc_gft
+        name: HVC gft & etenresten
+        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days-until', 0) %} \n \
+          \ Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_gft',\
+          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
+          \ over ({{ state_attr('sensor.hvc_gft', 'Days-until') }}) dagen\n{% endif\
+          \ %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days-until'', 0) }}'
+        entity: sensor.hvc_papier
+        name: HVC papier & karton
+        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days-until', 0) %} \n\
+          \  Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_papier',\
+          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
+          \ over ({{ state_attr('sensor.hvc_papier', 'Days-until') }}) dagen\n{% endif\
+          \ %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days-until'', 0) }}'
+        entity: sensor.hvc_pmd
+        name: HVC plastic, blik & drinkpakken
+        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days-until', 0) %} \n \
+          \ Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_pmd',\
+          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
+          \ over ({{ state_attr('sensor.hvc_pmd', 'Days-until') }}) dagen\n{% endif\
+          \ %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      type: entities
+    - entities:
+      - entities:
+        - entity: input_datetime.task_onkruid
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_onkruid
+        entity: input_datetime.task_onkruid
+        name: Onkruid wieden
+        secondary_info:
+          entity: input_datetime.task_onkruid
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      type: entities
+    - entities:
+      - entities:
+        - entity: input_datetime.task_afstoffen
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_afstoffen
+        entity: input_datetime.task_afstoffen
+        name: Afstoffen
+        secondary_info:
+          entity: input_datetime.task_afstoffen
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      - entities:
+        - entity: input_datetime.task_dweilen
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_dweilen
+        entity: input_datetime.task_dweilen
+        name: Dweilen
+        secondary_info:
+          entity: input_datetime.task_dweilen
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      - entities:
+        - entity: input_datetime.task_stofzuigen
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_stofzuigen
+        entity: input_datetime.task_stofzuigen
+        name: Stofzuigen
+        secondary_info:
+          entity: input_datetime.task_stofzuigen
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      - entities:
+        - entity: input_datetime.task_stofzuiger_filter
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_stofzuiger_filter
+        entity: input_datetime.task_stofzuiger_filter
+        name: Stofzuiger filter wassen
+        secondary_info:
+          entity: input_datetime.task_stofzuiger_filter
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      type: entities
+    - entities:
+      - entities:
+        - entity: input_datetime.task_beddengoed
+          format: yyyymmdd
+          name: Laatst gedaan
+        - icon: mdi:calendar-check-outline
+          state_color: true
+          tap_action:
+            action: call-service
+            service: script.action_mark_task_as_done
+            service_data:
+              task_id: input_datetime.task_beddengoed
+        entity: input_datetime.task_beddengoed
+        name: Beddengoed verschonen
+        secondary_info:
+          entity: input_datetime.task_beddengoed
+          format: relative
+          name: false
+        show_state: false
+        type: custom:multiple-entity-row
+      state_color: false
+      type: entities
+    type: vertical-stack
+  - cards:
+    - content: '# Scheduler'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - discover_existing: true
+      display_options:
+        icon: entity
+        primary_info:
+        - <b>{entity}</b>
+        - '{action}'
+        secondary_info: relative-time
+      include:
+      - climate
+      - fan
+      - input_boolean
+      - input_select
+      - switch
+      show_add_button: true
+      style: "ha-card {\n  padding-top: 0px;\n  padding-left: 10px;\n  padding-bottom:\
+        \ 10px;\n}\n"
+      tags: []
+      time_step: 5
+      title: false
+      type: custom:scheduler-card
+    type: vertical-stack
+  icon: mdi:calendar-multiple
+  path: tasks
+  title: Tasks
+- badges: []
+  cards:
+  - cards:
+    - content: '# Pi Status'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - entities:
+      - active: '{{ is_state(''binary_sensor.remote_ui'', ''on'') }}'
+        entity: binary_sensor.remote_ui
+        icon: mdi:image-filter-drama
+        name: Home Assistant Cloud
+        secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote UI
+          connected {% else %} Remote UI disconnected {% endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
+        entity: binary_sensor.ha_updater
+        icon: mdi:home-assistant
+        name: Home Assistant ({{states('sensor.current_version')}})
+        secondary: '{% if is_state(''binary_sensor.ha_updater'', ''on'')%} New update
+          available: {{states(''sensor.latest_version'')}} {% else %} Up-to-date {%
+          endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'') }}'
+        entity: binary_sensor.deconz_update_available
+        icon: mdi:usb-flash-drive
+        name: deCONZ Add-on ({{states('sensor.deconz_version')}})
+        secondary: '{% if is_state(''binary_sensor.deconz_update_available'', ''on'')%}
+          New update available: {{states(''sensor.deconz_newest_version'')}} {% else
+          %} Up-to-date {% endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - entity: binary_sensor.hacs_updater
+        icon: mdi:store
+        name: Community Store
+        secondary_info:
+          entity: sensor.hacs
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      type: entities
+    - entities:
+      - entities:
+        - entity: sensor.samba_backup
+          name: Backup
+          tap_action:
+            action: call-service
+            confirmation:
+              text: Create a new backup?
+            service: script.action_manual_backup
+        entity: sensor.samba_backup
+        icon: mdi:upload-network
+        name: Remote Backup
+        secondary_info:
+          entity: sensor.samba_relative_backup
+          name: Last backup
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      type: entities
+    - entities:
+      - entity: sensor.uptime
+        format: relative
+        icon: mdi:docker
+        name: Last container boot
+        secondary_info:
+          entity: sensor.uptime
+          format: date
+          name: 'On'
+        show_state: true
+        type: custom:multiple-entity-row
+      - entity: sensor.last_boot
+        format: relative
+        icon: mdi:raspberry-pi
+        name: Last hardware boot
+        secondary_info:
+          entity: sensor.last_boot
+          format: date
+          name: 'On'
+        show_state: true
+        type: custom:multiple-entity-row
+      state_color: false
+      type: entities
+    - alias:
+        ko: Problem detected
+        ok: 'Status: OK'
+      alignment:
+        header: spaced
+        status: spaced
+        tooltip_first: false
+      bar:
+        amount: 36
+        height: 67
+        round: 5
+      blink: {}
+      color:
+        icon: grey
+      entity: binary_sensor.rpi_power_status
+      hours_to_show: 24
+      icon: mdi:power-cycle
+      icon_adaptive_color: false
+      ko: 'on'
+      name: RPi Power status
+      ok: 'off'
+      show:
+        footer: true
+        header: true
+      status_adaptive_color: true
+      tap_action:
+        action: more-info
+      tooltip:
+        hour24: true
+      type: custom:uptime-card
+    - cards:
+      - entity: sensor.memory_use_percent
+        max: 100
+        min: 0
+        name: Memory (used)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      - entity: sensor.processor_use_percent
+        max: 100
+        min: 0
+        name: Processor (util.)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      - entity: sensor.disk_use_percent
+        max: 100
+        min: 0
+        name: Storage (used)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      - entity: sensor.swap_use_percent
+        max: 100
+        min: 0
+        name: Storage (swap)
+        needle: true
+        severity:
+          green: 0
+          red: 50
+          yellow: 5
+        type: gauge
+      type: horizontal-stack
+    type: vertical-stack
+  - cards:
+    - content: '# Pi Chart'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - entities:
+      - entity: sensor.memory_use
+        name: Memory (used)
+      - entity: sensor.memory_free
+        name: Memory (free)
+      - entity: sensor.processor_temperature
+        icon: mdi:cpu-64-bit
+        name: "Processor (\xB0C)"
+      state_color: false
+      type: glance
+    - entities:
+      - entity: sensor.memory_use
+        name: Memory (used)
+      hours_to_show: 12
+      refresh_interval: 0
+      type: history-graph
+    - entities:
+      - entity: sensor.processor_temperature
+        name: "Processor (\xB0C)"
+      hours_to_show: 12
+      refresh_interval: 0
+      type: history-graph
+    type: vertical-stack
+  - cards:
+    - content: '# NAS'
+      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
+        \ !important;\n}\n"
+      type: markdown
+    - entities:
+      - active: '{{ is_state(''binary_sensor.mesa_security_status'', ''on'') }}'
+        entity: binary_sensor.mesa_security_status
+        icon: mdi:server-security
+        name: Security Advisor
+        secondary: '{% if is_state(''binary_sensor.mesa_security_status'', ''on'')%}
+          DSM is currently unsafe {% else %} No issues detected {% endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state(''binary_sensor.mesa_update_available'', ''on'') }}'
+        entity: binary_sensor.mesa_update_available
+        name: Synology DSM 7
+        secondary: '{% if is_state(''binary_sensor.mesa_update_available'', ''on'')%}
+          New update available {% else %} Up-to-date {% endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - entities:
+        - entity: sensor.mesa_memory_available_real
+          name: Free
+        entity: sensor.mesa_memory_available_real
+        name: Synology Memory
+        secondary_info:
+          entity: sensor.mesa_memory_total_real
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      - entities:
+        - entity: sensor.mesa_drive_1_temperature
+          name: Drive 1
+        - entity: sensor.mesa_drive_2_temperature
+          name: Drive 2
+        entity: sensor.mesa_volume_1_average_disk_temp
+        name: Volume Temperature
+        secondary_info:
+          entity: sensor.mesa_volume_1_average_disk_temp
+          name: Average
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      state_color: true
+      type: entities
+    - entities:
+      - entity: sensor.mesa_last_boot
+        format: relative
+        icon: mdi:nas
+        name: Last hardware boot
+        secondary_info:
+          entity: sensor.mesa_last_boot
+          format: date
+          name: 'On'
+        show_state: true
+        state_color: true
+        type: custom:multiple-entity-row
+      type: entities
+    - cards:
+      - detail: 2
+        entity: sensor.mesa_download_throughput
+        graph: line
+        hours_to_show: 12
+        name: Download
+        type: sensor
+      - detail: 2
+        entity: sensor.mesa_upload_throughput
+        graph: line
+        hours_to_show: 12
+        name: Upload
+        type: sensor
+      type: horizontal-stack
+    - entities:
+      - entity: sensor.mesa_volume_1_status
+        name: Volume status
+      - entity: sensor.mesa_cpu_load_average_15_min
+        name: CPU Load
+      - entity: sensor.mesa_volume_1_used_space
+        name: Storage (used)
+      - entity: sensor.mesa_volume_1_total_size
+        icon: mdi:harddisk
+        name: Storage (total)
+      state_color: true
+      type: glance
+    - cards:
+      - entity: sensor.mesa_cpu_utilization_total
+        max: 100
+        min: 0
+        name: Intel Processor (utilization)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      - entity: sensor.mesa_memory_usage_real
+        max: 100
+        min: 0
+        name: Real Memory (used)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      - entity: sensor.mesa_volume_1_volume_used
+        max: 100
+        min: 0
+        name: Volume Storage (used)
+        needle: true
+        severity:
+          green: 0
+          red: 75
+          yellow: 50
+        type: gauge
+      type: horizontal-stack
+    type: vertical-stack
+  icon: mdi:information
+  path: hardware
+  title: Hardware

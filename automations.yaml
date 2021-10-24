@@ -1964,3 +1964,15 @@
         - input_boolean.studiekamer_control
       light: light.studiekamer_groep
       adaptive_lighting: switch.adaptive_lighting_ruimten
+- id: '1635090239136'
+  alias: Home Assistant - Convert Lovelace
+  description: Auto-convert UI Lovelace to readable yaml
+  trigger:
+  - platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+  condition: []
+  action:
+  - service: shell_command.lovelace_convert
+  mode: single

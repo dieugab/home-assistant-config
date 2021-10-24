@@ -1,0 +1,5 @@
+# █▀ █ █ █▀▀ █   █   #
+# ▄█ █▀█ ██▄ █▄▄ █▄▄ #
+
+# Auto-converts UI lovelace to yaml
+lovelace_convert: python /config/python_scripts/lovelace_convert.py
