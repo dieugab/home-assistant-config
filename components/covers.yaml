@@ -1,4 +1,5 @@
-#=== COVER GROUPS ===#
+# █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
+# █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
 
     # Cover group for kitchen shades
   - platform: group
@@ -16,8 +17,8 @@
       - cover.slaapkamer_l
       - cover.slaapkamer_r
 
-
-#=== COVER TEMPLATES ===#
+# ▀█▀ █▀▀ █▀▄▀█ █▀█ █   ▄▀█ ▀█▀ █▀▀ █▀ #
+#  █  ██▄ █ ▀ █ █▀▀ █▄▄ █▀█  █  ██▄ ▄█ #
 
   - platform: template
     covers:

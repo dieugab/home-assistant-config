@@ -1,11 +1,12 @@
-#=== VERSION SENSORS ===#
+# █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ █▀ #
+# ▀▄▀ ██▄ █▀▄ ▄█ █ █▄█ █ ▀█ ▄█ #
 
   - platform: version
   - platform: version
     source: supervisor
 
-
-#=== RASPBERRY PI SENSORS ===#
+# █▀█ ▄▀█ █▀ █▀█ █▄▄ █▀▀ █▀█ █▀█ █▄█   █▀█ █
+# █▀▄ █▀█ ▄█ █▀▀ █▄█ ██▄ █▀▄ █▀▄  █    █▀▀ █
     
   - platform: uptime
   - platform: systemmonitor
@@ -19,8 +20,8 @@
       - type: disk_use_percent
       - type: last_boot
 
-
-#=== HVC AFVALBEHEER ===#
+# █ █ █ █ █▀▀ #
+# █▀█ ▀▄▀ █▄▄ #
     
   - platform: afvalbeheer
     upcomingsensor: 1

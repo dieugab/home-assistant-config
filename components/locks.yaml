@@ -1,4 +1,5 @@
-#=== LOCK (NOTIFICATIONS) ===#
+# █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
+# █ ▀█ █▄█  █  █ █▀   █  #
     
     # Washer lock notification
   - platform: template

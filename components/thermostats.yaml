@@ -1,4 +1,5 @@
-#=== TUYA ===#
+# ▀█▀ █ █ █▄█ ▄▀█ #
+#  █  █▄█  █  █▀█ #
 
     # Duux ThreeSixty heater @ woonkamer
   - platform: generic_thermostat
@@ -13,8 +14,8 @@
     hot_tolerance: 0
     precision: 1
 
-
-#=== CLIMATE GROUPS ===#
+# █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
+# █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
 
     # Centrale verwarming begane grond
   - platform: climate_group
@@ -25,8 +26,8 @@
     - climate.woonkamer_radiator_r
     - climate.keuken_radiator
 
-
-#=== RADIATORS ===#
+# █▀█ ▄▀█ █▀▄ █ ▄▀█ ▀█▀ █▀█ █▀█ █▀ #
+# █▀▄ █▀█ █▄▀ █ █▀█  █  █▄█ █▀▄ ▄█ #
 
     # Radiator @ trapopening
   - platform: generic_thermostat

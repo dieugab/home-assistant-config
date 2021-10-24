@@ -1,4 +1,5 @@
-#=== TREND SENSORS ===#
+# ▀█▀ █▀█ █▀▀ █▄ █ █▀▄ █▀ #
+#  █  █▀▄ ██▄ █ ▀█ █▄▀ ▄█ #
 
   - platform: trend
     sensors:
