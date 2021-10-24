@@ -8,13 +8,10 @@
       - light.woonkamer_lamp
       - light.woonkamer_eettafel_lamp
       - light.filament_lamps
-      - light.play_lichtbalk
+      - light.play_gradient_lightstrip
 #      - light.globe_lamp
 #      - light.edison_lamp
 #      - light.tarnaby_lamp
-#      - light.play_lichtbalk_l
-#      - light.play_lichtbalk_m
-#      - light.play_lichtbalk_r
 
     # Slaapkamer nachtkastjes (not for use in HomeKit)
   - platform: group

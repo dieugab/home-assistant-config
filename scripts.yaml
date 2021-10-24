@@ -166,7 +166,7 @@ mode_privacy:
       - light.edison_lamp
       - light.tarnaby_lamp
       - light.globe_lamp
-      - light.play_lichtbalk
+      - light.play_gradient_lightstrip
     data:
       brightness_pct: 10
   - service: light.turn_off
@@ -210,7 +210,8 @@ mode_cinema:
       - switch.woonkamer_plug
   - service: light.turn_on
     target:
-      entity_id: light.play_lichtbalk
+      entity_id:
+      - light.play_gradient_lightstrip
     data:
       brightness_pct: 10
       kelvin: 6500
@@ -408,7 +409,7 @@ action_easy_entry:
       entity_id:
       - light.woonkamer_eettafel_lamp
       - light.filament_lamps
-      - light.play_lichtbalk
+      - light.play_gradient_lightstrip
   - service: switch.turn_on
     target:
       entity_id: switch.woonkamer_plug
@@ -568,9 +569,7 @@ home_modifier_home:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_hue_filament
-      - switch.adaptive_lighting_sleep_mode_hue_lichtbalk
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_zolder
   - service: climate.set_preset_mode
     target:
       entity_id:
@@ -641,9 +640,7 @@ home_modifier_sleeping:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_hue_filament
-      - switch.adaptive_lighting_sleep_mode_hue_lichtbalk
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_zolder
   - service: climate.set_preset_mode
     target:
       entity_id:
@@ -766,8 +763,8 @@ home_state_evening:
         target:
           entity_id:
           - light.woonkamer_eettafel_lamp
-          - light.play_lichtbalk
           - light.filament_lamps
+          - light.play_gradient_lightstrip
       - service: switch.turn_on
         target:
           entity_id: switch.woonkamer_plug
@@ -792,8 +789,8 @@ home_state_evening:
         target:
           entity_id:
           - light.woonkamer_eettafel_lamp
-          - light.play_lichtbalk
           - light.filament_lamps
+          - light.play_gradient_lightstrip
       - service: switch.turn_on
         target:
           entity_id: switch.woonkamer_plug

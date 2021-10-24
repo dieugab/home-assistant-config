@@ -180,8 +180,6 @@
       - switch.adaptive_lighting_adapt_brightness_woonkamer
       - switch.adaptive_lighting_adapt_brightness_hue_filament
       - switch.adaptive_lighting_adapt_color_hue_filament
-      - switch.adaptive_lighting_adapt_brightness_hue_lichtbalk
-      - switch.adaptive_lighting_adapt_color_hue_lichtbalk
       - switch.begane_grond_adaptive_lighting
   mode: single
 - id: '1610308361097'
@@ -353,7 +351,7 @@
   - service: adaptive_lighting.apply
     data:
       lights: light.zolder_groep
-      entity_id: switch.adaptive_lighting_zolder
+      entity_id: switch.adaptive_lighting_ruimten
   - service: switch.turn_on
     target:
       entity_id: switch.zolder_nymane
@@ -953,7 +951,7 @@
       take_control:
         entity_id: input_boolean.zolder_control
       light: light.zolder_groep
-      adaptive_lighting: switch.adaptive_lighting_zolder
+      adaptive_lighting: switch.adaptive_lighting_ruimten
 - id: '1627322341754'
   alias: deCONZ - Kledingkamer Hue Dimmer
   description: Switch to control light(s)

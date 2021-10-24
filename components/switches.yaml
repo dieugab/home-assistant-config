@@ -57,13 +57,11 @@
           - service: switch.turn_on
             entity_id:
               - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_hue_lichtbalk
               - switch.adaptive_lighting_hue_filament
         turn_off:
           - service: switch.turn_off
             entity_id:
               - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_hue_lichtbalk
               - switch.adaptive_lighting_hue_filament
 
 
