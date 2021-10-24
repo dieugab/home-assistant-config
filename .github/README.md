@@ -4,7 +4,7 @@ My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/pr
 ## Overview
 🚨 Home Security | 📱 Mobile control | 💡 Smart adaptive lighting | 👋 Motion & occupancy sensing | 👁 Smart curtains & blinds | ⚡ Energy & solar monitoring | 🌡 Smart heating & cooling | 🔊 Multi-room audio | 🎛 Local control
 
-![Hero shot](https://user-images.githubusercontent.com/61377476/138249250-09976edd-fd7c-42d2-b311-9d012e89a41d.png)
+![Hero-combined](https://user-images.githubusercontent.com/61377476/138591773-0800bf9a-436e-49e3-895f-d651278713fd.png)
 
 ### Foundation
 - 🚨 Home is secured using a combination of Aqara contact sensors, Sonos speakers and HomeKit Secure Video
