@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "key": "input_number",
+    "data": {
+        "items": [
+            {
+                "min": 0.0,
+                "max": 100.0,
+                "name": "Whisper Flex - Percentage",
+                "mode": "slider",
+                "step": 1.0,
+                "id": "whisper_flex_percentage",
+                "icon": "mdi:fan-speed-1"
+            }
+        ]
+    }
+}

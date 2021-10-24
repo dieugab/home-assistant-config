@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "key": "input_datetime",
+    "data": {
+        "items": [
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Onkruid wieden",
+                "icon": "mdi:sprout",
+                "id": "agenda_onkruid_wieden"
+            },
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Stofzuigen",
+                "icon": "mdi:floor-plan",
+                "id": "agenda_stofzuigen"
+            },
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Dweilen",
+                "icon": "mdi:water-check",
+                "id": "task_dweilen"
+            },
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Afstoffen",
+                "icon": "mdi:spray-bottle",
+                "id": "task_afstoffen"
+            },
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Beddengoed",
+                "icon": "mdi:bed-king",
+                "id": "task_beddengoed"
+            },
+            {
+                "has_time": false,
+                "has_date": true,
+                "name": "Task - Stofzuiger filter",
+                "id": "task_stofzuiger_filter",
+                "icon": "mdi:image-filter-tilt-shift"
+            }
+        ]
+    }
+}

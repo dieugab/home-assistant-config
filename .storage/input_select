@@ -1,0 +1,101 @@
+{
+    "version": 1,
+    "key": "input_select",
+    "data": {
+        "items": [
+            {
+                "name": "Scenes - Woonkamer",
+                "options": [
+                    "Woonkamer Lounge",
+                    "Woonkamer Visite",
+                    "Woonkamer Overdag",
+                    "Woonkamer Helder"
+                ],
+                "id": "woonkamer_scenes",
+                "icon": "mdi:palette-swatch"
+            },
+            {
+                "name": "Home State",
+                "options": [
+                    "Morning",
+                    "Day",
+                    "Evening",
+                    "Night"
+                ],
+                "id": "home_state",
+                "icon": "mdi:timeline-check"
+            },
+            {
+                "name": "Whisper Flex - Preset Modes",
+                "options": [
+                    "Normal Mode",
+                    "Sleep Mode",
+                    "Nature Mode"
+                ],
+                "id": "whisper_flex_preset_modes",
+                "icon": "mdi:fan-plus"
+            },
+            {
+                "name": "Whisper Flex - Oscillating",
+                "options": [
+                    "True",
+                    "False"
+                ],
+                "id": "whisper_flex_oscillating",
+                "icon": "mdi:axis-z-rotate-clockwise"
+            },
+            {
+                "name": "Whisper Flex - Direction",
+                "options": [
+                    "forward",
+                    "reverse"
+                ],
+                "id": "whisper_flex_direction",
+                "icon": "mdi:horizontal-rotate-counterclockwise"
+            },
+            {
+                "name": "Smartmi P1 - AQI",
+                "options": [
+                    "Excellent",
+                    "Good",
+                    "Fair",
+                    "Inferior",
+                    "Poor"
+                ],
+                "id": "smartmi_p1_aqi",
+                "icon": "mdi:smoke-detector"
+            },
+            {
+                "name": "Smartmi P1 - Preset Modes",
+                "options": [
+                    "Manual",
+                    "Auto"
+                ],
+                "id": "smartmi_p1_preset_modes",
+                "icon": "mdi:fan-plus"
+            },
+            {
+                "name": "Smartmi P1 - Percentage",
+                "options": [
+                    "0",
+                    "33",
+                    "66",
+                    "100"
+                ],
+                "id": "smartmi_p1_percentage",
+                "icon": "mdi:fan-speed-1"
+            },
+            {
+                "name": "Home State Modifier",
+                "options": [
+                    "Home",
+                    "Sleeping",
+                    "Away",
+                    "On vacation"
+                ],
+                "id": "home_state_modifier",
+                "icon": "mdi:variable-box"
+            }
+        ]
+    }
+}

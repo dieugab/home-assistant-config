@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "key": "timer",
+    "data": {
+        "items": [
+            {
+                "name": "Notification - Reminder",
+                "duration": "24:00:00",
+                "id": "notification_reminder_countdown",
+                "icon": "mdi:update"
+            },
+            {
+                "name": "Notification - Container",
+                "duration": "1:00:00",
+                "id": "notification_container"
+            }
+        ]
+    }
+}

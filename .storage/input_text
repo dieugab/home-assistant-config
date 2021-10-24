@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "key": "input_text",
+    "data": {
+        "items": [
+            {
+                "name": "Leverancier normaaltarief",
+                "max": 7,
+                "min": 0,
+                "mode": "text",
+                "id": "leverancier_normaaltarief",
+                "icon": "mdi:white-balance-sunny"
+            },
+            {
+                "name": "Leverancier daltarief",
+                "max": 7,
+                "min": 0,
+                "mode": "text",
+                "id": "leverancier_daltarief",
+                "icon": "mdi:power-sleep"
+            }
+        ]
+    }
+}

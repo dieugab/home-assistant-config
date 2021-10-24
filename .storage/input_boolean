@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "key": "input_boolean",
+    "data": {
+        "items": [
+            {
+                "name": "Control - Slaapkamer",
+                "id": "slaapkamer_control",
+                "icon": "mdi:light-switch"
+            },
+            {
+                "name": "Control - Badkamer",
+                "id": "badkamer_control",
+                "icon": "mdi:light-switch"
+            },
+            {
+                "name": "Control - Zolder",
+                "id": "zolder_control",
+                "icon": "mdi:light-switch"
+            },
+            {
+                "name": "Douche Occupancy State",
+                "id": "badkamer_hygrostat",
+                "icon": "mdi:shower-head"
+            },
+            {
+                "name": "Control - Studiekamer",
+                "icon": "mdi:light-switch",
+                "id": "studiekamer_control"
+            },
+            {
+                "name": "Control - Kledingkamer",
+                "id": "kledingkamer_control",
+                "icon": "mdi:light-switch"
+            },
+            {
+                "name": "Smartmi P1",
+                "icon": "mdi:air-filter",
+                "id": "air_purifier"
+            },
+            {
+                "name": "HomeKit - Cam Motion Sensor",
+                "id": "homekit_cam_motion_sensor",
+                "icon": "mdi:camera-account"
+            },
+            {
+                "name": "Task - Container",
+                "id": "task_container",
+                "icon": "mdi:trash-can"
+            },
+            {
+                "name": "Control - Keuken",
+                "id": "keuken_control"
+            }
+        ]
+    }
+}
