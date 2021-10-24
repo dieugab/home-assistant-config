@@ -1285,6 +1285,12 @@
   - platform: event
     event_type: homekit_state_change
     event_data:
+      entity_id: light.play_lichtbalk
+      service: turn_on
+    id: studiekamer
+  - platform: event
+    event_type: homekit_state_change
+    event_data:
       entity_id: light.kledingkamer_groep
       service: turn_on
     id: kledingkamer
