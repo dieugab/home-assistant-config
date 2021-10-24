@@ -1971,7 +1971,7 @@
   - platform: event
     event_type: folder_watcher
     event_data:
-      event_type: modified
+      event_type: moved
   condition: []
   action:
   - service: shell_command.lovelace_convert
