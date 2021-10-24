@@ -28,6 +28,7 @@ My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/pr
 - Home Assistant is accessible away from home through [Nabu Casa Cloud](https://www.nabucasa.com/) and a HomeKit Hub
 - The Zigbee network runs on [deCONZ](https://phoscon.de/en/conbee2/software)/[ConBee II](https://www.phoscon.de/en/conbee2) through a USB2 extension
 - The OS runs on a SATA/USB3 connected [Kingston A400 SSD](https://www.kingston.com/en/ssd/a400-solid-state-drive)
+- Lovelace uses my custom [homeOS theme](https://github.com/gvssr/home-assistant-config/tree/main/themes/homeOS_theme), based on work by [JuanMTech](https://github.com/JuanMTech)
 - Home Assistant's database runs on [MariaDB](https://mariadb.org/)
 - Daily backups are created and stored through SMB on a [Synology DS718+](https://www.synology.com/support/download/DS718+?version=7.0#system)
 - Home Assistant mobile app notifies me about new updates for Core, deCONZ, NAS DSM, Backups and Custom Integrations
