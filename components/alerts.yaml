@@ -1,5 +1,7 @@
-#=== ALERTS (WORK IN PROGRESS) ===#
-# (https://github.com/jcallaghan/home-assistant-config/issues/257)
+# █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
+# █ ▀█ █▄█  █  █ █▀   █  #
+
+# WORK IN PROGRESS (https://github.com/jcallaghan/home-assistant-config/issues/257)
 
   hvc_afhaal:
     name: HVC Container
