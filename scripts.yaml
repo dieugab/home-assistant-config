@@ -610,6 +610,9 @@ home_modifier_away:
       - climate.woonkamer_centrale_verwarming
       - climate.kledingkamer_radiator
       - climate.slaapkamer_radiator
+  - service: climate.turn_off
+    target:
+      entity_id: climate.duux_threesixty
   - service: script.turn_on
     target:
       entity_id:
