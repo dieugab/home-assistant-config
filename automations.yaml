@@ -1974,3 +1974,27 @@
   action:
   - service: shell_command.lovelace_convert
   mode: restart
+- id: '1635150252380'
+  alias: Location - Shanna @ Morning Commute
+  description: Automations to run, specifically when Shanna leaves in the morning
+  trigger:
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - thu
+    - fri
+    - sat
+    - sun
+    after: 06:00
+    before: '10:00'
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.woonkamer_plug
+  mode: single
