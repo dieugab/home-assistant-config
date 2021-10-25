@@ -27,6 +27,7 @@
     switches:
       threesixty:
         friendly_name: Duux ThreeSixty Power
+        unique_id: duux_threesixty_power
         icon_template: mdi:hvac
         turn_on:
           - service: climate.set_hvac_mode
