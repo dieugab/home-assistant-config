@@ -569,7 +569,7 @@
   - platform: state
     entity_id: binary_sensor.voordeur_sensor
     from: 'off'
-    to: to
+    to: 'on'
   - platform: state
     entity_id: binary_sensor.achterdeur_sensor
     from: 'off'
