@@ -57,4 +57,3 @@ lock: !include components/locks.yaml
 
 # Technical
 shell_command: !include components/shell_commands.yaml
-folder_watcher: !include components/folder_watcher.yaml

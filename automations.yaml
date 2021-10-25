@@ -1969,10 +1969,8 @@
   description: Auto-convert UI Lovelace to readable yaml
   trigger:
   - platform: event
-    event_type: folder_watcher
-    event_data:
-      event_type: moved
+    event_type: lovelace_updated
   condition: []
   action:
   - service: shell_command.lovelace_convert
-  mode: single
+  mode: restart

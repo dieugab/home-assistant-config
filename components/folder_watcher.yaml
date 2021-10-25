@@ -1,7 +1,0 @@
-# █▀▀ █▀█ █   █▀▄ █▀▀ █▀█   █ █ █ ▄▀█ ▀█▀ █▀▀ █ █ █▀▀ █▀█ #
-# █▀  █▄█ █▄▄ █▄▀ ██▄ █▀▄   ▀▄▀▄▀ █▀█  █  █▄▄ █▀█ ██▄ █▀▄ #
-
-    # .storage folder to watch
-  - folder: /config/.storage
-    patterns:
-      - 'lovelace'
