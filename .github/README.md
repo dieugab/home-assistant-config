@@ -53,7 +53,7 @@ These **Home States** in turn are adjusted based on which **Home State Modifier*
 
 ## Modes
 Additionally, there are a couple of **Modes** which can be manually turned on depending on the situation. Turning them off runs the corresponding script actions of the currect **Home State** to ensure a smooth transition back to the status quo.
-- 🍿 ``Cinema Mode`` ensures the ideal movie watching experience
-- 🎉 ``Party Mode`` ensures no automations are run that interfere with guests
-- 👀 ``Privacy Mode`` ensures the living room is secured against prying eyes from outside
+- 🍿 ``Cinema Mode`` ensures the ideal movie watching experience, by turning on the tv, closing the curtains and turning off or dimming certain lights
+- 🎉 ``Party Mode`` ensures no automations are run that interfere with guests, like curtains opening, alarms triggering or lights dimming
+- 👀 ``Privacy Mode`` ensures the living room is secured against prying eyes from outside, by closing the curtains, dimming lights, disabling camera's and playing music
 
