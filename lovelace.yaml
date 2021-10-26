@@ -33,11 +33,40 @@ views:
           action: toggle
         type: button
       type: horizontal-stack
-    - entities:
-      - entity: input_select.home_state
-      state_color: false
-      style: "ha-card {\n  padding-bottom: 5px;\n}\n"
-      type: entities
+    - cards:
+      - card:
+          card_mod:
+            style: "ha-card {\n  --ha-card-background: var(--alert-card-background);\n\
+              \  --card-mod-icon-color: var(--alert-icon-color);\n  --secondary-text-color:\
+              \ var(--alert-secondary-text-color);\n  border-radius: 0px;\n  color:\
+              \ var(--alert-primary-text-color);\n  border-bottom: 3px solid var(--alert-border-color);\n\
+              }\n"
+          type: entities
+        entities:
+        - entities:
+          - icon: mdi:close
+            state_color: true
+            tap_action:
+              action: call-service
+              service: input_boolean.turn_off
+              service_data:
+                entity_id: input_boolean.home_state_delay
+          entity: input_boolean.home_state_delay
+          name: Home State Transition Delayed
+          secondary_info: State will not transition to Day or Evening
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        show_empty: false
+        state_filter:
+        - 'on'
+        type: entity-filter
+      - entities:
+        - entity: input_select.home_state
+        state_color: false
+        style: "ha-card {\n  padding-bottom: 5px;\n}\n"
+        type: entities
+      type: custom:vertical-stack-in-card
     - entities:
       - entities:
         - entity: binary_sensor.voordeur_sensor
