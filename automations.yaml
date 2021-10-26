@@ -1117,28 +1117,37 @@
     data:
       addon: 15d21743_samba_backup
       input: restore-sensor
-  - condition: state
-    entity_id: input_select.home_state
-    state: Day
-  - service: climate.set_preset_mode
-    target:
-      entity_id:
-      - climate.kledingkamer_radiator
-      - climate.slaapkamer_radiator
-    data:
-      preset_mode: none
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: climate.set_preset_mode
-    target:
-      entity_id:
-      - climate.kledingkamer_radiator
-      - climate.slaapkamer_radiator
-    data:
-      preset_mode: away
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state
+          state: Day
+        - condition: time
+          before: '21:00:00'
+          after: '12:00:00'
+      sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+        data:
+          preset_mode: none
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+        data:
+          preset_mode: away
+    default: []
   mode: single
 - id: '1630052526059'
   alias: Heater - Update Tuya Temperature
