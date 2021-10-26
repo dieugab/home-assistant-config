@@ -3,11 +3,10 @@
   description: Turn on light when motion is detected, dim after inactivity and turn
     off after a delay
   trigger:
-  - type: motion
-    platform: device
-    device_id: 370cfb0d29dd34457c9f74b282ef78aa
+  - platform: state
     entity_id: binary_sensor.toilet_motion_sensor
-    domain: binary_sensor
+    from: 'off'
+    to: 'on'
   condition: []
   action:
   - service: adaptive_lighting.apply
@@ -18,15 +17,15 @@
     data:
       entity_id: light.toilet_lamp
   - wait_for_trigger:
-    - type: no_motion
-      platform: device
-      device_id: 370cfb0d29dd34457c9f74b282ef78aa
+    - platform: state
       entity_id: binary_sensor.toilet_motion_sensor
-      domain: binary_sensor
+      from: 'on'
+      to: 'off'
       for:
         hours: 0
         minutes: 1
         seconds: 0
+        milliseconds: 0
   - condition: state
     entity_id: light.toilet_lamp
     state: 'on'
@@ -36,28 +35,23 @@
       brightness: '{{ (state_attr(''light.toilet_lamp'', ''brightness'') / 2) | int
         }}'
   - delay: 00:01:00
-  - type: turn_off
-    device_id: cb851c4811ce29c17db1f786ad87a878
-    entity_id: light.toilet_lamp
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id: light.toilet_lamp
   mode: restart
 - id: '1610296743694'
   alias: Motion - Gang (lux)
   description: Turn on light when motion is detected, dim after inactivity and turn
     off after a delay
   trigger:
-  - type: motion
-    platform: device
-    device_id: db2cd668a94c6078b0808100667f4735
+  - platform: state
     entity_id: binary_sensor.gang_motion_sensor
-    domain: binary_sensor
+    from: 'off'
+    to: 'on'
   condition:
-  - type: is_illuminance
-    condition: device
-    device_id: bd3b24f04842d908489aa0b3413f67da
+  - condition: numeric_state
     entity_id: sensor.gang_light_sensor
-    domain: sensor
-    below: 50
+    below: '50'
   action:
   - service: adaptive_lighting.apply
     data:
@@ -67,15 +61,15 @@
     data:
       entity_id: light.gang_lamp
   - wait_for_trigger:
-    - type: no_motion
-      platform: device
-      device_id: db2cd668a94c6078b0808100667f4735
+    - platform: state
       entity_id: binary_sensor.gang_motion_sensor
-      domain: binary_sensor
+      from: 'on'
+      to: 'off'
       for:
         hours: 0
         minutes: 0
         seconds: 30
+        milliseconds: 0
   - condition: state
     entity_id: light.gang_lamp
     state: 'on'
@@ -190,7 +184,19 @@
     entity_id: light.studiekamer_groep
     from: 'on'
     to: 'off'
-  condition: []
+  - platform: state
+    entity_id: binary_sensor.studiekamer_occupancy
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.studiekamer_control
+    state: 'on'
   action:
   - service: input_boolean.turn_off
     data: {}
@@ -220,22 +226,23 @@
   alias: Reset Control - Badkamer
   description: Turn off control switch when light turns off
   trigger:
-  - platform: device
-    type: turned_off
-    device_id: 878e782384734390d904d060830ac9f4
+  - platform: state
     entity_id: light.badkamer_lamp
-    domain: light
-  - type: no_motion
-    platform: device
-    device_id: aa1af3d455f37ddf0baf288fb129cf9c
-    entity_id: binary_sensor.badkamer_motion_sensor
-    domain: binary_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.badkamer_occupancy
+    from: 'on'
+    to: 'off'
     for:
-      hours: 0
-      minutes: 45
+      hours: 1
+      minutes: 0
       seconds: 0
       milliseconds: 0
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_control
+    state: 'on'
   action:
   - service: input_boolean.turn_off
     data: {}
@@ -457,6 +464,15 @@
     entity_id: light.zolder_groep
     from: 'on'
     to: 'off'
+  - platform: state
+    entity_id: binary_sensor.zolder_occupancy
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.zolder_control
@@ -518,14 +534,13 @@
     entity_id: light.kledingkamer_groep
     from: 'on'
     to: 'off'
-  - type: no_motion
-    platform: device
-    device_id: 59a06333795076a244f24969e740c588
-    entity_id: binary_sensor.kledingkamer_motion_sensor
-    domain: binary_sensor
+  - platform: state
+    entity_id: binary_sensor.kledingkamer_occupancy
+    from: 'on'
+    to: 'off'
     for:
-      hours: 0
-      minutes: 30
+      hours: 1
+      minutes: 0
       seconds: 0
       milliseconds: 0
   condition:
@@ -540,24 +555,22 @@
   alias: Contact Sensor - Trapkast
   description: Turn on light when door is open, and turn off when door is closed
   trigger:
-  - type: opened
-    platform: device
-    device_id: 2dae2173ca5c46dcb67fe788b9745bb3
+  - platform: state
     entity_id: binary_sensor.trapkast_sensor
-    domain: binary_sensor
+    from: 'off'
+    to: 'on'
   condition: []
   action:
-  - type: turn_on
-    device_id: 4115724d56760e53e46abfe4c149b418
-    entity_id: light.trapkast_lamp
-    domain: light
-    brightness_pct: 100
+  - service: light.turn_on
+    target:
+      entity_id: light.trapkast_lamp
+    data:
+      brightness_pct: 100
   - wait_for_trigger:
-    - type: not_opened
-      platform: device
-      device_id: 2dae2173ca5c46dcb67fe788b9745bb3
+    - platform: state
       entity_id: binary_sensor.trapkast_sensor
-      domain: binary_sensor
+      from: 'on'
+      to: 'off'
   - service: light.turn_off
     data:
       entity_id: light.trapkast_lamp
@@ -777,11 +790,10 @@
   alias: Heater - Open Door Detection
   description: Turn off central heating when the door is opened
   trigger:
-  - type: opened
-    platform: device
-    device_id: b154b2646f7ac14381629233983faf25
+  - platform: state
     entity_id: binary_sensor.achterdeur_sensor
-    domain: binary_sensor
+    from: 'off'
+    to: 'on'
     for:
       hours: 0
       minutes: 0
@@ -798,11 +810,10 @@
       entity_id:
       - climate.woonkamer_centrale_verwarming
   - wait_for_trigger:
-    - type: not_opened
-      platform: device
-      device_id: b154b2646f7ac14381629233983faf25
+    - platform: state
       entity_id: binary_sensor.achterdeur_sensor
-      domain: binary_sensor
+      from: 'on'
+      to: 'off'
       for:
         hours: 0
         minutes: 0
@@ -823,14 +834,9 @@
     to: 'on'
     from: 'off'
   condition:
-  - condition: or
-    conditions:
-    - condition: numeric_state
-      entity_id: sensor.studiekamer_light_sensor
-      below: '50'
-    - condition: state
-      entity_id: input_boolean.studiekamer_control
-      state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.studiekamer_light_sensor
+    below: '50'
   action:
   - service: adaptive_lighting.apply
     data:
@@ -1781,6 +1787,15 @@
     entity_id: light.keuken_groep
     from: 'on'
     to: 'off'
+  - platform: state
+    entity_id: binary_sensor.keuken_occupancy
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.keuken_control

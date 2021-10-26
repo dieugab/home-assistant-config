@@ -863,9 +863,14 @@ home_state_morning:
         - condition: state
           entity_id: switch.party_mode
           state: 'off'
-        - condition: state
-          entity_id: input_select.home_state_modifier
-          state: Sleeping
+        - condition: or
+          conditions:
+          - condition: state
+            entity_id: input_select.home_state_modifier
+            state: Sleeping
+          - condition: state
+            entity_id: input_select.home_state_modifier
+            state: Home
       sequence:
       - service: cover.set_cover_position
         data:
