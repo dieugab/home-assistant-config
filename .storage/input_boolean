@@ -51,6 +51,11 @@
             {
                 "name": "Control - Keuken",
                 "id": "keuken_control"
+            },
+            {
+                "name": "Home State Delay",
+                "icon": "mdi:timeline-remove",
+                "id": "home_state_delay"
             }
         ]
     }
