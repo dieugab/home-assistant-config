@@ -178,14 +178,15 @@
   mode: single
 - id: '1610308361097'
   alias: Reset Control - Studiekamer
-  description: Turn off control switch when light turns off
+  description: Turn off control switch when light turns off or motion hasn't been
+    detected for an hour
   trigger:
   - platform: state
     entity_id: light.studiekamer_groep
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.studiekamer_occupancy
+    entity_id: binary_sensor.studiekamer_motion_sensor
     from: 'on'
     to: 'off'
     for:
@@ -224,14 +225,15 @@
   mode: single
 - id: '1610308504939'
   alias: Reset Control - Badkamer
-  description: Turn off control switch when light turns off
+  description: Turn off control switch when light turns off or motion hasn't been
+    detected for an hour
   trigger:
   - platform: state
     entity_id: light.badkamer_lamp
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.badkamer_occupancy
+    entity_id: binary_sensor.badkamer_motion_sensor
     from: 'on'
     to: 'off'
     for:
@@ -464,15 +466,6 @@
     entity_id: light.zolder_groep
     from: 'on'
     to: 'off'
-  - platform: state
-    entity_id: binary_sensor.zolder_occupancy
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.zolder_control
@@ -528,14 +521,15 @@
   mode: restart
 - id: '1613139430261'
   alias: Reset Control - Kledingkamer
-  description: Turn off control switch when light turns off
+  description: Turn off control switch when light turns off or motion hasn't been
+    detected for an hour
   trigger:
   - platform: state
     entity_id: light.kledingkamer_groep
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.kledingkamer_occupancy
+    entity_id: binary_sensor.kledingkamer_motion_sensor
     from: 'on'
     to: 'off'
     for:
@@ -1781,14 +1775,15 @@
   mode: single
 - id: '1634294358210'
   alias: Reset Control - Keuken
-  description: Turn off control switch when light turns off
+  description: Turn off control switch when light turns off or motion hasn't been
+    detected for an hour
   trigger:
   - platform: state
     entity_id: light.keuken_groep
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.keuken_occupancy
+    entity_id: binary_sensor.badkamer_motion_sensor
     from: 'on'
     to: 'off'
     for:
