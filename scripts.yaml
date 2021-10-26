@@ -254,15 +254,26 @@ sonos_alarm:
       - media_player.sonos_roam
       - media_player.ikea_symfonisk
       - media_player.sonos_arc
-  - service: media_player.play_media
-    data:
-      media_content_id: http://192.168.2.55:8123/local/zapsplat_alarms/alarm_warning.mp3
-      media_content_type: music
-    target:
-      entity_id:
-      - media_player.sonos_roam
-      - media_player.ikea_symfonisk
-      - media_player.sonos_arc
+  - repeat:
+      while:
+      - condition: state
+        entity_id: alarm_control_panel.security_system
+        state: triggered
+      sequence:
+      - service: media_player.play_media
+        data:
+          media_content_id: http://192.168.2.55:8123/local/zapsplat_alarms/alarm_fire02.mp3
+          media_content_type: music
+        target:
+          entity_id:
+          - media_player.sonos_roam
+          - media_player.ikea_symfonisk
+          - media_player.sonos_arc
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 6
+          milliseconds: 0
   mode: single
   icon: mdi:alarm-bell
 dummy:
