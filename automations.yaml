@@ -601,6 +601,15 @@
     target:
       entity_id: script.sonos_alarm
   - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_groep
+      - light.slaapkamer_groep
+      - light.gang_lamp
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+  - service: light.turn_on
     data:
       brightness_pct: 100
     target:
