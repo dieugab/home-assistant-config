@@ -510,6 +510,8 @@ views:
           name: TV
         - entity: media_player.apple_tv
           name: "\uF8FFTV"
+        - entity: media_player.play_sync_box
+          name: Sync
         - entity: media_player.playstation_4
           name: PS4
         - entity: media_player.xbox_one_s

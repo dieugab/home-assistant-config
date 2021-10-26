@@ -12,6 +12,7 @@
       - media_player.sony_bravia_tv
       - media_player.apple_tv
       - media_player.homepod_mini
+      - media_player.play_sync_box
   entity_config:
     media_player.playstation_4:
       feature_list:
