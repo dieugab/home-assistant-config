@@ -32,6 +32,12 @@ views:
         tap_action:
           action: toggle
         type: button
+      - entity: input_boolean.home_state_delay
+        icon_height: 23px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
       type: horizontal-stack
     - cards:
       - card:
