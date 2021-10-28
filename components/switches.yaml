@@ -80,11 +80,13 @@
             entity_id:
               - switch.adaptive_lighting_woonkamer
               - switch.adaptive_lighting_hue_filament
+              - switch.adaptive_lighting_ambient_lightstrip
         turn_off:
           - service: switch.turn_off
             entity_id:
               - switch.adaptive_lighting_woonkamer
               - switch.adaptive_lighting_hue_filament
+              - switch.adaptive_lighting_ambient_lightstrip
 
 # ▀█▀ █▀█ ▄▀█ █▀▀ █▄▀ █▀▀ █▀█ █▀ #
 #  █  █▀▄ █▀█ █▄▄ █ █ ██▄ █▀▄ ▄█ #
@@ -132,24 +134,6 @@
           data:
             dev_id: shanna
             location_name: not_home
-
-# █▀ █▄█ █▄ █ █▀▀   █▄▄ █▀█ ▀▄▀ #
-# ▄█  █  █ ▀█ █▄▄   █▄█ █▄█ █ █ #
-
-    # Turn on/off syncing lights
-  - platform: template
-    switches:
-      ambilight:
-        friendly_name: Ambilight
-        unique_id: play_sync_box_ambilight
-        value_template: "{{ is_state('media_player.play_sync_box', 'playing') }}"
-        icon_template: mdi:television-ambient-light
-        turn_on:
-          - service: media_player.media_play
-            entity_id: media_player.play_sync_box
-        turn_off:
-          - service: media_player.media_pause
-            entity_id: media_player.play_sync_box
 
 # █▀▄▀█ █▀█ █▀▄ █▀▀ █▀ #
 # █ ▀ █ █▄█ █▄▀ ██▄ ▄█ #

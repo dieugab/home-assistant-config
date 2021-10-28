@@ -95,6 +95,29 @@
                 ],
                 "id": "home_state_modifier",
                 "icon": "mdi:variable-box"
+            },
+            {
+                "name": "Ambilight - Sync Modes",
+                "icon": "mdi:television-ambient-light",
+                "options": [
+                    "Video",
+                    "Music",
+                    "Game"
+                ],
+                "id": "ambilight_modes"
+            },
+            {
+                "name": "Scenes - Play Gradient",
+                "options": [
+                    "Soho",
+                    "Tokyo",
+                    "Savanna sunset",
+                    "Sundown",
+                    "Tropical twilight",
+                    "Arctic aurora"
+                ],
+                "id": "hue_scenes",
+                "icon": "mdi:gradient-horizontal"
             }
         ]
     }

@@ -175,6 +175,8 @@
       - switch.adaptive_lighting_adapt_brightness_hue_filament
       - switch.adaptive_lighting_adapt_color_hue_filament
       - switch.begane_grond_adaptive_lighting
+      - switch.adaptive_lighting_adapt_color_ambient_lightstrip
+      - switch.adaptive_lighting_adapt_brightness_ambient_lightstrip
   mode: single
 - id: '1610308361097'
   alias: Reset Control - Studiekamer
@@ -871,26 +873,6 @@
       entity_id:
       - light.studiekamer_groep
   mode: restart
-- id: '1624344647667'
-  alias: TV - Switch input Xbox
-  description: Switch TV HDMI input Xbox when turned on
-  trigger:
-  - platform: state
-    entity_id: media_player.xbox_one_s
-    to: 'on'
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: media_player.sony_bravia_tv
-      attribute: hdmi_input
-      state: HW3
-  action:
-  - service: androidtv.adb_command
-    data:
-      entity_id: media_player.sony_bravia_tv
-      command: HDMI2
-  mode: single
 - id: '1625428959292'
   alias: deCONZ - Woonkamer IKEA STYRBAR Remote
   description: Swith to control light(s)
@@ -907,16 +889,10 @@
       - service: input_select.select_previous
         target:
           entity_id: input_select.woonkamer_scenes
-      - service: script.turn_on
-        target:
-          entity_id: script.scenes_woonkamer
       right_arrow_button:
       - service: input_select.select_next
         target:
           entity_id: input_select.woonkamer_scenes
-      - service: script.turn_on
-        target:
-          entity_id: script.scenes_woonkamer
 - id: '1626357055475'
   alias: deCONZ - Slaapkamer IKEA Shortcut Button
   description: Switch to set Nacht state
@@ -2032,3 +2008,86 @@
     target:
       entity_id: switch.woonkamer_plug
   mode: single
+- id: '1635360516773'
+  alias: TV - Disable Lightstrip Control
+  description: Disable control of the lightstrip & disable adaptive lighting when
+    Ambilight is on
+  trigger:
+  - platform: state
+    entity_id: media_player.play_sync_box
+    to: playing
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_ambient_lightstrip
+  mode: single
+- id: '1635362394376'
+  alias: TV - Spotify Audio Mode
+  description: Sync and desync Ambilight Mode to Audio when Spotify is playing
+  trigger:
+  - platform: state
+    entity_id: media_player.apple_tv
+    attribute: app_id
+    to: com.spotify.client
+    id: sync
+  - platform: state
+    entity_id: media_player.apple_tv
+    attribute: app_id
+    from: com.spotify.client
+    id: desync
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: sync
+      sequence:
+      - service: huesyncbox.set_sync_mode
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          mode: music
+    - conditions:
+      - condition: trigger
+        id: desync
+      sequence:
+      - service: huesyncbox.set_sync_mode
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          mode: video
+    default: []
+  mode: single
+- id: '1635409934820'
+  alias: Scenes - Play Gradient
+  description: Change scenes based on an Input Select
+  trigger:
+  - platform: event
+    event_type: state_changed
+    event_data:
+      entity_id: input_select.play_gradient_scenes
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id: script.scenes_play_gradient
+  mode: restart
+- id: '1635414861833'
+  alias: Scenes - Woonkamer
+  description: Change scenes based on an Input Select
+  trigger:
+  - platform: event
+    event_type: state_changed
+    event_data:
+      entity_id: input_select.woonkamer_scenes
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.scenes_woonkamer
+  mode: restart

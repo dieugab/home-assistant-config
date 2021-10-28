@@ -1,3 +1,56 @@
+# ▀█▀ █▀▀ █▀▄▀█ █▀█ █   ▄▀█ ▀█▀ █▀▀ █▀ #
+#  █  ██▄ █ ▀ █ █▀▀ █▄▄ █▀█  █  ██▄ ▄█ #
+
+    # Template light for controlling the Hue Play Sync Box + Gradient Lightstrip
+  - platform: template
+    lights:
+      ambilight:
+        friendly_name: "Ambilight"
+        unique_id: ambi_light
+        effect_list_template: "{{ state_attr('input_select.ambilight_sync_modes', 'options') }}"
+        icon_template: >-
+          {% if is_state('media_player.play_sync_box', 'playing') %}
+            mdi:television-ambient-light
+          {% else %}
+            mdi:television-off
+          {% endif %}
+        level_template: >-
+          {% if states('media_player.play_sync_box') != 'off' %}
+            {{ (state_attr('media_player.play_sync_box', 'brightness') * 255) | int(default=0) }}
+          {% else %}
+            0
+          {% endif %}
+        value_template: >-
+          {% if is_state('media_player.play_sync_box', 'playing') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        effect_template: >-
+          {% if is_state_attr('media_player.play_sync_box', 'mode', 'video') %}
+            Video
+          {% elif is_state_attr('media_player.play_sync_box', 'mode', 'music') %}
+            Music
+          {% elif is_state_attr('media_player.play_sync_box', 'mode', 'game') %}
+            Game
+          {% endif %}
+        turn_on:
+          service: media_player.media_play
+          entity_id: media_player.play_sync_box
+        turn_off:
+          service: media_player.media_pause
+          entity_id: media_player.play_sync_box
+        set_level:
+          service: media_player.volume_set
+          target:
+            entity_id: media_player.play_sync_box
+          data:
+            volume_level: "{{ (brightness / 255 * 100)|int / 100 }}"
+        set_effect:
+          service: script.ambilight_set_sync_mode
+          data:
+            effect: "{{ effect }}"
+
 # █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
 # █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
 
