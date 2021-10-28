@@ -172,11 +172,11 @@
       entity_id:
       - switch.adaptive_lighting_adapt_color_woonkamer
       - switch.adaptive_lighting_adapt_brightness_woonkamer
-      - switch.adaptive_lighting_adapt_brightness_hue_filament
-      - switch.adaptive_lighting_adapt_color_hue_filament
       - switch.begane_grond_adaptive_lighting
-      - switch.adaptive_lighting_adapt_color_ambient_lightstrip
-      - switch.adaptive_lighting_adapt_brightness_ambient_lightstrip
+      - switch.adaptive_lighting_adapt_color_play_lightstrip
+      - switch.adaptive_lighting_adapt_brightness_play_lightstrip
+      - switch.adaptive_lighting_adapt_brightness_filaments
+      - switch.adaptive_lighting_adapt_color_filaments
   mode: single
 - id: '1610308361097'
   alias: Reset Control - Studiekamer
@@ -2008,23 +2008,6 @@
     target:
       entity_id: switch.woonkamer_plug
   mode: single
-- id: '1635360516773'
-  alias: TV - Disable Lightstrip Control
-  description: Disable control of the lightstrip & disable adaptive lighting when
-    Ambilight is on
-  trigger:
-  - platform: state
-    entity_id: media_player.play_sync_box
-    to: playing
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.play_gradient_lightstrip
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: switch.adaptive_lighting_ambient_lightstrip
-  mode: single
 - id: '1635362394376'
   alias: TV - Spotify Audio Mode
   description: Sync and desync Ambilight Mode to Audio when Spotify is playing
@@ -2091,3 +2074,37 @@
       entity_id:
       - script.scenes_woonkamer
   mode: restart
+- id: '1635416907472'
+  alias: TV - Lightstrip Off @ Sync
+  description: Turn off lightstrip if it's turned on when Ambilight is on
+  trigger:
+  - platform: state
+    entity_id: light.play_gradient_lightstrip
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: state
+    entity_id: light.ambilight
+    state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
+  mode: single
+- id: '1635419057870'
+  alias: TV - Disable Lightstrip Control @ Sync
+  description: Disable control of the lightstrip & disable adaptive lighting when
+    Ambilight is on
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_play_lightstrip
+  mode: single

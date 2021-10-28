@@ -579,9 +579,9 @@ home_modifier_home:
     target:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
-      - switch.adaptive_lighting_sleep_mode_hue_filament
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_ambient_lightstrip
+      - switch.adaptive_lighting_sleep_mode_play_lightstrip
+      - switch.adaptive_lighting_sleep_mode_filaments
   - service: climate.set_preset_mode
     target:
       entity_id:
@@ -654,9 +654,9 @@ home_modifier_sleeping:
     target:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
-      - switch.adaptive_lighting_sleep_mode_hue_filament
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_ambient_lightstrip
+      - switch.adaptive_lighting_sleep_mode_play_lightstrip
+      - switch.adaptive_lighting_sleep_mode_filaments
   - service: climate.set_preset_mode
     target:
       entity_id:
@@ -1010,8 +1010,8 @@ scenes_play_gradient:
   sequence:
   - service: adaptive_lighting.set_manual_control
     data:
-      entity_id: switch.adaptive_lighting_ambient_lightstrip
-  - wait_template: '{{ is_state_attr(''switch.adaptive_lighting_ambient_lightstrip'',
+      entity_id: switch.adaptive_lighting_play_lightstrip
+  - wait_template: '{{ is_state_attr(''switch.adaptive_lighting_play_lightstrip'',
       ''manual_control'', ["light.play_gradient_lightstrip"]) }}'
   - service: hue.hue_activate_scene
     data_template:

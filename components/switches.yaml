@@ -79,14 +79,14 @@
           - service: switch.turn_on
             entity_id:
               - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_hue_filament
-              - switch.adaptive_lighting_ambient_lightstrip
+              - switch.adaptive_lighting_filaments
+              - switch.adaptive_lighting_play_lightstrip
         turn_off:
           - service: switch.turn_off
             entity_id:
               - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_hue_filament
-              - switch.adaptive_lighting_ambient_lightstrip
+              - switch.adaptive_lighting_filaments
+              - switch.adaptive_lighting_play_lightstrip
 
 # ▀█▀ █▀█ ▄▀█ █▀▀ █▄▀ █▀▀ █▀█ █▀ #
 #  █  █▀▄ █▀█ █▄▄ █ █ ██▄ █▀▄ ▄█ #
