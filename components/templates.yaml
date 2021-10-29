@@ -8,9 +8,9 @@
         device_class: temperature
         unit_of_measurement: "°C"
         state: >
-          {% set keuken = states('sensor.keuken_klima15_temperature_sensor') | float %}
-          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_temperature_sensor') | float %}
-          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_temperature_sensor') | float %}
+          {% set keuken = states('sensor.keuken_klima15_temperature_sensor') | float(default=20) %}
+          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_temperature_sensor') | float(default=20) %}
+          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_temperature_sensor') | float(default=20) %}
 
           {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
 
@@ -20,9 +20,9 @@
         device_class: humidity
         unit_of_measurement: "%"
         state: >
-          {% set keuken = states('sensor.keuken_klima15_humidity_sensor') | float %}
-          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_humidity_sensor') | float %}
-          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_humidity_sensor') | float %}
+          {% set keuken = states('sensor.keuken_klima15_humidity_sensor') | float(default=60) %}
+          {% set woonkamer_l = states('sensor.woonkamer_klima10_l_humidity_sensor') | float(default=60) %}
+          {% set woonkamer_r = states('sensor.woonkamer_klima10_r_humidity_sensor') | float(default=60) %}
 
           {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
 
