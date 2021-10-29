@@ -123,8 +123,8 @@ views:
       - entities:
         - light.play_gradient_lightstrip
         - light.ambilight
+        - light.woonkamer_kerstboom
         - light.woonkamer_eettafel_lamp
-        - switch.woonkamer_plug
         - light.woonkamer_lamp
         - light.globe_lamp
         - light.edison_lamp
@@ -1280,6 +1280,7 @@ views:
       - fan
       - input_boolean
       - input_select
+      - light
       - switch
       show_add_button: true
       style: "ha-card {\n  padding-top: 0px;\n  padding-left: 10px;\n  padding-bottom:\

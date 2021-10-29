@@ -1887,10 +1887,9 @@
       milliseconds: 0
   - service: light.turn_off
     target:
-      entity_id: light.woonkamer_groep
-  - service: switch.turn_off
-    target:
-      entity_id: switch.woonkamer_plug
+      entity_id:
+      - light.woonkamer_groep
+      - light.woonkamer_kerstboom
   mode: single
 - id: '1634824004562'
   alias: Home State - Morning
@@ -1941,9 +1940,9 @@
     to: 'on'
   condition: []
   action:
-  - service: switch.turn_on
+  - service: light.turn_on
     target:
-      entity_id: switch.woonkamer_plug
+      entity_id: light.woonkamer_kerstboom
   mode: single
 - id: '1635024518456'
   alias: deCONZ - Badkamer FoH Switch
@@ -1999,9 +1998,9 @@
     after: 06:00
     before: '10:00'
   action:
-  - service: switch.turn_off
+  - service: light.turn_off
     target:
-      entity_id: switch.woonkamer_plug
+      entity_id: light.woonkamer_kerstboom
   mode: single
 - id: '1635362394376'
   alias: TV - Spotify Audio Mode

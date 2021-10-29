@@ -209,7 +209,6 @@ mode_cinema:
     target:
       entity_id:
       - switch.begane_grond_adaptive_lighting
-      - switch.woonkamer_plug
   - service: light.turn_on
     target:
       entity_id:
@@ -231,6 +230,7 @@ mode_cinema:
       entity_id:
       - light.filament_lamps
       - light.woonkamer_lamp
+      - light.woonkamer_kerstboom
   mode: single
   icon: mdi:movie-roll
 scenes_woonkamer:
@@ -352,14 +352,7 @@ action_all_lights_off:
     target:
       entity_id:
       - light.woonkamer_groep
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: switch.turn_off
-    target:
-      entity_id: switch.woonkamer_plug
+      - light.woonkamer_kerstboom
   - delay:
       hours: 0
       minutes: 0
@@ -427,9 +420,7 @@ action_easy_entry:
       - light.woonkamer_eettafel_lamp
       - light.filament_lamps
       - light.play_gradient_lightstrip
-  - service: switch.turn_on
-    target:
-      entity_id: switch.woonkamer_plug
+      - light.woonkamer_kerstboom
   - service: cover.open_cover
     target:
       entity_id: cover.achterdeur_gordijn
@@ -787,9 +778,7 @@ home_state_evening:
           - light.woonkamer_eettafel_lamp
           - light.filament_lamps
           - light.play_gradient_lightstrip
-      - service: switch.turn_on
-        target:
-          entity_id: switch.woonkamer_plug
+          - light.woonkamer_kerstboom
       - service: switch.turn_off
         target:
           entity_id: switch.begane_grond_adaptive_lighting
@@ -813,9 +802,7 @@ home_state_evening:
           - light.woonkamer_eettafel_lamp
           - light.filament_lamps
           - light.play_gradient_lightstrip
-      - service: switch.turn_on
-        target:
-          entity_id: switch.woonkamer_plug
+          - light.woonkamer_kerstboom
       - service: cover.close_cover
         target:
           entity_id:

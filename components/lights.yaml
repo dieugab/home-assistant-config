@@ -4,6 +4,7 @@
     # Template light for controlling the Hue Play Sync Box + Gradient Lightstrip
   - platform: template
     lights:
+      # Template light for Hue Sync Box + Hue Play Lightstrip
       ambilight:
         friendly_name: "Ambilight"
         unique_id: ambi_light
@@ -50,6 +51,28 @@
           service: script.ambilight_set_sync_mode
           data:
             effect: "{{ effect }}"
+
+      woonkamer_kerstboom:
+        friendly_name: "Woonkamer Kerstboom"
+        unique_id: woonkamer_kerstboom
+        icon_template: >-
+          {% if is_state('switch.woonkamer_plug', 'on') %}
+            mdi:string-lights
+          {% else %}
+            mdi:string-lights-off
+          {% endif %}
+        value_template: >-
+          {% if is_state('switch.woonkamer_plug', 'on') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.woonkamer_plug
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.woonkamer_plug
 
 # █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
 # █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
