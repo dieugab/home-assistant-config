@@ -68,25 +68,27 @@
       begane_grond_adaptive_lighting:
         friendly_name: Begane Grond - Adaptive Lighting
         unique_id: adaptive_lighting_begane_grond
-        value_template: "{{ is_state('switch.adaptive_lighting_woonkamer', 'on') }}"
-        icon_template: >-
-          {% if is_state('switch.adaptive_lighting_woonkamer', 'on') %}
-            mdi:weather-sunny
-          {% else %}
-            mdi:weather-sunset
-          {% endif %}
+        icon_template: mdi:sun-wireless-outline
         turn_on:
-          - service: switch.turn_on
-            entity_id:
-              - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_filaments
-              - switch.adaptive_lighting_play_lightstrip
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_woonkamer
+            data:
+              manual_control: false
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_filaments
+            data:
+              manual_control: false
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_play_lightstrip
+            data:
+              manual_control: false
         turn_off:
-          - service: switch.turn_off
-            entity_id:
-              - switch.adaptive_lighting_woonkamer
-              - switch.adaptive_lighting_filaments
-              - switch.adaptive_lighting_play_lightstrip
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_woonkamer
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_filaments
+          - service: adaptive_lighting.set_manual_control
+            entity_id: switch.adaptive_lighting_play_lightstrip
 
 # ▀█▀ █▀█ ▄▀█ █▀▀ █▄▀ █▀▀ █▀█ █▀ #
 #  █  █▀▄ █▀█ █▄▄ █ █ ██▄ █▀▄ ▄█ #
@@ -195,6 +197,10 @@
         turn_off:
           - service: light.turn_off
             entity_id: light.woonkamer_groep
+          - service: light.turn_on
+            entity_id: light.ambilight
+            data:
+              brightness_pct: 50
           - service: switch.turn_on
             data_template:
               entity_id: >
