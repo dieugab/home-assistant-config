@@ -977,17 +977,9 @@
       button_hue:
       - choose:
         - conditions:
-          - condition: or
-            conditions:
-            - condition: state
-              entity_id: input_select.home_state
-              state: Evening
-            - condition: state
-              entity_id: input_select.home_state
-              state: Night
-            - condition: sun
-              before: sunrise
-              after: sunset
+          - condition: state
+            state: Evening
+            entity_id: input_select.home_state
           sequence:
           - service: input_select.select_option
             target:
@@ -1910,6 +1902,9 @@
   - condition: state
     entity_id: input_boolean.home_state_delay
     state: 'off'
+  - condition: state
+    entity_id: input_select.home_state
+    state: Night
   action:
   - service: switch.turn_on
     target:
@@ -2050,9 +2045,11 @@
   description: Change scenes based on an Input Select
   trigger:
   - platform: event
-    event_type: state_changed
+    event_type: call_service
     event_data:
-      entity_id: input_select.play_gradient_scenes
+      domain: input_select
+      service_data:
+        entity_id: input_select.play_gradient_scenes
   condition: []
   action:
   - service: script.turn_on
@@ -2107,4 +2104,30 @@
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_play_lightstrip
+  mode: single
+- id: '1635498219436'
+  alias: TV - Lightstrip Off @ Day
+  description: Turn of the lighting behind the tv when it's turned off during the
+    day and no other lights are on
+  trigger:
+  - platform: state
+    entity_id: media_player.sony_bravia_tv
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_select.home_state
+    state: Day
+  - condition: state
+    entity_id: light.woonkamer_lamp
+    state: 'off'
+  - condition: state
+    entity_id: light.woonkamer_eettafel_lamp
+    state: 'off'
+  - condition: state
+    entity_id: light.filament_lamps
+    state: 'off'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
   mode: single

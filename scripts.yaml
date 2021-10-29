@@ -155,18 +155,20 @@ mode_privacy:
   - service: light.turn_on
     target:
       entity_id: light.keuken_groep
-  - service: light.turn_on
+  - service: input_select.select_option
     target:
-      entity_id: light.keuken_groep
+      entity_id: input_select.play_gradient_scenes
     data:
-      brightness_pct: 100
+      option: Soho
+  - service: script.turn_on
+    target:
+      entity_id: script.scenes_play_gradient
   - service: light.turn_on
     target:
       entity_id:
       - light.edison_lamp
       - light.tarnaby_lamp
       - light.globe_lamp
-      - light.play_gradient_lightstrip
     data:
       brightness_pct: 10
   - service: light.turn_off
@@ -211,10 +213,14 @@ mode_cinema:
   - service: light.turn_on
     target:
       entity_id:
-      - light.play_gradient_lightstrip
+      - light.ambilight
+    data: {}
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.ambilight
     data:
-      brightness_pct: 10
-      kelvin: 6500
+      brightness_pct: 25
   - service: light.turn_on
     target:
       entity_id: light.woonkamer_eettafel_lamp
@@ -1008,6 +1014,20 @@ ambilight_set_sync_mode:
 scenes_play_gradient:
   alias: Scenes - Play Gradient
   sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.ambilight
+        state: 'on'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.ambilight
+      - wait_template: '{{ is_state(''light.play_gradient_lightstrip'', ''on'') }}'
+    default:
+    - service: light.turn_on
+      target:
+        entity_id: light.play_gradient_lightstrip
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_play_lightstrip
