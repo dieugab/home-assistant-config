@@ -34,7 +34,7 @@ views:
         type: button
       - entity: input_boolean.home_state_delay
         icon: mdi:close-box
-        icon_height: 23px
+        icon_height: 22px
         show_name: false
         tap_action:
           action: toggle
