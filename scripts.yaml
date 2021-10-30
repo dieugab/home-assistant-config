@@ -390,6 +390,9 @@ action_all_lights_off:
     target:
       entity_id:
       - light.zolder_groep
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
   mode: single
   icon: mdi:lightbulb-group-off
 purifier_set_preset_mode:
@@ -577,7 +580,6 @@ home_modifier_home:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_play_lightstrip
       - switch.adaptive_lighting_sleep_mode_filaments
   - service: climate.set_preset_mode
     target:
@@ -652,7 +654,6 @@ home_modifier_sleeping:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_play_lightstrip
       - switch.adaptive_lighting_sleep_mode_filaments
   - service: climate.set_preset_mode
     target:
@@ -1017,9 +1018,10 @@ scenes_play_gradient:
         entity_id: light.play_gradient_lightstrip
   - service: adaptive_lighting.set_manual_control
     data:
-      entity_id: switch.adaptive_lighting_play_lightstrip
-  - wait_template: '{{ is_state_attr(''switch.adaptive_lighting_play_lightstrip'',
-      ''manual_control'', ["light.play_gradient_lightstrip"]) }}'
+      entity_id: switch.adaptive_lighting_woonkamer
+      lights: light.play_gradient_lightstrip
+  - wait_template: "{% if 'light.play_gradient_lightstrip' in state_attr('switch.adaptive_lighting_woonkamer',\
+      \ 'manual_control') %}\n  True\n{% else %}\n  False\n{% endif %}"
   - service: hue.hue_activate_scene
     data_template:
       group_name: Woonkamer

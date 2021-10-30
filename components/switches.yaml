@@ -43,24 +43,20 @@
             hvac_mode: 'off'
           entity_id: climate.tuya_threesixty_v2
 
-      # Fix for Zolder spots not applying adaptive lighting
-      zolder_nymane:
-        friendly_name: Zolder NYMÅNE
-        unique_id: zolder_nymane
-        value_template: "{{ is_state('light.zolder_groep', 'on') }}"
-        availability_template: "{{ states('light.zolder_groep') != 'unavailable' }}"
-        icon_template: >-
-          {% if is_state('light.zolder_groep', 'on') %}
-            mdi:lightbulb-group
-          {% else %}
-            mdi:lightbulb-group-off
-          {% endif %}
+      # Set soundbar installation source to TV
+      soundbar_source_tv:
+        friendly_name: Soundbar TV
+        unique_id: soundbar_tv
+        value_template: "{{ is_state_attr('media_player.sonos_arc', 'source', 'TV') }}"
+        availability_template: "{{ states('media_player.sonos_arc') != 'unavailable' }}"
+        icon_template: mdi:youtube-tv
         turn_on:
-          service: light.turn_on
-          entity_id: light.zolder_groep
+          service: media_player.select_source
+          entity_id: media_player.sonos_arc
+          data:
+            source: TV
         turn_off:
-          service: light.turn_off
-          entity_id: light.zolder_groep
+          service: script.dummy
 
     # Adaptive Lighting for woonkamer area
   - platform: template
@@ -78,17 +74,11 @@
             entity_id: switch.adaptive_lighting_filaments
             data:
               manual_control: false
-          - service: adaptive_lighting.set_manual_control
-            entity_id: switch.adaptive_lighting_play_lightstrip
-            data:
-              manual_control: false
         turn_off:
           - service: adaptive_lighting.set_manual_control
             entity_id: switch.adaptive_lighting_woonkamer
           - service: adaptive_lighting.set_manual_control
             entity_id: switch.adaptive_lighting_filaments
-          - service: adaptive_lighting.set_manual_control
-            entity_id: switch.adaptive_lighting_play_lightstrip
 
 # ▀█▀ █▀█ ▄▀█ █▀▀ █▄▀ █▀▀ █▀█ █▀ #
 #  █  █▀▄ █▀█ █▄▄ █ █ ██▄ █▀▄ ▄█ #
