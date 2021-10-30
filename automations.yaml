@@ -404,8 +404,8 @@
       state: 'off'
   mode: single
 - id: '1610533060447'
-  alias: deCONZ - Woonkamer IKEA SYMFONISK Remote
-  description: Switch to control music playback
+  alias: deCONZ - Woonkamer SYMFONISK Controller
+  description: Controller to control music playback
   use_blueprint:
     path: L-Carslake/deconz-ikea-symfonisk.yaml
     input:
@@ -644,8 +644,8 @@
       entity_id: media_player.ikea_symfonisk, media_player.sonos_roam, media_player.sonos_arc
   mode: single
 - id: '1613724944074'
-  alias: deCONZ - Security Smart Button
-  description: Switch to enable and disable the alarm system
+  alias: deCONZ - Security Hue Button
+  description: Button to enable and disable the alarm system
   trigger:
   - device_id: 4945d96ec9acaa3fb3aef0184d00e467
     domain: deconz
@@ -874,8 +874,8 @@
       - light.studiekamer_groep
   mode: restart
 - id: '1625428959292'
-  alias: deCONZ - Woonkamer IKEA STYRBAR Remote
-  description: Swith to control light(s)
+  alias: deCONZ - Woonkamer STYRBAR Remote
+  description: Remote to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-styrbar.yaml
     input:
@@ -927,7 +927,7 @@
           - light.slaapkamer_nachtkastjes
           - light.woonkamer_hektar_lamp
 - id: '1627321581842'
-  alias: deCONZ - Zolder IKEA Switch
+  alias: deCONZ - Zolder TRADFRI Switch
   description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-button-switch.yaml
@@ -1957,7 +1957,7 @@
       light_L: light.badkamer_lamp
       light_R: light.badkamer_lamp
 - id: '1635025233017'
-  alias: deCONZ - Studiekamer IKEA Switch
+  alias: deCONZ - Studiekamer TRADFRI Switch
   description: Switch to control light(s)
   use_blueprint:
     path: Gabriel/deconz-ikea-button-switch.yaml
