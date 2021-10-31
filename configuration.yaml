@@ -20,6 +20,8 @@ recorder:
     entity_globs:
       - switch.adaptive*
       - sensor.*battery*
+    entities:
+      - script.dummy
 
 # █▀▀ █▀█ █▀▄▀█ █▀█ █▀█ █▄ █ █▀▀ █▄ █ ▀█▀ █▀ #
 # █▄▄ █▄█ █ ▀ █ █▀▀ █▄█ █ ▀█ ██▄ █ ▀█  █  ▄█ #
