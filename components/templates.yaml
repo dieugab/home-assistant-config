@@ -7,6 +7,16 @@
         unique_id: avg_cv_klima_temperature
         device_class: temperature
         unit_of_measurement: "°C"
+        availability: >-
+          {% if is_state('sensor.keuken_klima15_temperature_sensor', 'unavailable') %}
+            false
+          {% elif is_state('sensor.woonkamer_klima10_l_temperature_sensor', 'unavailable') %}
+            false
+          {% elif is_state('sensor.woonkamer_klima10_r_temperature_sensor', 'unavailable') %}
+            false
+          {% else %}
+            true
+          {% endif %}
         state: >
           {% set keuken = states('sensor.keuken_klima15_temperature_sensor') | float(default=20) %}
           {% set woonkamer_l = states('sensor.woonkamer_klima10_l_temperature_sensor') | float(default=20) %}
@@ -19,6 +29,16 @@
         unique_id: avg_cv_klima_humidity
         device_class: humidity
         unit_of_measurement: "%"
+        availability: >-
+          {% if is_state('sensor.keuken_klima15_humidity_sensor', 'unavailable') %}
+            false
+          {% elif is_state('sensor.woonkamer_klima10_l_humidity_sensor', 'unavailable') %}
+            false
+          {% elif is_state('sensor.woonkamer_klima10_r_humidity_sensor', 'unavailable') %}
+            false
+          {% else %}
+            true
+            {% endif %}
         state: >
           {% set keuken = states('sensor.keuken_klima15_humidity_sensor') | float(default=60) %}
           {% set woonkamer_l = states('sensor.woonkamer_klima10_l_humidity_sensor') | float(default=60) %}
