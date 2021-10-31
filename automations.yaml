@@ -1276,6 +1276,18 @@
   - platform: event
     event_type: homekit_state_change
     event_data:
+      entity_id: light.play_lichtbalk_l
+      service: turn_on
+    id: studiekamer
+  - platform: event
+    event_type: homekit_state_change
+    event_data:
+      entity_id: light.play_lichtbalk_r
+      service: turn_on
+    id: studiekamer
+  - platform: event
+    event_type: homekit_state_change
+    event_data:
       entity_id: light.kledingkamer_groep
       service: turn_on
     id: kledingkamer
@@ -1324,6 +1336,8 @@
     - condition: template
       value_template: '{{ trigger.event.data.value.startswith(''color temperature'')
         }}'
+    - condition: template
+      value_template: '{{ trigger.event.data.value.startswith(''set color at'') }}'
   action:
   - choose:
     - conditions:
