@@ -957,6 +957,20 @@ views:
     view_layout:
       position: sidebar
   - entities:
+    - entity: climate.studiekamer_radiator
+      icon: hue:room-computer
+      name: Studiekamer
+      secondary_info: last-updated
+    footer:
+      detail: 2
+      entity: sensor.studiekamer_klima10_temperature_sensor
+      hours_to_show: 24
+      type: graph
+    state_color: true
+    type: entities
+    view_layout:
+      position: sidebar
+  - entities:
     - entity: climate.slaapkamer_radiator
       icon: hue:room-bedroom
       name: Slaapkamer

@@ -618,6 +618,7 @@ home_modifier_away:
       - climate.woonkamer_centrale_verwarming
       - climate.kledingkamer_radiator
       - climate.slaapkamer_radiator
+      - climate.studiekamer_radiator
   - service: climate.turn_off
     target:
       entity_id: climate.duux_threesixty
@@ -660,7 +661,9 @@ home_modifier_sleeping:
       preset_mode: none
   - service: climate.set_preset_mode
     target:
-      entity_id: climate.woonkamer_centrale_verwarming
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.studiekamer_radiator
     data:
       preset_mode: away
   - service: light.turn_on

@@ -113,3 +113,20 @@
     initial_hvac_mode: "heat"
     away_temp: 18
     precision: 0.1
+    
+    # Radiator @ studiekamer
+  - platform: generic_thermostat
+    name: Studiekamer Radiator
+    unique_id: thermostat_studiekamer_radiator
+    heater: switch.studiekamer_klima10
+    target_sensor: sensor.studiekamer_klima10_temperature_sensor
+    min_temp: 18
+    max_temp: 22
+    target_temp: 21.5
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    initial_hvac_mode: "heat"
+    away_temp: 18
+    precision: 0.1
