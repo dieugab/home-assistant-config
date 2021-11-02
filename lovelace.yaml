@@ -9,7 +9,7 @@ views:
       type: markdown
     - cards:
       - entity: input_boolean.home_state_automatic
-        icon_height: 22px
+        icon_height: 24px
         show_name: false
         tap_action:
           action: toggle
