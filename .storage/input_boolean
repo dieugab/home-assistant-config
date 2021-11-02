@@ -53,9 +53,9 @@
                 "id": "keuken_control"
             },
             {
-                "name": "Home State Delay",
-                "icon": "mdi:timeline-remove",
-                "id": "home_state_delay"
+                "name": "Home State Automatic",
+                "icon": "mdi:chart-timeline-variant-shimmer",
+                "id": "home_state_automatic"
             }
         ]
     }

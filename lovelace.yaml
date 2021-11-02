@@ -8,6 +8,12 @@ views:
         \ !important;\n}\n"
       type: markdown
     - cards:
+      - entity: input_boolean.home_state_automatic
+        icon_height: 22px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
       - entity: switch.morning_state
         icon_height: 24px
         show_name: false
@@ -32,13 +38,6 @@ views:
         tap_action:
           action: toggle
         type: button
-      - entity: input_boolean.home_state_delay
-        icon: mdi:close-box
-        icon_height: 22px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
       type: horizontal-stack
     - cards:
       - card:
@@ -55,18 +54,18 @@ views:
             state_color: true
             tap_action:
               action: call-service
-              service: input_boolean.turn_off
+              service: input_boolean.turn_on
               service_data:
-                entity_id: input_boolean.home_state_delay
-          entity: input_boolean.home_state_delay
-          name: Home State Transition Delayed
+                entity_id: input_boolean.home_state_automatic
+          entity: input_boolean.home_state_automatic
+          name: Manual Home State Transition
           secondary_info: State will not transition to Day or Evening
           show_state: false
           state_color: true
           type: custom:multiple-entity-row
         show_empty: false
         state_filter:
-        - 'on'
+        - 'off'
         type: entity-filter
       - entities:
         - entity: input_select.home_state

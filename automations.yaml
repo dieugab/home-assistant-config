@@ -1869,8 +1869,8 @@
     entity_id: input_select.home_state
     state: Day
   - condition: state
-    entity_id: input_boolean.home_state_delay
-    state: 'off'
+    entity_id: input_boolean.home_state_automatic
+    state: 'on'
   action:
   - service: switch.turn_on
     target:
@@ -1912,8 +1912,8 @@
     event: sunrise
   condition:
   - condition: state
-    entity_id: input_boolean.home_state_delay
-    state: 'off'
+    entity_id: input_boolean.home_state_automatic
+    state: 'on'
   - condition: state
     entity_id: input_select.home_state
     state: Night
