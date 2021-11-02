@@ -120,14 +120,23 @@ views:
       type: entities
     - entities:
       - entities:
-        - light.play_gradient_lightstrip
-        - light.ambilight
-        - light.woonkamer_kerstboom
-        - light.woonkamer_eettafel_lamp
-        - light.woonkamer_lamp
-        - light.globe_lamp
-        - light.edison_lamp
-        - light.tarnaby_lamp
+        - entity: input_select.play_gradient_scenes
+          name: Gradient Scenes
+        - entity: light.play_gradient_lightstrip
+          name: Gradient Lightstrip
+        - entity: light.ambilight
+          name: TV Ambilight
+        - type: divider
+        - entity: light.woonkamer_kerstboom
+          name: Kerstboom
+        - entity: light.woonkamer_eettafel_lamp
+          name: Eettafel Lamp
+        - entity: light.woonkamer_lamp
+          name: Hanglamp
+        - type: divider
+        - entity: light.globe_lamp
+        - entity: light.edison_lamp
+        - entity: light.tarnaby_lamp
         group_config:
           secondary_info: brightness
           state_color: true
@@ -192,11 +201,17 @@ views:
           state_color: true
         type: custom:fold-entity-row
       - entities:
-        - light.studiekamer_lamp
-        - light.studiekamer_bureaulamp
-        - light.play_lichtbalk
-        - light.play_lichtbalk_l
-        - light.play_lichtbalk_r
+        - entity: input_select.studiekamer_scenes
+          name: Scenes
+        - entity: light.play_lichtbalk
+          name: Play Lichtbalken
+        - entity: light.play_lichtbalk_l
+        - entity: light.play_lichtbalk_r
+        - type: divider
+        - entity: light.studiekamer_lamp
+          name: Hanglamp
+        - entity: light.studiekamer_bureaulamp
+          name: Bureaulamp
         group_config:
           secondary_info: brightness
           state_color: true

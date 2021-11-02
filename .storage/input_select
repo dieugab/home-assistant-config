@@ -118,6 +118,16 @@
                 ],
                 "id": "hue_scenes",
                 "icon": "mdi:gradient-horizontal"
+            },
+            {
+                "icon": "mdi:palette-swatch",
+                "name": "Scenes - Studiekamer",
+                "options": [
+                    "Adaptive Lighting",
+                    "Red & Blue",
+                    "Orange & Blue"
+                ],
+                "id": "scenes_studiekamer"
             }
         ]
     }

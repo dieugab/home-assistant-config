@@ -190,14 +190,16 @@
       minutes: 0
       seconds: 0
       milliseconds: 0
-  condition:
-  - condition: state
-    entity_id: input_boolean.studiekamer_control
-    state: 'on'
+  condition: []
   action:
   - service: input_boolean.turn_off
     data: {}
     entity_id: input_boolean.studiekamer_control
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.studiekamer_scenes
+    data:
+      option: Adaptive Lighting
   mode: single
 - id: '1610308456079'
   alias: Reset Control - Slaapkamer
@@ -989,65 +991,6 @@
         - service: switch.turn_on
           target:
             entity_id: switch.day_state
-- id: '1629447322416'
-  alias: '# Experimental - HomeKit Adaptive Lighting'
-  description: Work in Progress
-  trigger:
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.woonkamer_eettafel_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.woonkamer_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.globe_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.edison_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.tarnaby_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.globe_lamp
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.play_lichtbalk
-      service: turn_on
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.woonkamer_groep
-      service: turn_on
-  condition:
-  - condition: or
-    conditions:
-    - condition: template
-      value_template: '{{ trigger.event.data.value.startswith(''Set state to 1, brightness'')
-        }}'
-    - condition: template
-      value_template: '{{ trigger.event.data.value.startswith(''color temperature'')
-        }}'
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.begane_grond_adaptive_lighting
-  mode: single
 - id: '1629971132565'
   alias: Home Assistant - Startup
   description: Actions to run at boot
@@ -2158,3 +2101,18 @@
     target:
       entity_id: switch.soundbar_source_tv
   mode: single
+- id: '1635855168121'
+  alias: Scenes - Studiekamer
+  description: Change scenes based on an Input Select
+  trigger:
+  - platform: event
+    event_type: state_changed
+    event_data:
+      entity_id: input_select.studiekamer_scenes
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.scenes_studiekamer
+  mode: restart

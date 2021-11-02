@@ -130,3 +130,207 @@
       friendly_name: Begane Grond - Adaptive Lighting
       icon: mdi:weather-sunset
       state: 'off'
+- id: '1635855055725'
+  name: Studiekamer - Red & Blue
+  entities:
+    light.play_lichtbalk_l:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: xy
+      brightness: 254
+      hs_color:
+      - 225.315
+      - 56.078
+      rgb_color:
+      - 112
+      - 147
+      - 255
+      xy_color:
+      - 0.1927
+      - 0.1756
+      is_deconz_group: false
+      friendly_name: Play Lichtbalk L
+      icon: mdi:wall-sconce-flat-variant
+      supported_features: 44
+      state: 'on'
+    light.play_lichtbalk_r:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: xy
+      brightness: 254
+      hs_color:
+      - 0
+      - 56.471
+      rgb_color:
+      - 255
+      - 111
+      - 111
+      xy_color:
+      - 0.5616
+      - 0.3101
+      is_deconz_group: false
+      friendly_name: Play Lichtbalk R
+      icon: mdi:wall-sconce-flat-variant
+      supported_features: 44
+      state: 'on'
+    light.studiekamer_lamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 128
+      color_temp: 140
+      hs_color:
+      - 235.086
+      - 6.526
+      rgb_color:
+      - 238
+      - 239
+      - 255
+      xy_color:
+      - 0.311
+      - 0.312
+      is_deconz_group: false
+      friendly_name: Studiekamer Lamp
+      icon: mdi:ceiling-light
+      supported_features: 40
+      state: 'on'
+    light.studiekamer_bureaulamp:
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 204
+      color_temp: 300
+      hs_color:
+      - 27.355
+      - 48.529
+      rgb_color:
+      - 255
+      - 187
+      - 131
+      xy_color:
+      - 0.467
+      - 0.377
+      is_deconz_group: false
+      friendly_name: Studiekamer Bureaulamp
+      icon: hue:desk-lamp
+      supported_features: 40
+      state: 'on'
+  icon: mdi:palette-swatch
+- id: '1635855726494'
+  name: Studiekamer - Orange & Blue
+  entities:
+    light.play_lichtbalk_l:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: xy
+      brightness: 254
+      hs_color:
+      - 26.725
+      - 89.804
+      rgb_color:
+      - 255
+      - 128
+      - 26
+      xy_color:
+      - 0.6091
+      - 0.3702
+      is_deconz_group: false
+      friendly_name: Play Lichtbalk L
+      icon: mdi:wall-sconce-flat-variant
+      supported_features: 44
+      state: 'on'
+    light.play_lichtbalk_r:
+      min_mireds: 140
+      max_mireds: 650
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: xy
+      brightness: 254
+      hs_color:
+      - 224.916
+      - 70.196
+      rgb_color:
+      - 76
+      - 121
+      - 255
+      xy_color:
+      - 0.164
+      - 0.132
+      is_deconz_group: false
+      friendly_name: Play Lichtbalk R
+      icon: mdi:wall-sconce-flat-variant
+      supported_features: 44
+      state: 'on'
+    light.studiekamer_lamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 128
+      color_temp: 153
+      hs_color:
+      - 54.768
+      - 1.6
+      rgb_color:
+      - 255
+      - 254
+      - 250
+      xy_color:
+      - 0.326
+      - 0.333
+      is_deconz_group: false
+      friendly_name: Studiekamer Lamp
+      icon: mdi:ceiling-light
+      supported_features: 40
+      state: 'on'
+    light.studiekamer_bureaulamp:
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 254
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      is_deconz_group: false
+      friendly_name: Studiekamer Bureaulamp
+      icon: hue:desk-lamp
+      supported_features: 40
+      state: 'on'
+  icon: mdi:palette-swatch
