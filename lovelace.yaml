@@ -165,7 +165,7 @@ views:
     - entities:
       - entities:
         - light.slaapkamer_lamp
-        - light.woonkamer_hektar_lamp
+        - light.slaapkamer_hektar_lamp
         - light.slaapkamer_nachtkastjes
         group_config:
           secondary_info: brightness
@@ -203,8 +203,6 @@ views:
       - entities:
         - entity: input_select.studiekamer_scenes
           name: Scenes
-        - entity: light.play_lichtbalk
-          name: Play Lichtbalken
         - entity: light.play_lichtbalk_l
         - entity: light.play_lichtbalk_r
         - type: divider

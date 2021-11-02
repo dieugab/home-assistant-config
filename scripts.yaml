@@ -164,13 +164,10 @@ mode_privacy:
     target:
       entity_id: script.scenes_play_gradient
   - service: light.turn_on
-    target:
-      entity_id:
-      - light.edison_lamp
-      - light.tarnaby_lamp
-      - light.globe_lamp
     data:
       brightness_pct: 10
+    target:
+      entity_id: light.filament_lamps
   - service: light.turn_off
     target:
       entity_id:
@@ -1041,6 +1038,9 @@ scenes_studiekamer:
   - condition: template
     value_template: '{{ states("input_select.studiekamer_scenes") != ''Adaptive Lighting''
       }}'
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.studiekamer_control
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_ruimten
