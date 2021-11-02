@@ -862,6 +862,12 @@ views:
     type: markdown
     view_layout:
       position: sidebar
+  - entity: weather.de_veste_hourly
+    name: De Veste
+    show_forecast: false
+    type: weather-forecast
+    view_layout:
+      position: sidebar
   - cards:
     - entity: climate.woonkamer_centrale_verwarming
       name: Centrale Verwarming
