@@ -35,3 +35,6 @@ custom_components/hacs
 !.storage/input_select
 !.storage/input_text
 !.storage/timer
+!.storage/energy
+!.storage/scheduler.storage
+!.storage/lovelace_resources
