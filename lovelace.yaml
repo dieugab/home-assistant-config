@@ -476,7 +476,7 @@ views:
                     color: var(--label-badge-red)
               style:
                 button:
-                  background-color: var(--table-row-alternative-background-color)
+                  background-color: var(--primary-background-color)
                   border-radius: 10px
                   margin-bottom: 0px
                   margin-right: 10px
@@ -493,14 +493,6 @@ views:
       hide:
         power: true
       info: short
-      speaker_group:
-        entities:
-        - entity_id: media_player.sonos_roam
-          name: Sonos Roam
-        - entity_id: media_player.ikea_symfonisk
-          name: Sonos Symfonisk
-        platform: sonos
-        show_group_count: true
       toggle_power: false
       type: custom:mini-media-player
       volume_stateless: false
@@ -563,9 +555,7 @@ views:
         - arm_night
         style: "ha-card {\n  border-radius: 0px;\n}\nh1.card-header {\n  font-size:\
           \ 1.2em;\n  font-weight: var(--mcg-title-font-weight, 500);\n  opacity:\
-          \ 0.65;\n  padding-top: 0px;\n  padding-bottom: 25px;\n}\nmwc-button {\n\
-          \  border-radius: 5px;\n  background-color: var(--table-row-alternative-background-color);\n\
-          }\n"
+          \ 0.65;\n  padding-top: 0px;\n  padding-bottom: 25px;\n}\n"
         type: alarm-panel
       type: custom:vertical-stack-in-card
     - cards:
@@ -581,7 +571,7 @@ views:
             name: Privacy
             style:
               button:
-                background-color: var(--table-row-alternative-background-color)
+                background-color: var(--primary-background-color)
                 border-radius: 10px
                 padding: 4px
               name:
@@ -590,7 +580,7 @@ views:
             name: Party
             style:
               button:
-                background-color: var(--table-row-alternative-background-color)
+                background-color: var(--primary-background-color)
                 border-radius: 10px
                 padding: 4px
               name:
@@ -599,7 +589,7 @@ views:
             name: Cinema
             style:
               button:
-                background-color: var(--table-row-alternative-background-color)
+                background-color: var(--primary-background-color)
                 border-radius: 10px
                 padding: 4px
               name:
