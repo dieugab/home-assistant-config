@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "key": "energy",
+    "data": {
+        "energy_sources": [
+            {
+                "type": "grid",
+                "flow_from": [
+                    {
+                        "stat_energy_from": "sensor.p1_meter_total_power_import_t1",
+                        "stat_cost": null,
+                        "entity_energy_from": "sensor.p1_meter_total_power_import_t1",
+                        "entity_energy_price": null,
+                        "number_energy_price": 0.23109
+                    },
+                    {
+                        "stat_energy_from": "sensor.p1_meter_total_power_import_t2",
+                        "stat_cost": null,
+                        "entity_energy_from": "sensor.p1_meter_total_power_import_t2",
+                        "entity_energy_price": null,
+                        "number_energy_price": 0.24839
+                    }
+                ],
+                "flow_to": [
+                    {
+                        "stat_energy_to": "sensor.p1_meter_total_power_export_t1",
+                        "stat_compensation": null,
+                        "entity_energy_to": "sensor.p1_meter_total_power_export_t1",
+                        "entity_energy_price": null,
+                        "number_energy_price": 0.23109
+                    },
+                    {
+                        "stat_energy_to": "sensor.p1_meter_total_power_export_t2",
+                        "stat_compensation": null,
+                        "entity_energy_to": "sensor.p1_meter_total_power_export_t2",
+                        "entity_energy_price": null,
+                        "number_energy_price": 0.24839
+                    }
+                ],
+                "cost_adjustment_day": 0.0
+            },
+            {
+                "type": "solar",
+                "stat_energy_from": "sensor.inverter_gw3600dns_energy",
+                "config_entry_solar_forecast": null
+            }
+        ],
+        "device_consumption": [
+            {
+                "stat_consumption": "sensor.wasmachine_energy"
+            },
+            {
+                "stat_consumption": "sensor.keuken_smart_plug_consumption"
+            }
+        ]
+    }
+}
