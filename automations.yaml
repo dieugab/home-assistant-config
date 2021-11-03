@@ -960,6 +960,29 @@
       take_control:
         entity_id: input_boolean.studiekamer_control
       adaptive_lighting: switch.adaptive_lighting_ruimten
+      button_hue:
+      - service: input_select.select_next
+        target:
+          entity_id: input_select.studiekamer_scenes
+      button_power_hold:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: climate.studiekamer_radiator
+            state: away
+            attribute: preset_mode
+          sequence:
+          - service: climate.set_preset_mode
+            target:
+              entity_id: climate.studiekamer_radiator
+            data:
+              preset_mode: none
+        default:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.studiekamer_radiator
+          data:
+            preset_mode: away
 - id: '1627322789979'
   alias: deCONZ - Slaapkamer Hue Dimmer
   description: Switch to control light(s)
@@ -1900,18 +1923,6 @@
     target:
       entity_id: light.woonkamer_kerstboom
   mode: single
-- id: '1635024518456'
-  alias: deCONZ - Badkamer FoH Switch
-  description: Switch to control light(s)
-  use_blueprint:
-    path: Gabriel/deconz-FoH-switch.yaml
-    input:
-      remote: cb34eb7664bdcfd14c8d2c2eda9f46af
-      take_control:
-        entity_id: input_boolean.badkamer_control
-      adaptive_lighting: switch.adaptive_lighting_ruimten
-      light_L: light.badkamer_lamp
-      light_R: light.badkamer_lamp
 - id: '1635025233017'
   alias: deCONZ - Studiekamer TRADFRI Switch
   description: Switch to control light(s)
@@ -2116,3 +2127,30 @@
       entity_id:
       - script.scenes_studiekamer
   mode: restart
+- id: '1635866119888'
+  alias: Location - Gabriel @ Away
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.gabriel_home
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: climate.set_preset_mode
+    target:
+      entity_id: climate.studiekamer_radiator
+    data:
+      preset_mode: away
+  mode: single
+- id: '1635942495785'
+  alias: deCONZ - Badkamer Hue Dimmer
+  description: Switch to control light(s)
+  use_blueprint:
+    path: Gabriel/deconz-hue-remote-v2.yaml
+    input:
+      remote: a1221d49c3647cffa2f8d42365938310
+      light: light.badkamer_lamp
+      take_control:
+        entity_id: input_boolean.badkamer_control
+      adaptive_lighting: switch.adaptive_lighting_ruimten
