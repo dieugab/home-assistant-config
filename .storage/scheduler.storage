@@ -1,0 +1,482 @@
+{
+    "version": 2,
+    "key": "scheduler.storage",
+    "data": {
+        "schedules": [
+            {
+                "schedule_id": "383113",
+                "timeslots": [
+                    {
+                        "start": "08:00:00",
+                        "stop": "21:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.slaapkamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "away"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "21:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.slaapkamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "none"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "773ce4",
+                "timeslots": [
+                    {
+                        "start": "08:00:00",
+                        "stop": "21:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.woonkamer_centrale_verwarming",
+                                "service_data": {
+                                    "preset_mode": "none"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "21:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.woonkamer_centrale_verwarming",
+                                "service_data": {
+                                    "preset_mode": "away"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "f06e50",
+                "timeslots": [
+                    {
+                        "start": "08:00:00",
+                        "stop": "09:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_temperature",
+                                "entity_id": "climate.duux_threesixty",
+                                "service_data": {
+                                    "hvac_mode": "heat",
+                                    "temperature": 21
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "09:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_hvac_mode",
+                                "entity_id": "climate.duux_threesixty",
+                                "service_data": {
+                                    "hvac_mode": "off"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "d421f4",
+                "timeslots": [
+                    {
+                        "start": "06:00:00",
+                        "stop": "06:45:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.kledingkamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "none"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "06:45:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.kledingkamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "away"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "mon",
+                    "tue",
+                    "thu",
+                    "fri"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "6c73b2",
+                "timeslots": [
+                    {
+                        "start": "06:45:00",
+                        "stop": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "light.turn_on",
+                                "entity_id": "light.woonkamer_kerstboom",
+                                "service_data": {}
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "mon",
+                    "tue",
+                    "thu",
+                    "fri"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "f60e14",
+                "timeslots": [
+                    {
+                        "start": "22:00:00",
+                        "stop": "22:30:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "switch.party_mode",
+                                "attribute": "state",
+                                "value": "off",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "and",
+                        "actions": [
+                            {
+                                "service": "input_select.select_option",
+                                "entity_id": "input_select.smartmi_p1_preset_modes",
+                                "service_data": {
+                                    "option": "Manual"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "22:30:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_modifier",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "switch.party_mode",
+                                "attribute": "state",
+                                "value": "off",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "and",
+                        "actions": [
+                            {
+                                "service": "input_select.select_option",
+                                "entity_id": "input_select.smartmi_p1_preset_modes",
+                                "service_data": {
+                                    "option": "Auto"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "747d8e",
+                "timeslots": [
+                    {
+                        "start": "08:00:00",
+                        "stop": "16:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "switch.gabriel_home",
+                                "attribute": "state",
+                                "value": "on",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.studiekamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "none"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "16:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "switch.gabriel_home",
+                                "attribute": "state",
+                                "value": "on",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "actions": [
+                            {
+                                "service": "climate.set_preset_mode",
+                                "entity_id": "climate.studiekamer_radiator",
+                                "service_data": {
+                                    "preset_mode": "away"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "tue",
+                    "thu",
+                    "fri"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "",
+                "enabled": true
+            }
+        ],
+        "tags": [
+            {
+                "name": "Heater",
+                "schedules": [
+                    "773ce4",
+                    "383113",
+                    "f06e50",
+                    "d421f4",
+                    "747d8e"
+                ]
+            },
+            {
+                "name": "Purifier",
+                "schedules": [
+                    "f60e14"
+                ]
+            },
+            {
+                "name": "Lights",
+                "schedules": [
+                    "6c73b2"
+                ]
+            }
+        ]
+    }
+}
