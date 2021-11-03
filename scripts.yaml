@@ -423,7 +423,8 @@ action_easy_entry:
       - light.woonkamer_kerstboom
   - service: cover.open_cover
     target:
-      entity_id: cover.achterdeur_gordijn
+      entity_id:
+      - cover.achterdeur_switchbot
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.achterdeur_sensor
@@ -449,7 +450,8 @@ action_easy_entry:
       to: 'off'
   - service: cover.close_cover
     target:
-      entity_id: cover.achterdeur_gordijn
+      entity_id:
+      - cover.achterdeur_switchbot
   mode: restart
   icon: mdi:elevator-passenger
 fan_set_preset_mode:
