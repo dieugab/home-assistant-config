@@ -24,7 +24,7 @@
                 "id": "54958fef7844442b9407c89985018350"
             },
             {
-                "url": "/hacsfiles/lovelace-card-mod/card-mod.js",
+                "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=1909275243013",
                 "type": "module",
                 "id": "f07dc82fd29541f1be1d08787c0c4cf6"
             },
@@ -34,7 +34,7 @@
                 "id": "61cb2e45e77e42a79a9a90bb52809a2f"
             },
             {
-                "url": "/hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381130",
+                "url": "/hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381140",
                 "type": "module",
                 "id": "175326a16af348398f02dcea00540e5b"
             },
