@@ -135,6 +135,9 @@ sonos_sleep_sounds:
 mode_privacy:
   alias: Mode - Privacy
   sequence:
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.apple_tv
   - service: cover.close_cover
     target:
       entity_id:
@@ -155,6 +158,11 @@ mode_privacy:
   - service: light.turn_on
     target:
       entity_id: light.keuken_groep
+  - service: light.turn_on
+    target:
+      entity_id: light.keuken_groep
+    data:
+      brightness_pct: 100
   - service: input_select.select_option
     target:
       entity_id: input_select.play_gradient_scenes
@@ -188,11 +196,9 @@ mode_privacy:
 mode_cinema:
   alias: Mode - Cinema
   sequence:
-  - service: remote.send_command
+  - service: media_player.turn_on
     target:
-      entity_id: remote.apple_tv
-    data:
-      command: wakeup
+      entity_id: media_player.apple_tv
   - service: cover.close_cover
     target:
       entity_id:
@@ -624,10 +630,9 @@ home_modifier_away:
   - service: climate.turn_off
     target:
       entity_id: climate.duux_threesixty
-  - service: script.turn_on
+  - service: media_player.turn_off
     target:
-      entity_id:
-      - script.action_sleep_apple_tv
+      entity_id: media_player.apple_tv
   - service: media_player.media_pause
     target:
       entity_id:
@@ -833,10 +838,9 @@ home_state_night:
       - input_select.home_state_modifier
     data:
       option: Sleeping
-  - service: script.turn_on
+  - service: media_player.turn_off
     target:
-      entity_id:
-      - script.action_sleep_apple_tv
+      entity_id: media_player.apple_tv
   - service: media_player.media_pause
     data: {}
     target:
