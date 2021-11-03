@@ -294,17 +294,17 @@
       - color_temp
       color_mode: color_temp
       brightness: 128
-      color_temp: 153
+      color_temp: 454
       hs_color:
-      - 54.768
-      - 1.6
+      - 29.79
+      - 84.553
       rgb_color:
       - 255
-      - 254
-      - 250
+      - 146
+      - 39
       xy_color:
-      - 0.326
-      - 0.333
+      - 0.579
+      - 0.388
       is_deconz_group: false
       friendly_name: Studiekamer Lamp
       icon: mdi:ceiling-light
