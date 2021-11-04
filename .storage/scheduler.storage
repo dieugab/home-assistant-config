@@ -203,7 +203,9 @@
                     }
                 ],
                 "weekdays": [
-                    "daily"
+                    "wed",
+                    "sat",
+                    "sun"
                 ],
                 "start_date": null,
                 "end_date": null,
