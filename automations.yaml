@@ -1005,11 +1005,9 @@
             state: Evening
             entity_id: input_select.home_state
           sequence:
-          - service: input_select.select_option
+          - service: switch.turn_on
             target:
-              entity_id: input_select.home_state_modifier
-            data:
-              option: Sleeping
+              entity_id: switch.sleeping_modifier
         default:
         - service: switch.turn_on
           target:
@@ -1711,10 +1709,7 @@
   - platform: state
     entity_id: input_select.home_state_modifier
     to: Home
-  condition:
-  - condition: state
-    entity_id: switch.party_mode
-    state: 'off'
+  condition: []
   action:
   - service: script.turn_on
     target:
@@ -1729,10 +1724,7 @@
   - platform: state
     entity_id: input_select.home_state_modifier
     to: Away
-  condition:
-  - condition: state
-    entity_id: switch.party_mode
-    state: 'off'
+  condition: []
   action:
   - service: script.turn_on
     target:
@@ -1909,20 +1901,6 @@
     target:
       entity_id: switch.day_state
   mode: single
-- id: '1634831015939'
-  alias: Location - Shanna @ Home
-  description: Automations to run, specifically when Shanna comes home
-  trigger:
-  - platform: state
-    entity_id: switch.shanna_home
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.woonkamer_kerstboom
-  mode: single
 - id: '1635025233017'
   alias: deCONZ - Studiekamer TRADFRI Switch
   description: Switch to control light(s)
@@ -1945,30 +1923,6 @@
   action:
   - service: shell_command.lovelace_convert
   mode: restart
-- id: '1635150252380'
-  alias: Location - Shanna @ Morning Commute
-  description: Automations to run, specifically when Shanna leaves in the morning
-  trigger:
-  - platform: state
-    entity_id: switch.shanna_home
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - thu
-    - fri
-    - sat
-    - sun
-    after: 06:00
-    before: '10:00'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.woonkamer_kerstboom
-  mode: single
 - id: '1635362394376'
   alias: TV - Spotify Audio Mode
   description: Sync and desync Ambilight Mode to Audio when Spotify is playing
@@ -2127,22 +2081,6 @@
       entity_id:
       - script.scenes_studiekamer
   mode: restart
-- id: '1635866119888'
-  alias: Location - Gabriel @ Away
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.gabriel_home
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: climate.set_preset_mode
-    target:
-      entity_id: climate.studiekamer_radiator
-    data:
-      preset_mode: away
-  mode: single
 - id: '1635942495785'
   alias: deCONZ - Badkamer Hue Dimmer
   description: Switch to control light(s)
@@ -2154,3 +2092,75 @@
       take_control:
         entity_id: input_boolean.badkamer_control
       adaptive_lighting: switch.adaptive_lighting_ruimten
+- id: '1636015545472'
+  alias: Location - Individual @ Home
+  description: Individual automations to run, specifically when one of us comes home
+  trigger:
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'off'
+    to: 'on'
+    id: shanna
+  - platform: state
+    entity_id: switch.gabriel_home
+    from: 'off'
+    to: 'on'
+    id: gabriel
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: shanna
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.woonkamer_kerstboom
+    default: []
+  mode: parallel
+  max: 2
+- id: '1636015750070'
+  alias: Location - Individual @ Away
+  description: Individual automations to run, specifically when one of us leaves
+  trigger:
+  - platform: state
+    entity_id: switch.gabriel_home
+    from: 'on'
+    to: 'off'
+    id: gabriel
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'on'
+    to: 'off'
+    id: shanna
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: gabriel
+      sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.studiekamer_radiator
+        data:
+          preset_mode: away
+    - conditions:
+      - condition: trigger
+        id: shanna
+      sequence:
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - thu
+        - fri
+        - sat
+        - sun
+        after: 06:00
+        before: '10:00'
+      - service: light.turn_off
+        target:
+          entity_id: light.woonkamer_kerstboom
+    default: []
+  mode: single

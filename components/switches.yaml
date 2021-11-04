@@ -34,9 +34,11 @@
             data:
               hvac_mode: 'auto'
             entity_id: climate.tuya_threesixty_v2
-          - service: scene.turn_on
+          - service: select.select_option
             target:
-              entity_id: scene.threesixty_boost_mode
+              entity_id: select.duux_threesixty_temperature_level
+            data:
+              option: '3'
         turn_off:
           service: climate.set_hvac_mode
           data:
@@ -198,6 +200,80 @@
                   switch.day_state
                 {% else %}
                   switch.evening_state
+                {% endif %}
+
+
+# █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀   █▀▄▀█ █▀█ █▀▄ █ █▀▀ █ █▀▀ █▀█ █▀ #
+# ▄█  █  █▀█  █  ██▄   █ ▀ █ █▄█ █▄▀ █ █▀  █ ██▄ █▀▄ ▄█ #
+
+  - platform: template
+    switches:
+      # Switch for Home script
+      home_modifier:
+        friendly_name: Home Modifier
+        unique_id: switch_home_modifier
+        icon_template: mdi:home-circle
+        value_template: >-
+          {{ is_state('input_select.home_state_modifier', 'Home') }}
+        turn_on:
+          - service: script.turn_on
+            entity_id: script.home_modifier_home
+        turn_off:
+          - service: script.turn_off
+            entity_id: script.home_modifier_home
+
+      # Switch for Sleeping script
+      sleeping_modifier:
+        friendly_name: Sleeping Modifier
+        unique_id: switch_sleeping_modifier
+        icon_template: mdi:bell-circle
+        value_template: >-
+          {{ is_state('input_select.home_state_modifier', 'Sleeping') }}
+        turn_on:
+          - service: script.turn_on
+            entity_id: script.home_modifier_sleeping
+        turn_off:
+          - service: script.turn_off
+            entity_id: script.home_modifier_sleeping
+
+      # Switch for Away script
+      away_modifier:
+        friendly_name: Away Modifier
+        unique_id: switch_away_modifier
+        icon_template: mdi:map-marker-circle
+        value_template: >-
+          {{ is_state('input_select.home_state_modifier', 'Away') 
+             or is_state('input_select.home_state_modifier', 'On vacation')
+          }}
+        turn_on:
+          - service: script.turn_on
+            entity_id: script.home_modifier_away
+        turn_off:
+          - service: script.turn_off
+            entity_id: script.home_modifier_away
+
+      # Switch for On vacation Select
+      on_vacation_modifier:
+        friendly_name: On vacation Modifier
+        unique_id: switch_on_vacation_modifier
+        icon_template: mdi:arrow-right-circle-outline
+        value_template: >-
+          {{ is_state('switch.away_modifier', 'on') 
+             and is_state('input_select.home_state_modifier', 'On vacation')
+          }}
+        turn_on:
+          - service: input_select.select_option
+            entity_id: input_select.home_state_modifier
+            data:
+              option: On vacation
+        turn_off:
+          - service: switch.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state("switch.away_modifier", "on")%}
+                  switch.away_modifier
+                {% else %}
+                  switch.home_modifier
                 {% endif %}
 
 # █ █ █▀█ █▀▄▀█ █▀▀   █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀ █▀ #

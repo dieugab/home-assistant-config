@@ -27,7 +27,7 @@ fan_off:
   - service: scene.turn_on
     target:
       entity_id: scene.flex_off
-  - wait_template: '{{ is_state(''switch.whisper_flex_ultimate'', ''off'') }}'
+  - wait_template: '{{ is_state(''input_boolean.whisper_flex'', ''off'') }}'
     continue_on_timeout: false
   - service: input_select.select_option
     target:
@@ -577,6 +577,14 @@ action_curtains_opened:
 home_modifier_home:
   alias: Home Modifier - Home
   sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_modifier
+    data:
+      option: Home
+  - condition: state
+    entity_id: switch.party_mode
+    state: 'off'
   - service: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.security_system
@@ -597,6 +605,9 @@ home_modifier_home:
       entity_id: climate.woonkamer_centrale_verwarming
     data:
       preset_mode: none
+  - service: script.turn_on
+    target:
+      entity_id: script.action_conditional_heating
   - condition: and
     conditions:
     - condition: or
@@ -615,6 +626,14 @@ home_modifier_home:
 home_modifier_away:
   alias: Home Modifier - Away
   sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_modifier
+    data:
+      option: Away
+  - condition: state
+    entity_id: switch.party_mode
+    state: 'off'
   - service: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.security_system
@@ -651,6 +670,11 @@ home_modifier_away:
 home_modifier_sleeping:
   alias: Home Modifier - Sleeping
   sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_modifier
+    data:
+      option: Sleeping
   - service: alarm_control_panel.alarm_arm_night
     target:
       entity_id: alarm_control_panel.security_system
@@ -816,6 +840,12 @@ home_state_evening:
           entity_id:
           - cover.achterdeur_gordijn
           - cover.woonkamer_gordijn
+      - condition: state
+        entity_id: input_select.home_state_modifier
+        state: Home
+      - service: script.turn_on
+        target:
+          entity_id: script.action_conditional_heating
     default:
     - service: cover.close_cover
       target:
@@ -832,12 +862,9 @@ home_state_night:
       entity_id: input_select.home_state
     data:
       option: Night
-  - service: input_select.select_option
+  - service: switch.turn_on
     target:
-      entity_id:
-      - input_select.home_state_modifier
-    data:
-      option: Sleeping
+      entity_id: switch.sleeping_modifier
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
@@ -941,11 +968,9 @@ home_state_day:
       sequence:
       - service: script.dummy
     default:
-    - service: input_select.select_option
+    - service: switch.turn_on
       target:
-        entity_id: input_select.home_state_modifier
-      data:
-        option: Home
+        entity_id: switch.home_modifier
   - service: light.turn_off
     target:
       entity_id:
@@ -1061,3 +1086,30 @@ scenes_studiekamer:
         ) == 'Orange & Blue' %}\n  scene.studiekamer_orange_blue\n{% endif %}"
   mode: restart
   icon: mdi:palette-swatch
+action_conditional_heating:
+  alias: Action - Conditional heating
+  sequence:
+  - choose:
+    - conditions:
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - thu
+        - fri
+        before: '16:00'
+        after: 06:00
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          temperature: 20
+    default:
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.woonkamer_centrale_verwarming
+      data:
+        temperature: 21.5
+  mode: single
+  icon: mdi:hvac
