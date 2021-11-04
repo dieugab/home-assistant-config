@@ -75,14 +75,21 @@ views:
       type: custom:vertical-stack-in-card
     - entities:
       - entities:
-        - entity: binary_sensor.voordeur_sensor
-          name: Voordeur
-        entity: light.voortuin_buitenlamp
-        secondary_info: brightness
-        show_state: true
-        state_color: true
-        toggle: true
-        type: custom:multiple-entity-row
+        - light.voortuin_buitenlamp
+        - light.achtertuin_buitenlamp
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.buiten_groep
+          icon: hue:room-outdoors
+          name: Buiten Lampen
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      state_color: true
+      type: entities
+    - entities:
       - entity: light.gang_lamp
         secondary_info: brightness
       - entity: light.toilet_lamp
@@ -116,16 +123,9 @@ views:
         type: custom:fold-entity-row
       - entity: switch.keuken_waterkoker
         secondary_info: last-updated
-      state_color: true
-      type: entities
-    - entities:
       - entities:
         - entity: input_select.play_gradient_scenes
           name: Gradient Scenes
-        - entity: light.play_gradient_lightstrip
-          name: Gradient Lightstrip
-        - entity: light.ambilight
-          name: TV Ambilight
         - type: divider
         - entity: light.woonkamer_kerstboom
           name: Kerstboom
@@ -147,19 +147,8 @@ views:
           secondary_info: brightness
           state_color: true
         type: custom:fold-entity-row
-      - entities:
-        - entity: binary_sensor.achterdeur_sensor
-          name: Achterdeur
-        entity: light.achtertuin_buitenlamp
-        secondary_info: brightness
-        show_state: true
-        state_color: true
-        toggle: true
-        type: custom:multiple-entity-row
-      - entity: switch.aqara_g2h
-        icon: mdi:webcam
-        name: Security Cam
-        secondary_info: last-changed
+      - entity: light.play_gradient_lightstrip
+      - entity: light.ambilight
       state_color: true
       type: entities
     - entities:
@@ -444,8 +433,9 @@ views:
     - cards:
       - entity: climate.woonkamer_centrale_verwarming
         name: Centrale Verwarming
-        style: "ha-card {\n  margin-bottom: 8px;\n}\n"
+        style: "ha-card {\n  margin-bottom: 2px;\n}\n"
         type: thermostat
+      - type: divider
       - entities:
         - entity: fan.whisper_flex
           name: Whisper Flex
@@ -484,7 +474,7 @@ views:
           name: Smartmi P1
           secondary_info: last-changed
           state_color: true
-        style: "ha-card {\n  margin-top: 8px;\n}\n"
+        style: "ha-card {\n  margin-top: 2px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - artwork: cover
@@ -549,22 +539,43 @@ views:
         \ !important;\n}\n"
       type: markdown
     - cards:
-      - entity: alarm_control_panel.security_system
-        states:
-        - arm_away
-        - arm_night
-        style: "ha-card {\n  border-radius: 0px;\n}\nh1.card-header {\n  font-size:\
-          \ 1.2em;\n  font-weight: var(--mcg-title-font-weight, 500);\n  opacity:\
-          \ 0.65;\n  padding-top: 0px;\n  padding-bottom: 25px;\n}\n"
-        type: alarm-panel
-      type: custom:vertical-stack-in-card
+      - entity: switch.home_modifier
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.sleeping_modifier
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.away_modifier
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      - entity: switch.on_vacation_modifier
+        icon_height: 24px
+        show_name: false
+        tap_action:
+          action: toggle
+        type: button
+      type: horizontal-stack
     - cards:
       - entities:
         - entity: person.gabriel
         - entity: person.shanna
         - entity: input_select.home_state_modifier
           name: Modifier
+        style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
+          \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
+          }\nha-card {\n  margin-bottom: 2px;\n}\n"
+        title: Presence
         type: glance
+      - type: divider
       - entities:
         - buttons:
           - entity: switch.privacy_mode
@@ -595,8 +606,24 @@ views:
               name:
                 font-size: 14px
           type: custom:paper-buttons-row
+        style: "ha-card {\n  margin-top: 2px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
+    - cards:
+      - entity: alarm_control_panel.security_system
+        type: entity
+      - entity: switch.aqara_g2h
+        name: Security Cam
+        type: entity
+      - entity: binary_sensor.voordeur_sensor
+        name: Voordeur
+        type: entity
+      - entity: binary_sensor.achterdeur_sensor
+        name: Achterdeur
+        type: entity
+      columns: 2
+      square: false
+      type: grid
     - cards:
       - aggregate_func: max
         animate: false
@@ -619,14 +646,14 @@ views:
         - color: '#4CAF50'
           entity: binary_sensor.achtertuin_motion_sensor
           name: Achtertuin
-        height: 54
+        height: 70
         hours_to_show: 6
         icon: mdi:page-layout-footer
         line_width: 3
         name: Motion downstairs
         points_per_hour: 9
         show:
-          fill: false
+          fill: true
           labels: false
           state: true
         smoothing: false
@@ -657,14 +684,14 @@ views:
         - color: '#FFC107'
           entity: binary_sensor.zolder_occupancy
           name: Zolder
-        height: 55
+        height: 70
         hours_to_show: 6
         icon: mdi:page-layout-body
         line_width: 3
         name: Motion upstairs
         points_per_hour: 9
         show:
-          fill: false
+          fill: true
           labels: false
           state: true
         smoothing: false
@@ -682,17 +709,6 @@ views:
           clickable: true
         spaceBetween: 20
       type: custom:swipe-card
-    - entities:
-      - entity: binary_sensor.voordeur_sensor
-        name: Voordeur
-      - entity: binary_sensor.achterdeur_sensor
-        name: Achterdeur
-      hours_to_show: 12
-      refresh_interval: 0
-      style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
-        \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
-      title: Outside doors
-      type: history-graph
     - entities:
       - entities:
         - binary_sensor.keuken_motion_sensor
@@ -772,6 +788,22 @@ views:
           secondary_info: last-changed
           state_color: true
         type: custom:fold-entity-row
+      style: 'h1.card-header {
+
+        font-size: 1.2em;
+
+        font-weight: var(--mcg-title-font-weight, 500);
+
+        opacity: 0.65;
+
+        padding-top: 0px;
+
+        padding-bottom: 15px;
+
+        }
+
+        '
+      title: Occupancy
       type: entities
     type: vertical-stack
   icon: mdi:home
@@ -1296,7 +1328,7 @@ views:
         primary_info:
         - <b>{entity}</b>
         - '{action}'
-        secondary_info: relative-time
+        secondary_info: time
       include:
       - climate
       - fan
