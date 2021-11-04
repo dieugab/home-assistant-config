@@ -100,6 +100,14 @@
       - light.edison_lamp
       - light.tarnaby_lamp
 
+    # Buiten belichting
+  - platform: group
+    name: Buiten Groep
+    unique_id: ha_buiten_groep
+    entities:
+      - light.voortuin_buitenlamp
+      - light.achtertuin_buitenlamp
+
     # Slaapkamer nachtkastjes (not for use in HomeKit)
   - platform: group
     name: Slaapkamer Nachtkastjes
