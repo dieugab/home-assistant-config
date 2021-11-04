@@ -56,6 +56,11 @@
                 "name": "Home State Automatic",
                 "icon": "mdi:chart-timeline-variant-shimmer",
                 "id": "home_state_automatic"
+            },
+            {
+                "name": "Whisper Flex",
+                "icon": "mdi:fan",
+                "id": "whisper_flex"
             }
         ]
     }
