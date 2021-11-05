@@ -189,10 +189,10 @@
         turn_off:
           - service: light.turn_off
             entity_id: light.woonkamer_groep
-          - service: light.turn_on
-            entity_id: light.ambilight
+          - service: adaptive_lighting.apply
             data:
-              brightness_pct: 50
+              entity_id: switch.adaptive_lighting_ambilight
+              lights: light.ambilight
           - service: switch.turn_on
             data_template:
               entity_id: >
