@@ -163,14 +163,6 @@ mode_privacy:
       entity_id: light.keuken_groep
     data:
       brightness_pct: 100
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.play_gradient_scenes
-    data:
-      option: Soho
-  - service: script.turn_on
-    target:
-      entity_id: script.scenes_play_gradient
   - service: light.turn_on
     data:
       brightness_pct: 10
@@ -191,6 +183,14 @@ mode_privacy:
       source: '{{ ["The Beauty in All", "This Is Rhye", "This Is FKJ"] | random }}'
     target:
       entity_id: media_player.sonos_arc
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.play_gradient_scenes
+    data_template:
+      option: '{{ ["Soho", "Tokyo", "Sundown", "Tropical twilight"] | random }}'
+  - service: script.turn_on
+    target:
+      entity_id: script.scenes_play_gradient
   mode: single
   icon: mdi:heart-circle
 mode_cinema:
@@ -700,8 +700,7 @@ home_modifier_sleeping:
   - service: light.turn_on
     target:
       entity_id:
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
+      - light.buiten_groep
     data:
       brightness_pct: 50
   - service: input_boolean.turn_on
@@ -783,8 +782,7 @@ home_state_evening:
   - service: light.turn_on
     target:
       entity_id:
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
+      - light.buiten_groep
     data:
       brightness_pct: 50
   - service: cover.set_cover_position
@@ -894,8 +892,7 @@ home_state_morning:
   - service: light.turn_off
     target:
       entity_id:
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
+      - light.buiten_groep
   - choose:
     - conditions:
       - condition: and
@@ -974,8 +971,7 @@ home_state_day:
   - service: light.turn_off
     target:
       entity_id:
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
+      - light.buiten_groep
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.slaapkamer_control
@@ -1042,7 +1038,14 @@ scenes_play_gradient:
       - service: light.turn_off
         target:
           entity_id: light.ambilight
-      - wait_template: '{{ is_state(''light.play_gradient_lightstrip'', ''on'') }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id: light.play_gradient_lightstrip
     default:
     - service: light.turn_on
       target:
