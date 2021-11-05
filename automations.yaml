@@ -1992,8 +1992,8 @@
       - script.scenes_woonkamer
   mode: restart
 - id: '1635416907472'
-  alias: TV - Lightstrip Off @ Sync
-  description: Turn off lightstrip if it's turned on when Ambilight is on
+  alias: TV - Keep Lightstrip Off
+  description: Turn off lightstrip if it's turned on while Ambilight is on
   trigger:
   - platform: state
     entity_id: light.play_gradient_lightstrip
@@ -2003,50 +2003,6 @@
   - condition: state
     entity_id: light.ambilight
     state: 'on'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.play_gradient_lightstrip
-  mode: single
-- id: '1635419057870'
-  alias: TV - Disable Lightstrip Control @ Sync
-  description: Disable control of the lightstrip & disable adaptive lighting when
-    Ambilight is on
-  trigger:
-  - platform: state
-    entity_id: light.ambilight
-    to: 'on'
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.play_gradient_lightstrip
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: switch.adaptive_lighting_woonkamer
-      lights: light.play_gradient_lightstrip
-  mode: single
-- id: '1635498219436'
-  alias: TV - Lightstrip Off @ Day
-  description: Turn of the lighting behind the tv when it's turned off during the
-    day and no other lights are on
-  trigger:
-  - platform: state
-    entity_id: media_player.sony_bravia_tv
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_select.home_state
-    state: Day
-  - condition: state
-    entity_id: light.woonkamer_lamp
-    state: 'off'
-  - condition: state
-    entity_id: light.woonkamer_eettafel_lamp
-    state: 'off'
-  - condition: state
-    entity_id: light.filament_lamps
-    state: 'off'
   action:
   - service: light.turn_off
     target:
@@ -2163,4 +2119,49 @@
         target:
           entity_id: light.woonkamer_kerstboom
     default: []
+  mode: single
+- id: '1636030085546'
+  alias: TV - Ambilight-to-Lightstrip
+  description: Automations to run when Ambilight turns off
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  condition:
+  - condition: state
+    entity_id: light.woonkamer_groep
+    state: 'on'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.play_gradient_lightstrip
+  mode: single
+- id: '1636030887029'
+  alias: TV - Lightstrip-to-Ambilight
+  description: Automations to run when Ambilight turns on
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.play_gradient_lightstrip
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_woonkamer
+      lights: light.play_gradient_lightstrip
   mode: single
