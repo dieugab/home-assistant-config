@@ -148,7 +148,9 @@ views:
           state_color: true
         type: custom:fold-entity-row
       - entity: light.play_gradient_lightstrip
+        secondary_info: brightness
       - entity: light.ambilight
+        secondary_info: brightness
       state_color: true
       type: entities
     - entities:
