@@ -231,7 +231,7 @@
       home_modifier:
         friendly_name: Home Modifier
         unique_id: switch_home_modifier
-        icon_template: mdi:home-circle
+        icon_template: mdi:home
         value_template: >-
           {{ is_state('input_select.home_state_modifier', 'Home') }}
         turn_on:
@@ -245,7 +245,7 @@
       sleeping_modifier:
         friendly_name: Sleeping Modifier
         unique_id: switch_sleeping_modifier
-        icon_template: mdi:bell-circle
+        icon_template: mdi:bell
         value_template: >-
           {{ is_state('input_select.home_state_modifier', 'Sleeping') }}
         turn_on:
@@ -259,7 +259,7 @@
       away_modifier:
         friendly_name: Away Modifier
         unique_id: switch_away_modifier
-        icon_template: mdi:map-marker-circle
+        icon_template: mdi:map-marker
         value_template: >-
           {{ is_state('input_select.home_state_modifier', 'Away') 
              or is_state('input_select.home_state_modifier', 'On vacation')
@@ -275,7 +275,7 @@
       on_vacation_modifier:
         friendly_name: On vacation Modifier
         unique_id: switch_on_vacation_modifier
-        icon_template: mdi:arrow-right-circle-outline
+        icon_template: mdi:arrow-right-thick
         value_template: >-
           {{ is_state('switch.away_modifier', 'on') 
              and is_state('input_select.home_state_modifier', 'On vacation')

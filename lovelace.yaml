@@ -542,13 +542,13 @@ views:
       type: markdown
     - cards:
       - entity: switch.home_modifier
-        icon_height: 24px
+        icon_height: 25px
         show_name: false
         tap_action:
           action: toggle
         type: button
       - entity: switch.sleeping_modifier
-        icon_height: 24px
+        icon_height: 22px
         show_name: false
         tap_action:
           action: toggle
@@ -560,7 +560,7 @@ views:
           action: toggle
         type: button
       - entity: switch.on_vacation_modifier
-        icon_height: 24px
+        icon_height: 27px
         show_name: false
         tap_action:
           action: toggle
@@ -808,7 +808,7 @@ views:
       title: Occupancy
       type: entities
     type: vertical-stack
-  icon: mdi:home
+  icon: mdi:home-variant
   path: home
   title: home
 - badges: []
@@ -1346,7 +1346,7 @@ views:
       title: false
       type: custom:scheduler-card
     type: vertical-stack
-  icon: mdi:calendar-multiple
+  icon: mdi:clipboard-list-outline
   path: tasks
   title: Tasks
 - badges: []
