@@ -614,7 +614,7 @@ views:
     - cards:
       - entity: alarm_control_panel.security_system
         type: entity
-      - entity: switch.aqara_g2h
+      - entity: switch.security_cam
         name: Security Cam
         type: entity
       - entity: binary_sensor.voordeur_sensor

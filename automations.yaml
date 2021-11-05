@@ -747,7 +747,7 @@
   - service: switch.turn_on
     target:
       entity_id:
-      - switch.aqara_g2h
+      - switch.security_cam
   mode: single
 - id: '1614153848468'
   alias: Security - Camera Access DISABLED
@@ -774,7 +774,7 @@
   - service: switch.turn_off
     target:
       entity_id:
-      - switch.aqara_g2h
+      - switch.security_cam
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.homekit_cam_motion_sensor

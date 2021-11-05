@@ -151,7 +151,7 @@ mode_privacy:
     target:
       entity_id:
       - switch.begane_grond_adaptive_lighting
-      - switch.aqara_g2h
+      - switch.security_cam
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.keuken_control

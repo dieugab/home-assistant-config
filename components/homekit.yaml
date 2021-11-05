@@ -38,8 +38,11 @@
     include_entities:
       - switch.keuken_smart_plug
       - switch.wasmachine
+      - switch.security_cam
   entity_config:
     switch.keuken_smart_plug:
       type: outlet
     switch.wasmachine:
+      type: outlet
+    switch.security_cam:
       type: outlet
