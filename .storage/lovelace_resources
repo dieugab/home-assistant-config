@@ -14,7 +14,7 @@
                 "id": "bbd2c9feb6d7423e904bd0ff1bc04cc6"
             },
             {
-                "url": "/hacsfiles/lovelace-fold-entity-row/fold-entity-row.js",
+                "url": "/hacsfiles/lovelace-fold-entity-row/fold-entity-row.js?hacstag=1507819942009",
                 "type": "module",
                 "id": "6b94102141f44a7f96b3b89d6f2d6cad"
             },
@@ -37,11 +37,6 @@
                 "url": "/hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381140",
                 "type": "module",
                 "id": "175326a16af348398f02dcea00540e5b"
-            },
-            {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522115",
-                "type": "module",
-                "id": "01266fc56e0a4472a6be06f1d44c8f95"
             },
             {
                 "url": "/hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js?hacstag=366482637014",
@@ -69,7 +64,7 @@
                 "id": "8cd7dbf4197c4b8092a6b88939b77304"
             },
             {
-                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=350509867071",
+                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=350509867072",
                 "type": "module",
                 "id": "33f96aedc939414dacf8a248e98fb779"
             },
@@ -77,6 +72,11 @@
                 "url": "/hacsfiles/swipe-card/swipe-card.js?hacstag=192732887400",
                 "type": "module",
                 "id": "274103ba270c4e71aadf75789be8a538"
+            },
+            {
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522117",
+                "type": "module",
+                "id": "1d27dae02d1741f8a2b19683f30107cd"
             }
         ]
     }
