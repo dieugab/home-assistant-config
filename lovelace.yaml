@@ -199,8 +199,8 @@ views:
         - type: divider
         - entity: light.studiekamer_lamp
           name: Hanglamp
-        - entity: light.studiekamer_bureaulamp
-          name: Bureaulamp
+        - entity: light.studiekamer_bureauspot
+          name: Bureauspot
         group_config:
           secondary_info: brightness
           state_color: true
@@ -613,15 +613,19 @@ views:
       type: custom:vertical-stack-in-card
     - cards:
       - entity: alarm_control_panel.security_system
+        state_color: true
         type: entity
       - entity: switch.security_cam
         name: Security Cam
+        state_color: true
         type: entity
       - entity: binary_sensor.voordeur_sensor
         name: Voordeur
+        state_color: true
         type: entity
       - entity: binary_sensor.achterdeur_sensor
         name: Achterdeur
+        state_color: true
         type: entity
       columns: 2
       square: false
