@@ -318,22 +318,6 @@ action_mark_task_as_done:
       description: Task to complete
   mode: single
   icon: mdi:calendar-check-outline
-action_sleep_apple_tv:
-  alias: Action - Sleep Apple TV
-  sequence:
-  - condition: state
-    entity_id: media_player.sony_bravia_tv
-    state: playing
-  - service: remote.send_command
-    target:
-      entity_id: remote.apple_tv
-    data:
-      command:
-      - home_hold
-      - select
-      delay_secs: 1
-  mode: single
-  icon: mdi:remote-tv
 action_all_lights_off:
   alias: Action - All lights off
   sequence:
@@ -420,6 +404,14 @@ purifier_set_speed:
 action_easy_entry:
   alias: Action - Easy Entry
   sequence:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.home_state
+      state: Evening
+    - condition: state
+      entity_id: input_select.home_state
+      state: Night
   - service: light.turn_on
     target:
       entity_id:
@@ -608,19 +600,21 @@ home_modifier_home:
   - service: script.turn_on
     target:
       entity_id: script.action_conditional_heating
-  - condition: and
+  - condition: or
     conditions:
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: input_select.home_state
-        state: Evening
-      - condition: state
-        entity_id: input_select.home_state
-        state: Night
-  - service: script.turn_on
+    - condition: state
+      entity_id: input_select.home_state
+      state: Evening
+    - condition: state
+      entity_id: input_select.home_state
+      state: Night
+  - service: light.turn_on
     target:
-      entity_id: script.action_easy_entry
+      entity_id:
+      - light.woonkamer_eettafel_lamp
+      - light.filament_lamps
+      - light.play_gradient_lightstrip
+      - light.woonkamer_kerstboom
   mode: single
   icon: mdi:home-circle
 home_modifier_away:
