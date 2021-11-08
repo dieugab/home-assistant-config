@@ -61,6 +61,10 @@
                 "name": "Whisper Flex",
                 "icon": "mdi:fan",
                 "id": "whisper_flex"
+            },
+            {
+                "name": "Control - Dummy",
+                "id": "dummy_control"
             }
         ]
     }
