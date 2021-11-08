@@ -1,0 +1,74 @@
+blueprint:
+  name: deCONZ - IKEA Cover Switch
+  description: |
+    IKEA TRÅDFRI Cover Switch (up/down & hold up/down)
+  domain: automation
+
+  input:
+    remote:
+      name: Remote
+      description: Switch to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: IKEA of Sweden
+          model: TRADFRI open/close remote
+
+    cover:
+      name: Cover(s)
+      description: 'The cover(s) to control.'
+      selector:
+        target:
+          entity:
+            domain: cover
+
+    button_up_hold_release:
+      name: Button up hold (release)
+      description: 'Action to run when holding the cover open button'
+      default: []
+      selector:
+        action:
+
+    button_down_hold_release:
+      name: Button down hold (release)
+      description: 'Action to run when holding the cover close button'
+      default: []
+      selector:
+        action:
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      #button up press
+      - conditions:
+           - "{{ event == 1002 }}"
+        sequence:
+          - service: cover.open_cover
+            target: !input "cover"
+
+      #button up hold release
+      - conditions:
+           - "{{ event == 1003 }}"
+        sequence: !input button_up_hold_release
+
+      #button down press
+      - conditions:
+           - "{{ event == 2002 }}"
+        sequence:
+          - service: cover.close_cover
+            target: !input "cover"
+
+      #button down hold release
+      - conditions:
+           - "{{ event == 2003 }}"
+        sequence: !input button_down_hold_release
