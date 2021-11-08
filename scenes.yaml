@@ -192,42 +192,42 @@
       - color_temp
       color_mode: color_temp
       brightness: 128
-      color_temp: 140
+      color_temp: 153
       hs_color:
-      - 235.086
-      - 6.526
+      - 54.768
+      - 1.6
       rgb_color:
-      - 238
-      - 239
       - 255
+      - 254
+      - 250
       xy_color:
-      - 0.311
-      - 0.312
+      - 0.326
+      - 0.333
       is_deconz_group: false
       friendly_name: Studiekamer Lamp
       icon: mdi:ceiling-light
       supported_features: 40
       state: 'on'
-    light.studiekamer_bureaulamp:
-      min_mireds: 153
-      max_mireds: 454
+    light.studiekamer_bureauspot:
+      min_mireds: 140
+      max_mireds: 650
       supported_color_modes:
       - color_temp
       color_mode: color_temp
-      brightness: 204
-      color_temp: 300
+      brightness: 128
+      color_temp: 153
       hs_color:
-      - 27.355
-      - 48.529
+      - 54.768
+      - 1.6
       rgb_color:
       - 255
-      - 187
-      - 131
+      - 254
+      - 250
       xy_color:
-      - 0.467
-      - 0.377
+      - 0.326
+      - 0.333
       is_deconz_group: false
-      friendly_name: Studiekamer Bureaulamp
+      friendly_name: Studiekamer Bureauspot
       icon: hue:desk-lamp
       supported_features: 40
       state: 'on'
@@ -310,26 +310,26 @@
       icon: mdi:ceiling-light
       supported_features: 40
       state: 'on'
-    light.studiekamer_bureaulamp:
-      min_mireds: 153
-      max_mireds: 454
+    light.studiekamer_bureauspot:
+      min_mireds: 140
+      max_mireds: 650
       supported_color_modes:
       - color_temp
       color_mode: color_temp
       brightness: 254
-      color_temp: 454
+      color_temp: 500
       hs_color:
-      - 29.79
-      - 84.553
+      - 30.601
+      - 94.547
       rgb_color:
       - 255
-      - 146
-      - 39
+      - 136
+      - 13
       xy_color:
-      - 0.579
-      - 0.388
+      - 0.599
+      - 0.382
       is_deconz_group: false
-      friendly_name: Studiekamer Bureaulamp
+      friendly_name: Studiekamer Bureauspot
       icon: hue:desk-lamp
       supported_features: 40
       state: 'on'
