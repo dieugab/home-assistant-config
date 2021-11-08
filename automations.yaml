@@ -894,39 +894,6 @@
       - service: input_select.select_next
         target:
           entity_id: input_select.woonkamer_scenes
-- id: '1626357055475'
-  alias: deCONZ - Slaapkamer IKEA Shortcut Button
-  description: Switch to set Nacht state
-  use_blueprint:
-    path: Gabriel/deconz-ikea-shortcut.yaml
-    input:
-      remote: 39f0032ded816ac1f3c922e48ae714d4
-      press_button:
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: input_select.home_state
-          state: Evening
-        - condition: state
-          entity_id: input_select.home_state
-          state: Night
-      - service: switch.turn_on
-        target:
-          entity_id: switch.night_state
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: light.turn_off
-        target:
-          entity_id: light.slaapkamer_groep
-      hold_button:
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.slaapkamer_nachtkastjes
-          - light.slaapkamer_hektar_lamp
 - id: '1627321581842'
   alias: deCONZ - Zolder TRADFRI Switch
   description: Switch to control light(s)
@@ -1056,8 +1023,8 @@
           entity_id: input_select.home_state
           state: Day
         - condition: time
-          before: '21:00:00'
-          after: '12:00:00'
+          before: '21:00'
+          after: 09:00
       sequence:
       - service: climate.set_preset_mode
         target:
@@ -2072,6 +2039,13 @@
       - service: light.turn_on
         target:
           entity_id: light.woonkamer_kerstboom
+    - conditions:
+      - condition: trigger
+        id: gabriel
+      sequence:
+      - service: script.turn_on
+        target:
+          entity_id: script.action_easy_entry
     default: []
   mode: parallel
   max: 2
@@ -2165,3 +2139,111 @@
       entity_id: switch.adaptive_lighting_woonkamer
       lights: light.play_gradient_lightstrip
   mode: single
+- id: '1636111326399'
+  alias: deCONZ - Woonkamer Friends of Hue Switch
+  description: Switch to control light(s)
+  use_blueprint:
+    path: Gabriel/deconz-FoH-switch.yaml
+    input:
+      remote: cb34eb7664bdcfd14c8d2c2eda9f46af
+      take_control:
+        entity_id: input_boolean.dummy_control
+      adaptive_lighting: switch.adaptive_lighting_woonkamer
+      light_L: light.woonkamer_lamp
+      light_R: light.woonkamer_eettafel_lamp
+- id: '1636112922611'
+  alias: deCONZ - Woonkamer TRADFRI Cover Switch
+  description: Switch to control cover(s)
+  use_blueprint:
+    path: Gabriel/deconz-ikea-cover-switch.yaml
+    input:
+      remote: 09fd711a90b60a0b0d4d6190a2e440c1
+      cover:
+        entity_id:
+        - cover.woonkamer_switchbot
+        - cover.achterdeur_switchbot
+- id: '1636295211264'
+  alias: deCONZ - Slaapkamer IKEA Shortcut Button L
+  description: Switch to set Nacht state
+  use_blueprint:
+    path: Gabriel/deconz-ikea-shortcut.yaml
+    input:
+      remote: 39f33242667ef784d39e67935dd6be80
+      press_button:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state
+          state: Evening
+        - condition: state
+          entity_id: input_select.home_state
+          state: Night
+      - service: switch.turn_on
+        target:
+          entity_id: switch.night_state
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: light.turn_off
+        target:
+          entity_id: light.slaapkamer_groep
+      hold_button:
+      - service: light.turn_on
+        target:
+          entity_id: light.slaapkamer_groep
+- id: '1636295728714'
+  alias: deCONZ - Slaapkamer IKEA Shortcut Button R
+  description: Switch to set Sleeping modifier
+  use_blueprint:
+    path: Gabriel/deconz-ikea-shortcut.yaml
+    input:
+      remote: 39f0032ded816ac1f3c922e48ae714d4
+      press_button:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_select.home_state
+          state: Evening
+        - condition: state
+          entity_id: input_select.home_state
+          state: Night
+      - service: switch.turn_on
+        target:
+          entity_id:
+          - switch.sleeping_modifier
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: light.turn_off
+        target:
+          entity_id: light.slaapkamer_groep
+      hold_button:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.slaapkamer_groep
+- id: '1636298495983'
+  alias: deCONZ - Badkamer IKEA Shortcut Button
+  description: Button to control the light(s)
+  use_blueprint:
+    path: Gabriel/deconz-ikea-shortcut.yaml
+    input:
+      remote: 71dfa94e27d530837416cf1db88d8113
+      press_button:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.badkamer_control
+      - condition: state
+        entity_id: light.badkamer_lamp
+        state: 'off'
+      - service: light.turn_on
+        target:
+          entity_id: light.badkamer_lamp
+      hold_button:
+      - service: light.turn_off
+        target:
+          entity_id: light.badkamer_lamp
