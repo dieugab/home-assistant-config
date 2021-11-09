@@ -447,7 +447,8 @@
                 "weekdays": [
                     "tue",
                     "thu",
-                    "fri"
+                    "fri",
+                    "mon"
                 ],
                 "start_date": null,
                 "end_date": null,
