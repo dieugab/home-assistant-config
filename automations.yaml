@@ -412,9 +412,19 @@
     input:
       remote: 65b90502299bd5bde8f71041bf62be96
       button_single_press:
-      - service: media_player.media_play_pause
-        target:
-          entity_id: media_player.sonos_arc
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: media_player.sonos_arc
+            state: playing
+          sequence:
+          - service: media_player.media_pause
+            target:
+              entity_id: media_player.sonos_arc
+        default:
+        - service: media_player.media_play
+          target:
+            entity_id: media_player.sonos_arc
       button_double_press:
       - service: media_player.media_next_track
         data: {}
@@ -2162,8 +2172,29 @@
         entity_id:
         - cover.woonkamer_switchbot
         - cover.achterdeur_switchbot
-- id: '1636295211264'
-  alias: deCONZ - Slaapkamer IKEA Shortcut Button L
+- id: '1636298495983'
+  alias: deCONZ - Badkamer IKEA Shortcut Button
+  description: Button to control the light(s)
+  use_blueprint:
+    path: Gabriel/deconz-ikea-shortcut.yaml
+    input:
+      remote: 71dfa94e27d530837416cf1db88d8113
+      press_button:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.badkamer_control
+      - condition: state
+        entity_id: light.badkamer_lamp
+        state: 'off'
+      - service: light.turn_on
+        target:
+          entity_id: light.badkamer_lamp
+      hold_button:
+      - service: light.turn_off
+        target:
+          entity_id: light.badkamer_lamp
+- id: '1636382036921'
+  alias: deCONZ - Nachtkastje L IKEA Shortcut Button
   description: Switch to set Nacht state
   use_blueprint:
     path: Gabriel/deconz-ikea-shortcut.yaml
@@ -2193,8 +2224,8 @@
       - service: light.turn_on
         target:
           entity_id: light.slaapkamer_groep
-- id: '1636295728714'
-  alias: deCONZ - Slaapkamer IKEA Shortcut Button R
+- id: '1636382062713'
+  alias: deCONZ - Nachtkastje R IKEA Shortcut Button
   description: Switch to set Sleeping modifier
   use_blueprint:
     path: Gabriel/deconz-ikea-shortcut.yaml
@@ -2226,24 +2257,64 @@
         target:
           entity_id:
           - light.slaapkamer_groep
-- id: '1636298495983'
-  alias: deCONZ - Badkamer IKEA Shortcut Button
-  description: Button to control the light(s)
+- id: '1636382573171'
+  alias: deCONZ - Slaapkamer IKEA Shortcut Button
+  description: Button to control Day/Night and Sleeping states
   use_blueprint:
     path: Gabriel/deconz-ikea-shortcut.yaml
     input:
-      remote: 71dfa94e27d530837416cf1db88d8113
+      remote: 30b8cc291032e96ea81f3d98b1243a3b
       press_button:
-      - service: input_boolean.turn_on
-        target:
-          entity_id: input_boolean.badkamer_control
-      - condition: state
-        entity_id: light.badkamer_lamp
-        state: 'off'
-      - service: light.turn_on
-        target:
-          entity_id: light.badkamer_lamp
+      - choose:
+        - conditions:
+          - condition: and
+            conditions:
+            - condition: state
+              entity_id: input_select.home_state
+              state: Evening
+            - condition: state
+              entity_id: input_select.home_state_modifier
+              state: Home
+          sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: switch.sleeping_modifier
+        - conditions:
+          - condition: and
+            conditions:
+            - condition: state
+              entity_id: input_select.home_state
+              state: Evening
+            - condition: state
+              entity_id: input_select.home_state_modifier
+              state: Sleeping
+          sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: switch.night_state
+        - conditions:
+          - condition: and
+            conditions:
+            - condition: or
+              conditions:
+              - condition: state
+                entity_id: input_select.home_state
+                state: Night
+              - condition: state
+                entity_id: input_select.home_state
+                state: Morning
+            - condition: time
+              after: 06:00
+              before: '18:00'
+          sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: switch.day_state
+        default:
+        - service: script.turn_on
+          target:
+            entity_id: script.dummy
       hold_button:
-      - service: light.turn_off
+      - service: switch.turn_on
         target:
-          entity_id: light.badkamer_lamp
+          entity_id: switch.night_state
