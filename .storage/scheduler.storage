@@ -211,7 +211,7 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "",
-                "enabled": true
+                "enabled": false
             },
             {
                 "schedule_id": "d421f4",
