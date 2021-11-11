@@ -18,49 +18,57 @@ My smart home built on a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/pr
 - 🎛 Every room (save a few exceptions) contain physical Hue or IKEA Zigbee switches to manually control the lights
 
 ### Miscellaneous
-- TV (Android) and streaming box (Apple TV) can be controlled through Lovelace or HomeKit
-- Game consoles can be turned on/off through Lovelace or HomeKit
-- Washer state is monitored through SmartThings in Lovelace and notified in HomeKit through a lock entity
-- Air purification is done using a Smartmi purifier controlled through Lovelace (via helpers) or HomeKit (direct)
-- HP Printer & ink state is monitored in Lovelace
+- 📺 Android TV and Apple TV can be controlled through Lovelace or HomeKit
+- 🎮 Game consoles can be controlled through Lovelace or HomeKit
+- 🧺 Washer state is monitored using SmartThings in Lovelace and notified in HomeKit through a lock entity
+- 💨 Air purification is done using a Smartmi purifier controlled through Lovelace (via helpers) or HomeKit (directly)
+- 🖨️ HP Printer & ink state is monitored in Lovelace
 
-### Technical
-- Home Assistant is accessible away from home through [Nabu Casa Cloud](https://www.nabucasa.com/) and a HomeKit Hub
-- The Zigbee network runs on [deCONZ](https://phoscon.de/en/conbee2/software)/[ConBee II](https://www.phoscon.de/en/conbee2) through a USB2 extension
-- The OS runs on a SATA/USB3 connected [Kingston A400 SSD](https://www.kingston.com/en/ssd/a400-solid-state-drive)
-- Lovelace uses my custom [homeOS theme](https://github.com/gvssr/home-assistant-config/tree/main/themes/homeOS_theme), based on work by [JuanMTech](https://github.com/JuanMTech)
+## Technical
+### Software
+- [Home Assistant OS](https://www.home-assistant.io/installation/) is accessible away from home through [Nabu Casa Cloud](https://www.nabucasa.com/)
+- The Zigbee network runs on the [deCONZ](https://phoscon.de/en/conbee2/software) add-on
 - Home Assistant's database runs on [MariaDB](https://mariadb.org/)
-- Daily backups are created and stored through SMB on a [Synology DS718+](https://www.synology.com/support/download/DS718+?version=7.0#system)
-- Home Assistant mobile app notifies me about new updates for Core, deCONZ, NAS DSM, Backups and Custom Integrations
-- Git setup using the community guide [Sharing your configuration on Github](https://community.home-assistant.io/t/sharing-your-configuration-on-github/195144) and [Atlassian Git Cheatsheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet)
+- Lovelace uses my custom [homeOS theme](https://github.com/gvssr/home-assistant-config/tree/main/themes/homeOS_theme), based on work by [JuanMTech](https://github.com/JuanMTech)
+- Daily backups are created and stored remotely through SMB using the [Samba Backup](https://github.com/thomasmauerer/hassio-addons/tree/master/samba-backup) add-on
+- [Home Assistant iOS](https://github.com/home-assistant/iOS) app notifies me about new updates for Core, deCONZ, DSM and Custom Integrations
+- Files and SSH are accessible using the [Samba share](https://github.com/home-assistant/addons/tree/master/samba), [SSH & Web Terminal](https://github.com/hassio-addons/addon-ssh) and [File Editor](https://github.com/home-assistant/addons/tree/master/configurator) add-ons
+- This Git was setup using a [community guide](https://community.home-assistant.io/t/sharing-your-configuration-on-github/195144) and [Atlassian Git Cheatsheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet)
 
-## Home State & Modifiers
-Globally, my Home Assistant config follows a **State** path during the day, which controls how certain automations and scripts run: ⛅️ `Morning` ⇢ ☀️ `Day` ⇢ 🌜 `Evening` ⇢ 🌑 `Night`
+### Hardware
+| [Raspberry Pi 4B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)  | [ConBee II](https://phoscon.de/en/conbee2) | [Synology DS718+](https://www.synology.com/nl-nl/support/download/DS718+) | [Philips Hue Bridge v2](https://www.philips-hue.com/nl-nl/p/hue-bridge/8718696511800) | [Hue HDMI Sync Box](https://www.philips-hue.com/nl-nl/p/hue-play-hdmi-sync-box/8718699704803) | [SwitchBot Hub Mini](https://www.switch-bot.com/products/switchbot-hub-mini) | [Apple TV 4K](https://www.apple.com/apple-tv-4k/) |
+| :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
+| <img src="https://img.icons8.com/dotty/80/000000/raspberry-pi.png"/> | <img src="https://img.icons8.com/dotty/80/000000/usb-memory-stick.png"/> | <img src="https://img.icons8.com/dotty/80/000000/nas.png"/> | <img src="https://img.icons8.com/dotty/80/000000/hub.png"/> | <img src="https://img.icons8.com/dotty/80/000000/hdmi-cable.png"/> | <img src="https://img.icons8.com/dotty/80/000000/switch.png"/> | <img src="https://img.icons8.com/dotty/80/000000/apple-tv.png"/> |
+| Runs Home Assistant OS and it's add-ons like SSH and SMB from a [Kingston A400 SSD](https://www.kingston.com/en/ssd/a400-solid-state-drive)  | USB-gateway connected through a USB2.0 Extension cable to connect all my Zigbee nodes. | Stores SMB backups and contains a Homebridge instance for devices Home Assistant doesn't support.  | In use to control the entertainment area in conjuction with the HDMI Sync Box and OTAU Hue devices. | In use for the Ambilight behind the tv and the rest of the entertainment area in conjuction with the Hue Bridge.  | In use to connect to SwitchBot Curtains, runs through HomeBridge to Home Assistant.  | In use as HomeKit Home Hubs to run location automations and control the Home app when away. |
 
-Each **Home State** is controlled by a switch and corresponding Input Select, which run scripts in the background. Roughly, the actions are as following:
+Icons by [Icons8](https://icons8.com)
+
+## Implementation
+In general, whenever I built something in Home Assistant it uses the following structure: an **Automation** to control a **Switch**, which triggers a **Script(s)**. Major exceptions to this rule are:
+- deCONZ devices, which are controlled directly with Automations by listening for events, 
+- Motion sensors, which are controlled by an Automation per sensor
+- Notifications, which listen for state changes and calls the Notify service
+
+### Home States
+Globally, my Home Assistant config follows a **State** path during the day, which controls how certain Automations, and thus Switches and Scripts run: ⛅️ `Morning` ⇢ ☀️ `Day` ⇢ 🌜 `Evening` ⇢ 🌑 `Night`
+
+Each **Home State** is controlled by a Switch and corresponding Input Select, which run Scripts in the background. All of these either run automatically through Automations, or can be called through a Home app or a physical controller. Roughly, the corresponding actions are as following:
 
 - ⛅️ `Morning` turns off outside lights, and opens all the blinds except the bedroom
 - ☀️ `Day` ensures the `Home` Modifier is set, opens all curtains and runs certain bedroom automations
 - 🌜 `Evening` turns on outside and living room lights, and closes all curtains
 - 🌑 `Night` ensures the `Sleeping` Modifier is set and turns off lights & devices
 
-These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. The following modifiers are available:
+### Home State Modifiers
+These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. Similarly, these are controlled by Switches and an Input Select, which runs Scripts. Some of these, like `Away` and `On vacation` run automatically through Automations. Others, like `Sleeping` need to specifically be called, either through a Home app or physical controller. The following modifiers are available:
 
 - 🏠 `Home` ⇢ 💤 `Sleeping` turns security on, dims lights, adjusts heating and runs certain bedroom automations
 - 🏠 `Home` ⇢ 📍 `Away` turns security on, turns off lights & devices and lowers heating
 - 📍 `Away` ⇢ ⛱️ `On vacation` ensures Home State automations will run as if someone's home
 - 💤 `Sleeping` | 📍 `Away` | ⛱️ `On vacation` ⇢ 🏠 `Home` turns security off, adapts lights and turns on heating
 
-## Modes
+### Modes
 Additionally, there are a couple of **Modes** which can be manually turned on depending on the situation. Turning them off runs the corresponding script actions of the currect **Home State** to ensure a smooth transition back to the status quo.
 - 🍿 ``Cinema Mode`` ensures the ideal movie watching experience, by turning on the tv, closing the curtains and turning off or dimming certain lights
 - 🎉 ``Party Mode`` ensures no automations are run that interfere with guests, like curtains opening, alarms triggering or lights dimming
 - 👀 ``Privacy Mode`` ensures the living room is secured against prying eyes from outside, by closing the curtains, dimming lights, disabling camera's and playing music
-
-## Technical Hardware
-| [Raspberry Pi 4B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)  | [ConBee II](https://phoscon.de/en/conbee2) | [Synology DS718+](https://www.synology.com/nl-nl/support/download/DS718+) | [Philips Hue Bridge v2](https://www.philips-hue.com/nl-nl/p/hue-bridge/8718696511800) | [Hue HDMI Sync Box](https://www.philips-hue.com/nl-nl/p/hue-play-hdmi-sync-box/8718699704803) | [SwitchBot Hub Mini](https://www.switch-bot.com/products/switchbot-hub-mini) | [Apple TV 4K](https://www.apple.com/apple-tv-4k/) |
-| :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-| <img src="https://img.icons8.com/dotty/80/000000/raspberry-pi.png"/> | <img src="https://img.icons8.com/dotty/80/000000/usb-memory-stick.png"/> | <img src="https://img.icons8.com/dotty/80/000000/nas.png"/> | <img src="https://img.icons8.com/dotty/80/000000/hub.png"/> | <img src="https://img.icons8.com/dotty/80/000000/hdmi-cable.png"/> | <img src="https://img.icons8.com/dotty/80/000000/switch.png"/> | <img src="https://img.icons8.com/dotty/80/000000/apple-tv.png"/> |
-| Runs Home Assistant OS and it's add-ons like deCONZ, MariaDB, SMB & SSH.  | Dresden Elektronik Universal USB-gateway used to connect all my Zigbee nodes. | Contains a Homebridge instance for any devices Home Assistant doesn't support.  | In use to control the entertainment area in conjuction with the HDMI Sync Box and OTAU Hue devices. | In use for the Ambilight behind the tv and the rest of the entertainment area in conjuction with the Hue Bridge.  | In use to connect to SwitchBot Curtains, runs through HomeBridge to Home Assistant.  | In use as HomeKit Home Hubs to run location automations and control the Home app when away. |
-
-Icons by [Icons8](https://icons8.com)
