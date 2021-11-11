@@ -183,6 +183,11 @@ mode_privacy:
       source: '{{ ["The Beauty in All", "This Is Rhye", "This Is FKJ"] | random }}'
     target:
       entity_id: media_player.sonos_arc
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
   - service: input_select.select_option
     target:
       entity_id: input_select.play_gradient_scenes
