@@ -64,7 +64,8 @@
             },
             {
                 "name": "Control - Dummy",
-                "id": "dummy_control"
+                "id": "dummy_control",
+                "icon": "mdi:debug-step-over"
             }
         ]
     }

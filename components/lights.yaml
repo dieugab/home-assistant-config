@@ -11,9 +11,9 @@
         effect_list_template: "{{ state_attr('input_select.ambilight_sync_modes', 'options') }}"
         icon_template: >-
           {% if is_state('media_player.play_sync_box', 'playing') %}
-            mdi:television-ambient-light
+            hue:lightstrip-tv
           {% else %}
-            hue:lightstrip-tv-alt
+            hue:lightstrip-tv-off
           {% endif %}
         level_template: >-
           {% if states('media_player.play_sync_box') != 'off' %}
