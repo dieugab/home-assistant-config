@@ -11,13 +11,13 @@
                         "stop": "21:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -39,13 +39,13 @@
                         "stop": "00:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -80,13 +80,13 @@
                         "stop": "21:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -108,13 +108,13 @@
                         "stop": "00:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -149,13 +149,13 @@
                         "stop": "09:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -178,13 +178,13 @@
                         "stop": "00:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -221,13 +221,13 @@
                         "stop": "06:45:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -249,13 +249,13 @@
                         "stop": "00:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -293,13 +293,13 @@
                         "stop": null,
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Home",
                                 "match_type": "is"
                             },
                             {
-                                "entity_id": "input_select.home_state_modifier",
+                                "entity_id": "input_select.home_state_occupancy",
                                 "attribute": "state",
                                 "value": "Sleeping",
                                 "match_type": "is"
@@ -335,15 +335,15 @@
                         "stop": "22:30:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
                                 "entity_id": "switch.party_mode",
                                 "attribute": "state",
                                 "value": "off",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
                                 "match_type": "is"
                             }
                         ],
@@ -363,15 +363,15 @@
                         "stop": "00:00:00",
                         "conditions": [
                             {
-                                "entity_id": "input_select.home_state_modifier",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
                                 "entity_id": "switch.party_mode",
                                 "attribute": "state",
                                 "value": "off",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
                                 "match_type": "is"
                             }
                         ],

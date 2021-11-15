@@ -86,19 +86,8 @@
                 "icon": "mdi:fan-speed-1"
             },
             {
-                "name": "Home State Modifier",
-                "options": [
-                    "Home",
-                    "Sleeping",
-                    "Away",
-                    "On vacation"
-                ],
-                "id": "home_state_modifier",
-                "icon": "mdi:variable-box"
-            },
-            {
                 "name": "Ambilight - Sync Modes",
-                "icon": "mdi:television-ambient-light",
+                "icon": "hue:lightstrip-wrap",
                 "options": [
                     "Video",
                     "Music",
@@ -128,6 +117,17 @@
                     "Orange & Blue"
                 ],
                 "id": "scenes_studiekamer"
+            },
+            {
+                "name": "Home State Occupancy",
+                "icon": "mdi:human-male-female",
+                "options": [
+                    "Home",
+                    "Sleeping",
+                    "Away",
+                    "On vacation"
+                ],
+                "id": "home_state_occupancy"
             }
         ]
     }

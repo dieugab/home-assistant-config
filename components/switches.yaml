@@ -221,78 +221,77 @@
                   switch.evening_state
                 {% endif %}
 
-
-# █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀   █▀▄▀█ █▀█ █▀▄ █ █▀▀ █ █▀▀ █▀█ █▀ #
-# ▄█  █  █▀█  █  ██▄   █ ▀ █ █▄█ █▄▀ █ █▀  █ ██▄ █▀▄ ▄█ #
+# █ █ █▀█ █▀▄▀█ █▀▀   █▀█ █▀▀ █▀▀ █ █ █▀█ ▄▀█ █▄ █ █▀▀ █▄█ #
+# █▀█ █▄█ █ ▀ █ ██▄   █▄█ █▄▄ █▄▄ █▄█ █▀▀ █▀█ █ ▀█ █▄▄  █  #
 
   - platform: template
     switches:
       # Switch for Home script
-      home_modifier:
-        friendly_name: Home Modifier
-        unique_id: switch_home_modifier
+      home_occupancy:
+        friendly_name: Home Occupancy
+        unique_id: switch_home_occupancy
         icon_template: mdi:home
         value_template: >-
-          {{ is_state('input_select.home_state_modifier', 'Home') }}
+          {{ is_state('input_select.home_state_occupancy', 'Home') }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_modifier_home
+            entity_id: script.home_occupancy_home
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_modifier_home
+            entity_id: script.home_occupancy_home
 
       # Switch for Sleeping script
-      sleeping_modifier:
-        friendly_name: Sleeping Modifier
-        unique_id: switch_sleeping_modifier
+      sleeping_occupancy:
+        friendly_name: Sleeping Occupancy
+        unique_id: switch_sleeping_occupancy
         icon_template: mdi:bell
         value_template: >-
-          {{ is_state('input_select.home_state_modifier', 'Sleeping') }}
+          {{ is_state('input_select.home_state_occupancy', 'Sleeping') }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_modifier_sleeping
+            entity_id: script.home_occupancy_sleeping
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_modifier_sleeping
+            entity_id: script.home_occupancy_sleeping
 
       # Switch for Away script
-      away_modifier:
-        friendly_name: Away Modifier
-        unique_id: switch_away_modifier
+      away_occupancy:
+        friendly_name: Away Occupancy
+        unique_id: switch_away_occupancy
         icon_template: mdi:map-marker
         value_template: >-
-          {{ is_state('input_select.home_state_modifier', 'Away') 
-             or is_state('input_select.home_state_modifier', 'On vacation')
+          {{ is_state('input_select.home_state_occupancy', 'Away') 
+             or is_state('input_select.home_state_occupancy', 'On vacation')
           }}
         turn_on:
           - service: script.turn_on
-            entity_id: script.home_modifier_away
+            entity_id: script.home_occupancy_away
         turn_off:
           - service: script.turn_off
-            entity_id: script.home_modifier_away
+            entity_id: script.home_occupancy_away
 
       # Switch for On vacation Select
-      on_vacation_modifier:
-        friendly_name: On vacation Modifier
-        unique_id: switch_on_vacation_modifier
+      on_vacation_occupancy:
+        friendly_name: On vacation Occupancy
+        unique_id: switch_on_vacation_occupancy
         icon_template: mdi:arrow-right-thick
         value_template: >-
-          {{ is_state('switch.away_modifier', 'on') 
-             and is_state('input_select.home_state_modifier', 'On vacation')
+          {{ is_state('switch.away_occupancy', 'on') 
+             and is_state('input_select.home_state_occupancy', 'On vacation')
           }}
         turn_on:
           - service: input_select.select_option
-            entity_id: input_select.home_state_modifier
+            entity_id: input_select.home_state_occupancy
             data:
               option: On vacation
         turn_off:
           - service: switch.turn_on
             data_template:
               entity_id: >
-                {% if is_state("switch.away_modifier", "on")%}
-                  switch.away_modifier
+                {% if is_state("switch.away_occupancy", "on")%}
+                  switch.away_occupancy
                 {% else %}
-                  switch.home_modifier
+                  switch.home_occupancy
                 {% endif %}
 
 # █ █ █▀█ █▀▄▀█ █▀▀   █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀ █▀ #

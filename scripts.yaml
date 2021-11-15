@@ -362,10 +362,10 @@ action_all_lights_off:
       - condition: or
         conditions:
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: Away
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
       - service: light.turn_off
@@ -571,205 +571,6 @@ action_curtains_opened:
   mode: parallel
   icon: mdi:curtains
   max: 10
-home_modifier_home:
-  alias: Home Modifier - Home
-  sequence:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state_modifier
-    data:
-      option: Home
-  - condition: state
-    entity_id: switch.party_mode
-    state: 'off'
-  - service: alarm_control_panel.alarm_disarm
-    target:
-      entity_id: alarm_control_panel.security_system
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.adaptive_lighting_sleep_mode_ruimten
-      - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_filaments
-  - service: climate.set_preset_mode
-    target:
-      entity_id:
-      - climate.slaapkamer_radiator
-    data:
-      preset_mode: away
-  - service: climate.set_preset_mode
-    target:
-      entity_id: climate.woonkamer_centrale_verwarming
-    data:
-      preset_mode: none
-  - service: script.turn_on
-    target:
-      entity_id: script.action_conditional_heating
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: input_select.home_state
-      state: Evening
-    - condition: state
-      entity_id: input_select.home_state
-      state: Night
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.woonkamer_eettafel_lamp
-      - light.filament_lamps
-      - light.play_gradient_lightstrip
-      - light.woonkamer_kerstboom
-  mode: single
-  icon: mdi:home-circle
-home_modifier_away:
-  alias: Home Modifier - Away
-  sequence:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state_modifier
-    data:
-      option: Away
-  - condition: state
-    entity_id: switch.party_mode
-    state: 'off'
-  - service: alarm_control_panel.alarm_arm_away
-    target:
-      entity_id: alarm_control_panel.security_system
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: away
-    target:
-      entity_id:
-      - climate.woonkamer_centrale_verwarming
-      - climate.kledingkamer_radiator
-      - climate.slaapkamer_radiator
-      - climate.studiekamer_radiator
-  - service: climate.turn_off
-    target:
-      entity_id: climate.duux_threesixty
-  - service: media_player.turn_off
-    target:
-      entity_id: media_player.apple_tv
-  - service: media_player.media_pause
-    target:
-      entity_id:
-      - media_player.sonos_arc
-      - media_player.sonos_roam
-      - media_player.ikea_symfonisk
-      - media_player.homepod_mini
-  - service: fan.turn_off
-    target:
-      entity_id: fan.whisper_flex
-  - service: script.turn_on
-    target:
-      entity_id: script.action_all_lights_off
-  mode: single
-  icon: mdi:map-marker-circle
-home_modifier_sleeping:
-  alias: Home Modifier - Sleeping
-  sequence:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state_modifier
-    data:
-      option: Sleeping
-  - service: alarm_control_panel.alarm_arm_night
-    target:
-      entity_id: alarm_control_panel.security_system
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.adaptive_lighting_sleep_mode_ruimten
-      - switch.adaptive_lighting_sleep_mode_woonkamer
-      - switch.adaptive_lighting_sleep_mode_filaments
-  - service: climate.set_preset_mode
-    target:
-      entity_id:
-      - climate.slaapkamer_radiator
-    data:
-      preset_mode: none
-  - service: climate.set_preset_mode
-    target:
-      entity_id:
-      - climate.woonkamer_centrale_verwarming
-      - climate.studiekamer_radiator
-    data:
-      preset_mode: away
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.buiten_groep
-    data:
-      brightness_pct: 50
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.slaapkamer_control
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id: light.slaapkamer_lamp
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_select.smartmi_p1_preset_modes
-        state: manual
-      sequence:
-      - service: fan.set_preset_mode
-        target:
-          entity_id: fan.smartmi_p1
-        data:
-          preset_mode: Auto
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: fan.turn_off
-        target:
-          entity_id: fan.smartmi_p1
-    default:
-    - service: fan.turn_off
-      target:
-        entity_id: fan.smartmi_p1
-  - service: script.turn_on
-    target:
-      entity_id: script.sonos_sleep_sounds
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.action_curtains_closed
-  - choose:
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.slaapkamer_temperature_multi_sensor
-        above: '22.5'
-      - condition: state
-        entity_id: fan.whisper_flex
-        state: 'off'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id: fan.whisper_flex
-      - wait_template: '{{ is_state(''fan.tuya_whisper_flex'', ''on'') }}'
-      - service: fan.oscillate
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          oscillating: true
-      - service: fan.set_preset_mode
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          preset_mode: Sleep Mode
-    default:
-    - service: script.dummy
-  mode: restart
-  icon: mdi:bell-circle
 home_state_evening:
   alias: Home State - Evening
   sequence:
@@ -818,10 +619,10 @@ home_state_evening:
       - condition: or
         conditions:
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: Home
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
       - service: light.turn_on
@@ -838,7 +639,7 @@ home_state_evening:
           - cover.achterdeur_gordijn
           - cover.woonkamer_gordijn
       - condition: state
-        entity_id: input_select.home_state_modifier
+        entity_id: input_select.home_state_occupancy
         state: Home
       - service: script.turn_on
         target:
@@ -861,7 +662,7 @@ home_state_night:
       option: Night
   - service: switch.turn_on
     target:
-      entity_id: switch.sleeping_modifier
+      entity_id: switch.sleeping_occupancy
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
@@ -902,10 +703,10 @@ home_state_morning:
         - condition: or
           conditions:
           - condition: state
-            entity_id: input_select.home_state_modifier
+            entity_id: input_select.home_state_occupancy
             state: Sleeping
           - condition: state
-            entity_id: input_select.home_state_modifier
+            entity_id: input_select.home_state_occupancy
             state: Home
       sequence:
       - service: cover.set_cover_position
@@ -921,10 +722,10 @@ home_state_morning:
       - condition: or
         conditions:
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: Away
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
       - service: cover.set_cover_position
@@ -956,17 +757,17 @@ home_state_day:
       - condition: or
         conditions:
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: Away
         - condition: state
-          entity_id: input_select.home_state_modifier
+          entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
       - service: script.dummy
     default:
     - service: switch.turn_on
       target:
-        entity_id: switch.home_modifier
+        entity_id: switch.home_occupancy
   - service: light.turn_off
     target:
       entity_id:
@@ -1115,3 +916,202 @@ action_conditional_heating:
         temperature: 21.5
   mode: single
   icon: mdi:hvac
+home_occupancy_away:
+  alias: Home Occupancy - Away
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_occupancy
+    data:
+      option: Away
+  - condition: state
+    entity_id: switch.party_mode
+    state: 'off'
+  - service: alarm_control_panel.alarm_arm_away
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: away
+    target:
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.kledingkamer_radiator
+      - climate.slaapkamer_radiator
+      - climate.studiekamer_radiator
+  - service: climate.turn_off
+    target:
+      entity_id: climate.duux_threesixty
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.apple_tv
+  - service: media_player.media_pause
+    target:
+      entity_id:
+      - media_player.sonos_arc
+      - media_player.sonos_roam
+      - media_player.ikea_symfonisk
+      - media_player.homepod_mini
+  - service: fan.turn_off
+    target:
+      entity_id: fan.whisper_flex
+  - service: script.turn_on
+    target:
+      entity_id: script.action_all_lights_off
+  mode: single
+  icon: mdi:map-marker-circle
+home_occupancy_home:
+  alias: Home Occupancy - Home
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_occupancy
+    data:
+      option: Home
+  - condition: state
+    entity_id: switch.party_mode
+    state: 'off'
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_ruimten
+      - switch.adaptive_lighting_sleep_mode_woonkamer
+      - switch.adaptive_lighting_sleep_mode_filaments
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.slaapkamer_radiator
+    data:
+      preset_mode: away
+  - service: climate.set_preset_mode
+    target:
+      entity_id: climate.woonkamer_centrale_verwarming
+    data:
+      preset_mode: none
+  - service: script.turn_on
+    target:
+      entity_id: script.action_conditional_heating
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.home_state
+      state: Evening
+    - condition: state
+      entity_id: input_select.home_state
+      state: Night
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.woonkamer_eettafel_lamp
+      - light.filament_lamps
+      - light.play_gradient_lightstrip
+      - light.woonkamer_kerstboom
+  mode: single
+  icon: mdi:home-circle
+home_occupancy_sleeping:
+  alias: Home Occupancy - Sleeping
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_occupancy
+    data:
+      option: Sleeping
+  - service: alarm_control_panel.alarm_arm_night
+    target:
+      entity_id: alarm_control_panel.security_system
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_ruimten
+      - switch.adaptive_lighting_sleep_mode_woonkamer
+      - switch.adaptive_lighting_sleep_mode_filaments
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.slaapkamer_radiator
+    data:
+      preset_mode: none
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.studiekamer_radiator
+    data:
+      preset_mode: away
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.buiten_groep
+    data:
+      brightness_pct: 50
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.slaapkamer_control
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.slaapkamer_lamp
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_select.smartmi_p1_preset_modes
+        state: manual
+      sequence:
+      - service: fan.set_preset_mode
+        target:
+          entity_id: fan.smartmi_p1
+        data:
+          preset_mode: Auto
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: fan.turn_off
+        target:
+          entity_id: fan.smartmi_p1
+    default:
+    - service: fan.turn_off
+      target:
+        entity_id: fan.smartmi_p1
+  - service: script.turn_on
+    target:
+      entity_id: script.sonos_sleep_sounds
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.action_curtains_closed
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.slaapkamer_temperature_multi_sensor
+        above: '22.5'
+      - condition: state
+        entity_id: fan.whisper_flex
+        state: 'off'
+      sequence:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.whisper_flex
+      - wait_template: '{{ is_state(''fan.tuya_whisper_flex'', ''on'') }}'
+      - service: fan.oscillate
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          oscillating: true
+      - service: fan.set_preset_mode
+        target:
+          entity_id: fan.whisper_flex
+        data:
+          preset_mode: Sleep Mode
+    default:
+    - service: script.dummy
+  mode: restart
+  icon: mdi:bell-circle

@@ -108,7 +108,7 @@
   - choose:
     - conditions:
       - condition: state
-        entity_id: input_select.home_state_modifier
+        entity_id: input_select.home_state_occupancy
         state: Sleeping
       sequence:
       - wait_for_trigger:
@@ -138,7 +138,7 @@
   - choose:
     - conditions:
       - condition: state
-        entity_id: input_select.home_state_modifier
+        entity_id: input_select.home_state_occupancy
         state: Sleeping
       sequence:
       - delay:
@@ -214,7 +214,7 @@
     entity_id: input_boolean.slaapkamer_control
     state: 'on'
   - condition: state
-    entity_id: input_select.home_state_modifier
+    entity_id: input_select.home_state_occupancy
     state: Home
   action:
   - service: input_boolean.turn_off
@@ -984,7 +984,7 @@
           sequence:
           - service: switch.turn_on
             target:
-              entity_id: switch.sleeping_modifier
+              entity_id: switch.sleeping_occupancy
         default:
         - service: switch.turn_on
           target:
@@ -1644,69 +1644,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1634035599709'
-  alias: Home Modifier - On vacation
-  description: Automatically set the Home Modifier to On vacation
-  trigger:
-  - platform: state
-    entity_id: input_select.home_state_modifier
-    to: Away
-    for:
-      hours: 12
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state_modifier
-    data:
-      option: On vacation
-  mode: single
-- id: '1634035705155'
-  alias: Home Modifier - Sleeping
-  description: Run Sleep script when Home Modifier is set to Sleeping
-  trigger:
-  - platform: state
-    entity_id: input_select.home_state_modifier
-    to: Sleeping
-    from: Home
-  condition: []
-  action:
-  - service: script.turn_on
-    target:
-      entity_id: script.home_modifier_sleeping
-  mode: restart
-  max: 10
-- id: '1634040103630'
-  alias: Home Modifier - Home
-  description: Run Home script when Home Modifier is set to Home
-  trigger:
-  - platform: state
-    entity_id: input_select.home_state_modifier
-    to: Home
-  condition: []
-  action:
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.home_modifier_home
-  mode: restart
-  max: 10
-- id: '1634041772121'
-  alias: Home Modifier - Away
-  description: Run Away script when Home Modifier is set to Away
-  trigger:
-  - platform: state
-    entity_id: input_select.home_state_modifier
-    to: Away
-  condition: []
-  action:
-  - service: script.turn_on
-    target:
-      entity_id: script.home_modifier_away
-  mode: single
 - id: '1634294358210'
   alias: Reset Control - Keuken
   description: Turn off control switch when light turns off or motion hasn't been
@@ -1813,14 +1750,14 @@
   mode: single
 - id: '1634823973170'
   alias: Home State - Night (On vacation)
-  description: Automatically set Home State to Night while Home State Modifier is
+  description: Automatically set Home State to Night while Home State Occupancy is
     set to On vacation
   trigger:
   - platform: time
-    at: '23:00'
+    at: '23:00:00'
   condition:
   - condition: state
-    entity_id: input_select.home_state_modifier
+    entity_id: input_select.home_state_occupancy
     state: On vacation
   action:
   - service: input_select.select_option
@@ -1859,7 +1796,7 @@
   mode: single
 - id: '1634824073011'
   alias: Home State - Day (Away)
-  description: Automatically set Home State to Day while Home State Modifier is set
+  description: Automatically set Home State to Day while Home State Occupancy is set
     to Away
   trigger:
   - platform: time
@@ -1868,10 +1805,10 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: input_select.home_state_modifier
+      entity_id: input_select.home_state_occupancy
       state: Away
     - condition: state
-      entity_id: input_select.home_state_modifier
+      entity_id: input_select.home_state_occupancy
       state: On vacation
   action:
   - service: switch.turn_on
@@ -2226,7 +2163,7 @@
           entity_id: light.slaapkamer_groep
 - id: '1636382062713'
   alias: deCONZ - Nachtkastje R IKEA Shortcut Button
-  description: Switch to set Sleeping modifier
+  description: Switch to set Home State Occupancy to Sleeping
   use_blueprint:
     path: Gabriel/deconz-ikea-shortcut.yaml
     input:
@@ -2243,7 +2180,7 @@
       - service: switch.turn_on
         target:
           entity_id:
-          - switch.sleeping_modifier
+          - switch.sleeping_occupancy
       - delay:
           hours: 0
           minutes: 0
@@ -2273,12 +2210,12 @@
               entity_id: input_select.home_state
               state: Evening
             - condition: state
-              entity_id: input_select.home_state_modifier
+              entity_id: input_select.home_state_occupancy
               state: Home
           sequence:
           - service: switch.turn_on
             target:
-              entity_id: switch.sleeping_modifier
+              entity_id: switch.sleeping_occupancy
         - conditions:
           - condition: and
             conditions:
@@ -2286,7 +2223,7 @@
               entity_id: input_select.home_state
               state: Evening
             - condition: state
-              entity_id: input_select.home_state_modifier
+              entity_id: input_select.home_state_occupancy
               state: Sleeping
           sequence:
           - service: switch.turn_on
@@ -2318,3 +2255,24 @@
       - service: switch.turn_on
         target:
           entity_id: switch.night_state
+- id: '1636925140619'
+  alias: Home Occupancy - On vacation
+  description: Automatically set Home Occupancy to On vacation
+  trigger:
+  - platform: state
+    entity_id: input_select.home_state_occupancy
+    to: Away
+    for:
+      hours: 12
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id:
+      - input_select.home_state_occupancy
+    data:
+      option: On vacation
+  mode: single

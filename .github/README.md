@@ -55,12 +55,12 @@ Globally, my Home Assistant config follows a **State** path during the day, whic
 Each **Home State** is controlled by a Switch and corresponding Input Select, which run Scripts in the background. All of these either run automatically through Automations, or can be called through a Home app or a physical controller. Roughly, the corresponding actions are as following:
 
 - ⛅️ `Morning` turns off outside lights, and opens all the blinds except the bedroom
-- ☀️ `Day` ensures the `Home` Modifier is set, opens all curtains and runs certain bedroom automations
+- ☀️ `Day` ensures the `Home` Occupancy is set, opens all curtains and runs certain bedroom automations
 - 🌜 `Evening` turns on outside and living room lights, and closes all curtains
-- 🌑 `Night` ensures the `Sleeping` Modifier is set and turns off lights & devices
+- 🌑 `Night` ensures the `Sleeping` Occupancy is set and turns off lights & devices
 
-### Home State Modifiers
-These **Home States** in turn are adjusted based on which **Home State Modifier** is active during that time. Similarly, these are controlled by Switches and an Input Select, which runs Scripts. Some of these, like `Away` and `On vacation` run automatically through Automations. Others, like `Sleeping` need to specifically be called, either through a Home app or physical controller. The following modifiers are available:
+### Home State Occupancy
+While **Home States** are mostly based on _time and/or sun-position_, I've also created **Home State Occupancy** as an additional variable based on location data. Similarly, these are controlled by Switches and an Input Select, which runs Scripts. Some of these, like `Away` and `On vacation` run automatically through Automations. Others, like `Sleeping` need to specifically be called, either through a Home app or physical controller. The following occupancy state transitions are possible:
 
 - 🏠 `Home` ⇢ 💤 `Sleeping` turns security on, dims lights, adjusts heating and runs certain bedroom automations
 - 🏠 `Home` ⇢ 📍 `Away` turns security on, turns off lights & devices and lowers heating

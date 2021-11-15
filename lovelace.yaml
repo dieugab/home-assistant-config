@@ -541,25 +541,25 @@ views:
         \ !important;\n}\n"
       type: markdown
     - cards:
-      - entity: switch.home_modifier
+      - entity: switch.home_occupancy
         icon_height: 25px
         show_name: false
         tap_action:
           action: toggle
         type: button
-      - entity: switch.sleeping_modifier
+      - entity: switch.sleeping_occupancy
         icon_height: 22px
         show_name: false
         tap_action:
           action: toggle
         type: button
-      - entity: switch.away_modifier
+      - entity: switch.away_occupancy
         icon_height: 24px
         show_name: false
         tap_action:
           action: toggle
         type: button
-      - entity: switch.on_vacation_modifier
+      - entity: switch.on_vacation_occupancy
         icon_height: 27px
         show_name: false
         tap_action:
@@ -570,12 +570,12 @@ views:
       - entities:
         - entity: person.gabriel
         - entity: person.shanna
-        - entity: input_select.home_state_modifier
-          name: Modifier
+        - entity: input_select.home_state_occupancy
+          name: State
         style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
           \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
           }\nha-card {\n  margin-bottom: 2px;\n}\n"
-        title: Presence
+        title: Home
         type: glance
       - type: divider
       - entities:
@@ -809,7 +809,7 @@ views:
         }
 
         '
-      title: Occupancy
+      title: Rooms
       type: entities
     type: vertical-stack
   icon: mdi:home-variant
