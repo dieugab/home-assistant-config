@@ -907,7 +907,7 @@ action_conditional_heating:
         target:
           entity_id: climate.woonkamer_centrale_verwarming
         data:
-          temperature: 20
+          temperature: 19
     default:
     - service: climate.set_temperature
       target:

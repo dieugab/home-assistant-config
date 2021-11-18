@@ -1735,7 +1735,7 @@
       milliseconds: 0
   condition:
   - condition: time
-    after: '16:00'
+    after: '15:00'
     before: 00:00
   - condition: state
     entity_id: input_select.home_state
