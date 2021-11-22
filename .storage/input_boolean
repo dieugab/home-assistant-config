@@ -54,7 +54,7 @@
             },
             {
                 "name": "Home State Automatic",
-                "icon": "mdi:chart-timeline-variant-shimmer",
+                "icon": "mdi:chart-gantt",
                 "id": "home_state_automatic"
             },
             {
