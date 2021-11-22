@@ -201,6 +201,8 @@ views:
           name: Hanglamp
         - entity: light.studiekamer_bureauspot
           name: Bureauspot
+        - entity: light.studiekamer_hektar_bureaulamp
+          name: Bureaulamp
         group_config:
           secondary_info: brightness
           state_color: true

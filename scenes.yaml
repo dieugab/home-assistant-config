@@ -215,19 +215,42 @@
       - color_temp
       color_mode: color_temp
       brightness: 128
-      color_temp: 153
+      color_temp: 250
       hs_color:
-      - 54.768
-      - 1.6
+      - 26.812
+      - 34.87
       rgb_color:
       - 255
-      - 254
-      - 250
+      - 205
+      - 166
       xy_color:
-      - 0.326
-      - 0.333
+      - 0.421
+      - 0.364
       is_deconz_group: false
       friendly_name: Studiekamer Bureauspot
+      icon: hue:desk-lamp
+      supported_features: 40
+      state: 'on'
+    light.studiekamer_hektar_bureaulamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 128
+      color_temp: 215
+      hs_color:
+      - 26.765
+      - 24.202
+      rgb_color:
+      - 255
+      - 220
+      - 193
+      xy_color:
+      - 0.387
+      - 0.354
+      is_deconz_group: false
+      friendly_name: Studiekamer Hektar Bureaulamp
       icon: hue:desk-lamp
       supported_features: 40
       state: 'on'
@@ -317,19 +340,42 @@
       - color_temp
       color_mode: color_temp
       brightness: 254
-      color_temp: 500
+      color_temp: 454
       hs_color:
-      - 30.601
-      - 94.547
+      - 29.79
+      - 84.553
       rgb_color:
       - 255
-      - 136
-      - 13
+      - 146
+      - 39
       xy_color:
-      - 0.599
-      - 0.382
+      - 0.579
+      - 0.388
       is_deconz_group: false
       friendly_name: Studiekamer Bureauspot
+      icon: hue:desk-lamp
+      supported_features: 40
+      state: 'on'
+    light.studiekamer_hektar_bureaulamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 254
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      is_deconz_group: false
+      friendly_name: Studiekamer Hektar Bureaulamp
       icon: hue:desk-lamp
       supported_features: 40
       state: 'on'
