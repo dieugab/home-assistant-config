@@ -95,11 +95,30 @@ views:
       - entity: light.toilet_lamp
         icon: mdi:wall-sconce-round
         secondary_info: brightness
-      - entities:
-        - entity: binary_sensor.trapkast_sensor
-          name: Trapkast
-        entity: light.trapkast_lamp
+      - entity: light.trapkast_lamp
+        extend_paper_buttons_row:
+          buttons:
+          - entity: binary_sensor.trapkast_sensor
+            layout: icon|state
+            state_icons:
+              'off': mdi:door-closed
+              'on': mdi:door-open
+            state_styles:
+              'on':
+                button:
+                  color: var(--primary-color)
+            state_text:
+              'off': Closed
+              'on': Opened
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
         icon: mdi:lightbulb-on
+        name: Trapkast
         secondary_info: brightness
         show_state: true
         state_color: true
@@ -283,9 +302,9 @@ views:
           entity: binary_sensor.ha_updater
           icon: mdi:home-assistant
           name: Home Assistant ({{states('sensor.current_version')}})
-          secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  New\
-            \ update available: {{states('sensor.latest_version')}} \n{% else %} \n\
-            \  Up-to-date \n{% endif %}"
+          secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  Update\
+            \ available: {{states('sensor.latest_version')}} \n{% else %} \n  Up-to-date\
+            \ \n{% endif %}"
           state: ''
           tap_action:
             action: more-info
@@ -296,7 +315,7 @@ views:
           icon: mdi:usb-flash-drive
           name: deCONZ ({{states('sensor.deconz_version')}})
           secondary: "{% if is_state('binary_sensor.deconz_update_available', 'on')\
-            \ %} \n  New update available: {{states('sensor.deconz_newest_version')}}\
+            \ %} \n  Update available: {{states('sensor.deconz_newest_version')}}\
             \ \n{% else %}\n  Up-to-date \n{% endif %}"
           state: ''
           tap_action:
@@ -314,31 +333,79 @@ views:
         type: entities
       type: custom:vertical-stack-in-card
     - entities:
-      - entities:
-        - entity: sensor.samba_backup
-          name: Backup
-          tap_action:
-            action: call-service
-            confirmation:
-              text: Create a new backup?
-            service: script.action_manual_backup
-        entity: sensor.samba_backup
+      - entity: sensor.samba_backup
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.samba_backup
+            layout: icon|name
+            name: "{% if is_state('sensor.samba_backup', 'IDLE') %}\n  Start\n{% elif\
+              \ is_state('sensor.samba_backup', 'RUNNING') %}\n  Running\n{% elif\
+              \ is_state('sensor.samba_backup', 'SUCCEEDED') %}\n  Finished\n{% elif\
+              \ is_state('sensor.samba_backup', 'FAILED') %}\n  Failed\n{% endif %}"
+            state_icons:
+              FAILED: mdi:alert-circle
+              IDLE: mdi:plus-circle
+              RUNNING: mdi:play-circle
+              SUCCEEDED: mdi:check-circle
+            state_styles:
+              failed:
+                button:
+                  color: var(--label-badge-red)
+              running:
+                button:
+                  color: var(--primary-color)
+              succeeded:
+                button:
+                  color: var(--label-badge-green)
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 0px
+                padding: 6px
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Create a new backup?
+              service: script.action_manual_backup
         icon: mdi:upload-network
         name: Remote Backup
         secondary_info:
           entity: sensor.samba_relative_backup
-          name: Last backup
+          name: false
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
       type: entities
     - entities:
-      - entities:
-        - entity: sensor.hp_tango_x_inkcartridge_black
-          name: Black
-        - entity: sensor.hp_tango_x_inkcartridge_cyanmagentayellow
-          name: Color
-        entity: binary_sensor.hp_tango_x_connectivity
+      - entity: binary_sensor.hp_tango_x_connectivity
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.hp_tango_x_inkcartridge_black
+            icon: mdi:water
+            layout: icon|state
+            state:
+              postfix: '%'
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          - entity: sensor.hp_tango_x_inkcartridge_cyanmagentayellow
+            icon: mdi:water-opacity
+            layout: icon|state
+            state:
+              postfix: '%'
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 0px
+                padding: 6px
         name: Printer
         secondary_info:
           entity: binary_sensor.hp_tango_x_connectivity
@@ -346,12 +413,28 @@ views:
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
-      - entities:
-        - entity: sensor.wasmachine_washer_job_state
-          name: Trommel
-        - entity: sensor.wasmachine_washer_machine_state
-          name: State
-        entity: switch.wasmachine
+      - entity: switch.wasmachine
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.wasmachine_washer_job_state
+            layout: icon|state
+            state_icons:
+              none: mdi:check-circle
+              rinse: mdi:circle-opacity
+              spin: mdi:sync-circle
+              wash: mdi:water-circle
+            state_text:
+              none: Finished
+              rinse: Rinse
+              spin: Spin
+              wash: Wash
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 0px
+                padding: 6px
         name: Wasmachine
         secondary_info:
           entity: sensor.wasmachine_washer_completion_time
@@ -365,7 +448,7 @@ views:
     - cards:
       - entities:
         - entity: sensor.p1_meter_active_power
-          name: P1 Energieverbruik
+          name: Live Energieverbruik
         type: entities
       - type: energy-distribution
       type: custom:vertical-stack-in-card
@@ -574,6 +657,7 @@ views:
         - entity: person.shanna
         - entity: input_select.home_state_occupancy
           name: State
+        - entity: sensor.season
         style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
           \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
           }\nha-card {\n  margin-bottom: 2px;\n}\n"
@@ -588,33 +672,28 @@ views:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
-                padding: 4px
-              name:
-                font-size: 14px
+                padding: 6px
           - entity: switch.party_mode
             name: Party
             style:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
-                padding: 4px
-              name:
-                font-size: 14px
+                padding: 6px
           - entity: switch.cinema_mode
             name: Cinema
             style:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
-                padding: 4px
-              name:
-                font-size: 14px
+                padding: 6px
           type: custom:paper-buttons-row
         style: "ha-card {\n  margin-top: 2px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - cards:
       - entity: alarm_control_panel.security_system
+        name: Security
         state_color: true
         type: entity
       - entity: switch.security_cam
@@ -636,22 +715,22 @@ views:
       - aggregate_func: max
         animate: false
         entities:
-        - color: '#546E7A'
+        - color: var(--label-badge-gray)
           entity: binary_sensor.gang_motion_sensor
           name: Gang
-        - color: '#1E88E5'
+        - color: var(--primary-color)
           entity: binary_sensor.toilet_motion_sensor
           name: Toilet
-        - color: '#FF9800'
+        - color: var(--state-climate-heat-color)
           entity: binary_sensor.keuken_motion_sensor
           name: Keuken
-        - color: '#F44336'
+        - color: var(--label-badge-red)
           entity: binary_sensor.woonkamer_cam_motion_sensor
           name: Woonkamer
         - color: '#795548'
           entity: binary_sensor.voortuin_motion_sensor
           name: Voortuin
-        - color: '#4CAF50'
+        - color: var(--label-badge-green)
           entity: binary_sensor.achtertuin_motion_sensor
           name: Achtertuin
         height: 70
@@ -674,13 +753,13 @@ views:
       - aggregate_func: max
         animate: false
         entities:
-        - color: '#546E7A'
+        - color: var(--label-badge-gray)
           entity: binary_sensor.overloop_motion_sensor
           name: Overloop
-        - color: '#1E88E5'
+        - color: var(--primary-color)
           entity: binary_sensor.badkamer_motion_sensor
           name: Badkamer
-        - color: '#8BC34A'
+        - color: var(--label-badge-green)
           entity: binary_sensor.slaapkamer_motion_sensor
           name: Slaapkamer
         - color: '#9C27B0'
@@ -689,7 +768,7 @@ views:
         - color: '#FF5722'
           entity: binary_sensor.studiekamer_motion_sensor
           name: Studiekamer
-        - color: '#FFC107'
+        - color: var(--label-badge-yellow)
           entity: binary_sensor.zolder_occupancy
           name: Zolder
         height: 70
@@ -827,7 +906,7 @@ views:
     - cards:
       - entities:
         - entity: sensor.p1_meter_active_power
-          name: P1 Energieverbruik
+          name: Live Energieverbruik
         type: entities
       - type: energy-distribution
       type: custom:vertical-stack-in-card
@@ -913,8 +992,9 @@ views:
   - cards:
     - entity: climate.woonkamer_centrale_verwarming
       name: Centrale Verwarming
-      style: "ha-card {\n  margin-bottom: 8px;\n}\n"
+      style: "ha-card {\n  margin-bottom: 2px;\n}\n"
       type: thermostat
+    - type: divider
     - entities:
       - entity: fan.whisper_flex
         name: Whisper Flex
@@ -922,6 +1002,36 @@ views:
         state_color: true
         toggle: true
         type: custom:slider-entity-row
+      - entity: climate.tuya_duux_threesixty
+        extend_paper_buttons_row:
+          buttons:
+          - entity: select.tuya_duux_threesixty_temperature_level
+            layout: icon|name
+            name: false
+            state_icons:
+              '1': mdi:fan-speed-1
+              '2': mdi:fan-speed-2
+              '3': mdi:fan-speed-3
+            state_styles:
+              '1':
+                button:
+                  color: var(--label-badge-green)
+              '2':
+                button:
+                  color: var(--state-climate-heat-color)
+              '3':
+                button:
+                  color: var(--label-badge-red)
+            style:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+        name: Duux ThreeSixty
+        secondary_info: last-changed
+        state_color: true
       - entity: fan.smartmi_p1
         extend_paper_buttons_row:
           buttons:
@@ -953,7 +1063,7 @@ views:
         name: Smartmi P1
         secondary_info: last-changed
         state_color: true
-      style: "ha-card {\n  margin-top: 8px;\n}\n"
+      style: "ha-card {\n  margin-top: 2px;\n}\n"
       type: entities
     type: custom:vertical-stack-in-card
     view_layout:
@@ -970,18 +1080,6 @@ views:
     - entity: climate.keuken_radiator
       icon: hue:room-kitchen
       secondary_info: last-updated
-    state_color: true
-    type: entities
-    view_layout:
-      position: sidebar
-  - entities:
-    - entity: climate.duux_threesixty
-      secondary_info: last-updated
-    footer:
-      detail: 2
-      entity: sensor.woonkamer_cv_temperature_average
-      hours_to_show: 24
-      type: graph
     state_color: true
     type: entities
     view_layout:
@@ -1406,20 +1504,47 @@ views:
         type: custom:multiple-entity-row
       type: entities
     - entities:
-      - entities:
-        - entity: sensor.samba_backup
-          name: Backup
-          tap_action:
-            action: call-service
-            confirmation:
-              text: Create a new backup?
-            service: script.action_manual_backup
-        entity: sensor.samba_backup
+      - entity: sensor.samba_backup
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.samba_backup
+            layout: icon|name
+            name: "{% if is_state('sensor.samba_backup', 'IDLE') %}\n  Start\n{% elif\
+              \ is_state('sensor.samba_backup', 'RUNNING') %}\n  Running\n{% elif\
+              \ is_state('sensor.samba_backup', 'SUCCEEDED') %}\n  Finished\n{% elif\
+              \ is_state('sensor.samba_backup', 'FAILED') %}\n  Failed\n{% endif %}"
+            state_icons:
+              FAILED: mdi:alert-circle
+              IDLE: mdi:plus-circle
+              RUNNING: mdi:play-circle
+              SUCCEEDED: mdi:check-circle
+            state_styles:
+              failed:
+                button:
+                  color: var(--label-badge-red)
+              running:
+                button:
+                  color: var(--primary-color)
+              succeeded:
+                button:
+                  color: var(--label-badge-green)
+            style:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 0px
+                padding: 6px
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Create a new backup?
+              service: script.action_manual_backup
         icon: mdi:upload-network
         name: Remote Backup
         secondary_info:
           entity: sensor.samba_relative_backup
-          name: Last backup
+          name: false
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
