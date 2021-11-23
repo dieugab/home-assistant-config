@@ -118,8 +118,8 @@
               timestamp_attribute: next_trigger
             end_time:
               timestamp_attribute: next_trigger
-          - entity: switch.schedule_f06e50
-            name: Duux ThreeSixty schema
+          - entity: switch.schedule_747d8e
+            name: Studiekamer radiator schema
             start_time:
               timestamp_attribute: next_trigger
             end_time:
