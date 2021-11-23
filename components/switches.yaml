@@ -41,28 +41,25 @@
           service: switch.turn_off
           entity_id: switch.aqara_g2h
 
-    # Duux ThreeSixty on/off using Tuya hvac_mode 
+    # Duux ThreeSixty on/off
   - platform: template
     switches:
-      threesixty:
+      duux_threesixty_power:
         friendly_name: Duux ThreeSixty Power
         unique_id: duux_threesixty_power
+        value_template: "{{ is_state('climate.tuya_duux_threesixty', 'heat') }}"
         icon_template: mdi:hvac
         turn_on:
-          - service: climate.set_hvac_mode
-            data:
-              hvac_mode: 'auto'
-            entity_id: climate.tuya_threesixty_v2
+          - service: climate.turn_on
+            entity_id: climate.tuya_duux_threesixty
           - service: select.select_option
             target:
-              entity_id: select.duux_threesixty_temperature_level
+              entity_id: select.tuya_duux_threesixty_temperature_level
             data:
               option: '3'
         turn_off:
-          service: climate.set_hvac_mode
-          data:
-            hvac_mode: 'off'
-          entity_id: climate.tuya_threesixty_v2
+          service: climate.turn_off
+          entity_id: climate.tuya_duux_threesixty
 
       # Set soundbar installation source to TV
       soundbar_source_tv:
