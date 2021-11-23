@@ -142,78 +142,6 @@
                 "enabled": true
             },
             {
-                "schedule_id": "f06e50",
-                "timeslots": [
-                    {
-                        "start": "08:00:00",
-                        "stop": "09:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Sleeping",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "or",
-                        "actions": [
-                            {
-                                "service": "climate.set_temperature",
-                                "entity_id": "climate.duux_threesixty",
-                                "service_data": {
-                                    "hvac_mode": "heat",
-                                    "temperature": 21
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "start": "09:00:00",
-                        "stop": "00:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Sleeping",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "or",
-                        "actions": [
-                            {
-                                "service": "climate.set_hvac_mode",
-                                "entity_id": "climate.duux_threesixty",
-                                "service_data": {
-                                    "hvac_mode": "off"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "weekdays": [
-                    "wed",
-                    "sat",
-                    "sun"
-                ],
-                "start_date": null,
-                "end_date": null,
-                "repeat_type": "repeat",
-                "name": "",
-                "enabled": false
-            },
-            {
                 "schedule_id": "d421f4",
                 "timeslots": [
                     {
@@ -463,7 +391,6 @@
                 "schedules": [
                     "773ce4",
                     "383113",
-                    "f06e50",
                     "d421f4",
                     "747d8e"
                 ]
