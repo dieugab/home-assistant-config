@@ -68,7 +68,7 @@ homeOS Theme:
       label-badge-red: rgb(199, 72, 76)
       label-badge-green: rgb(76, 175, 80) #rgb(109, 192, 113)
       label-badge-blue: var(--primary-color)
-      label-badge-yellow: rgb(217, 183, 87)
+      label-badge-yellow: rgb(255, 193, 7) # rgb(217, 183, 87)
       label-badge-gray: rgb(95, 98, 103)
 
       # Cards
