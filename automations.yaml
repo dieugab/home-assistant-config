@@ -240,9 +240,14 @@
       seconds: 0
       milliseconds: 0
   condition:
-  - condition: state
-    entity_id: input_boolean.badkamer_control
-    state: 'on'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_boolean.badkamer_control
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.badkamer_occupancy
+      state: 'on'
   action:
   - service: input_boolean.turn_off
     data: {}
@@ -454,20 +459,15 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.badkamer_hygrostat_on
+    entity_id: binary_sensor.badkamer_hygrostat
     to: 'on'
     from: 'off'
+  - platform: numeric_state
+    entity_id: sensor.badkamer_humidity_multi_sensor
+    above: '98'
   condition: []
   action:
   - service: input_boolean.turn_on
-    data: {}
-    entity_id: input_boolean.douche_occupancy_state
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.badkamer_hygrostat_off
-      from: 'off'
-      to: 'on'
-  - service: input_boolean.turn_off
     data: {}
     entity_id: input_boolean.douche_occupancy_state
   mode: restart
@@ -990,90 +990,23 @@
           target:
             entity_id: switch.day_state
 - id: '1629971132565'
-  alias: Home Assistant - Startup
+  alias: '@ Home Assistant - Startup'
   description: Actions to run at boot
   trigger:
   - platform: homeassistant
     event: start
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: switch.gabriel_home
-        state: 'on'
-      sequence:
-      - service: device_tracker.see
-        data:
-          dev_id: gabriel
-          location_name: home
-    default:
-    - service: script.dummy
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: switch.shanna_home
-        state: 'on'
-      sequence:
-      - service: device_tracker.see
-        data:
-          dev_id: shanna
-          location_name: home
-    default:
-    - service: script.dummy
   - service: hassio.addon_stdin
     data:
       addon: 15d21743_samba_backup
       input: restore-sensor
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: input_select.home_state
-          state: Day
-        - condition: time
-          before: '21:00'
-          after: 09:00
-      sequence:
-      - service: climate.set_preset_mode
-        target:
-          entity_id:
-          - climate.kledingkamer_radiator
-          - climate.slaapkamer_radiator
-        data:
-          preset_mode: none
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: climate.set_preset_mode
-        target:
-          entity_id:
-          - climate.kledingkamer_radiator
-          - climate.slaapkamer_radiator
-        data:
-          preset_mode: away
-    default: []
-  mode: single
-- id: '1630052526059'
-  alias: Heater - Update Tuya Temperature
-  description: Update Duux ThreeSixty temperature settings using Tuya cloud
-  trigger:
-  - platform: event
-    event_type: state_changed
-    event_data:
-      entity_id: climate.duux_threesixty
-  condition: []
-  action:
-  - service: climate.set_temperature
+  - service: script.turn_on
     target:
-      entity_id: climate.tuya_threesixty_v2
-    data_template:
-      temperature: '{{ state_attr(''climate.duux_threesixty'', ''temperature'') }}'
-  mode: parallel
-  max: 10
+      entity_id:
+      - script.workaround_incorrect_person_state
+      - script.workaround_incorrect_climate_temp
+  mode: single
 - id: '1630318612363'
   alias: Notify - HACS Update
   description: Notication when there is an update in HACS
@@ -1187,7 +1120,7 @@
   mode: single
   max: 2
 - id: '1630663148251'
-  alias: HomeKit - Adaptive Lighting (Ruimten)
+  alias: '@ HomeKit - Lighting Take Control (Ruimten)'
   description: Take manual control of lights when changed in HomeKit
   trigger:
   - platform: event
@@ -1205,7 +1138,13 @@
   - platform: event
     event_type: homekit_state_change
     event_data:
-      entity_id: light.studiekamer_bureaulamp
+      entity_id: light.studiekamer_bureauspot
+      service: turn_on
+    id: studiekamer
+  - platform: event
+    event_type: homekit_state_change
+    event_data:
+      entity_id: light.studiekamer_hektar_bureaulamp
       service: turn_on
     id: studiekamer
   - platform: event
@@ -1654,7 +1593,7 @@
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.badkamer_motion_sensor
+    entity_id: binary_sensor.keuken_motion_sensor
     from: 'on'
     to: 'off'
     for:
@@ -1827,16 +1766,6 @@
         - input_boolean.studiekamer_control
       light: light.studiekamer_groep
       adaptive_lighting: switch.adaptive_lighting_ruimten
-- id: '1635090239136'
-  alias: Home Assistant - Convert Lovelace
-  description: Auto-convert UI Lovelace to readable yaml
-  trigger:
-  - platform: event
-    event_type: lovelace_updated
-  condition: []
-  action:
-  - service: shell_command.lovelace_convert
-  mode: restart
 - id: '1635362394376'
   alias: TV - Spotify Audio Mode
   description: Sync and desync Ambilight Mode to Audio when Spotify is playing
@@ -2022,20 +1951,13 @@
           entity_id: climate.studiekamer_radiator
         data:
           preset_mode: away
+      - service: climate.turn_off
+        target:
+          entity_id: climate.tuya_duux_threesixty
     - conditions:
       - condition: trigger
         id: shanna
       sequence:
-      - condition: time
-        weekday:
-        - mon
-        - tue
-        - thu
-        - fri
-        - sat
-        - sun
-        after: 06:00
-        before: '10:00'
       - service: light.turn_off
         target:
           entity_id: light.woonkamer_kerstboom
@@ -2119,7 +2041,8 @@
       press_button:
       - service: input_boolean.turn_on
         target:
-          entity_id: input_boolean.badkamer_control
+          entity_id:
+          - input_boolean.douche_occupancy_state
       - condition: state
         entity_id: light.badkamer_lamp
         state: 'off'
@@ -2276,3 +2199,29 @@
     data:
       option: On vacation
   mode: single
+- id: '1637656471598'
+  alias: Heater - Auto conditional heating
+  description: Activate conditional heating whenever the CV preset mode is set to
+    none
+  trigger:
+  - platform: state
+    entity_id: climate.woonkamer_centrale_verwarming
+    attribute: preset_mode
+    from: away
+    to: none
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id: script.action_conditional_heating
+  mode: single
+- id: '1637656559452'
+  alias: Shell - Auto Convert Lovelace
+  description: Automatically convert Lovelace UI to readable yaml for git
+  trigger:
+  - platform: event
+    event_type: lovelace_updated
+  condition: []
+  action:
+  - service: shell_command.lovelace_convert
+  mode: restart
