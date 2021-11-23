@@ -289,7 +289,7 @@ sonos_alarm:
           seconds: 6
           milliseconds: 0
   mode: single
-  icon: mdi:alarm-bell
+  icon: mdi:surround-sound
 dummy:
   alias: No action
   sequence:
@@ -310,7 +310,7 @@ action_manual_backup:
         command: trigger
         backup_name: Manual-backup v{version} | {date}
   mode: single
-  icon: mdi:cog-clockwise
+  icon: mdi:cog-play
 action_mark_task_as_done:
   alias: Action - Mark task as done
   sequence:
@@ -357,22 +357,6 @@ action_all_lights_off:
       - light.badkamer_lamp
       - light.kledingkamer_groep
       - light.studiekamer_groep
-  - choose:
-    - conditions:
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: input_select.home_state_occupancy
-          state: Away
-        - condition: state
-          entity_id: input_select.home_state_occupancy
-          state: On vacation
-      sequence:
-      - service: light.turn_off
-        target:
-          entity_id: light.slaapkamer_groep
-    default:
-    - service: script.dummy
   - delay:
       hours: 0
       minutes: 0
@@ -385,6 +369,17 @@ action_all_lights_off:
   - service: light.turn_off
     target:
       entity_id: light.play_gradient_lightstrip
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.home_state_occupancy
+      state: Away
+    - condition: state
+      entity_id: input_select.home_state_occupancy
+      state: On vacation
+  - service: light.turn_off
+    target:
+      entity_id: light.slaapkamer_groep
   mode: single
   icon: mdi:lightbulb-group-off
 purifier_set_preset_mode:
@@ -740,6 +735,9 @@ home_state_morning:
           entity_id:
           - cover.achterdeur_gordijn
           - cover.woonkamer_gordijn
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.slaapkamer_control
     default:
     - service: script.dummy
   mode: single
@@ -889,33 +887,6 @@ scenes_studiekamer:
         ) == 'Orange & Blue' %}\n  scene.studiekamer_orange_blue\n{% endif %}"
   mode: restart
   icon: mdi:palette-swatch
-action_conditional_heating:
-  alias: Action - Conditional heating
-  sequence:
-  - choose:
-    - conditions:
-      - condition: time
-        weekday:
-        - mon
-        - tue
-        - thu
-        - fri
-        before: '16:00'
-        after: 06:00
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.woonkamer_centrale_verwarming
-        data:
-          temperature: 19
-    default:
-    - service: climate.set_temperature
-      target:
-        entity_id: climate.woonkamer_centrale_verwarming
-      data:
-        temperature: 21.5
-  mode: single
-  icon: mdi:hvac
 home_occupancy_away:
   alias: Home Occupancy - Away
   sequence:
@@ -941,7 +912,8 @@ home_occupancy_away:
       - climate.studiekamer_radiator
   - service: climate.turn_off
     target:
-      entity_id: climate.duux_threesixty
+      entity_id:
+      - climate.tuya_duux_threesixty
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
@@ -1062,7 +1034,7 @@ home_occupancy_sleeping:
     - conditions:
       - condition: state
         entity_id: input_select.smartmi_p1_preset_modes
-        state: manual
+        state: Manual
       sequence:
       - service: fan.set_preset_mode
         target:
@@ -1072,7 +1044,7 @@ home_occupancy_sleeping:
       - delay:
           hours: 0
           minutes: 0
-          seconds: 1
+          seconds: 2
           milliseconds: 0
       - service: fan.turn_off
         target:
@@ -1115,3 +1087,184 @@ home_occupancy_sleeping:
     - service: script.dummy
   mode: restart
   icon: mdi:bell-circle
+workaround_incorrect_climate_temp:
+  alias: Workaround - Incorrect climate temp
+  sequence:
+  - choose:
+    - conditions:
+      - condition: time
+        after: 08:00
+        before: '16:00'
+      sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.studiekamer_radiator
+        data:
+          preset_mode: away
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.studiekamer_radiator
+        data:
+          preset_mode: none
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+        data:
+          preset_mode: none
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+        data:
+          preset_mode: away
+    - conditions:
+      - condition: time
+        after: '16:00'
+        before: '21:00'
+      sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          preset_mode: away
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          preset_mode: none
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+          - climate.studiekamer_radiator
+        data:
+          preset_mode: none
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
+          - climate.studiekamer_radiator
+        data:
+          preset_mode: away
+    - conditions:
+      - condition: time
+        after: '21:00'
+        before: 08:00
+      sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.studiekamer_radiator
+          - climate.kledingkamer_radiator
+        data:
+          preset_mode: none
+      - service: climate.set_preset_mode
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.studiekamer_radiator
+          - climate.kledingkamer_radiator
+        data:
+          preset_mode: away
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.slaapkamer_radiator
+        data:
+          preset_mode: away
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.slaapkamer_radiator
+        data:
+          preset_mode: none
+    default: []
+  mode: single
+  icon: mdi:thermometer-alert
+workaround_incorrect_person_state:
+  alias: Workaround - Incorrect person state
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.gabriel_home
+        state: 'on'
+      sequence:
+      - service: device_tracker.see
+        data:
+          dev_id: gabriel
+          location_name: home
+    default:
+    - service: script.dummy
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.shanna_home
+        state: 'on'
+      sequence:
+      - service: device_tracker.see
+        data:
+          dev_id: shanna
+          location_name: home
+    default:
+    - service: script.dummy
+  mode: single
+  icon: mdi:badge-account-alert
+action_conditional_heating:
+  alias: Action - Conditional heating
+  sequence:
+  - condition: state
+    entity_id: climate.woonkamer_centrale_verwarming
+    attribute: preset_mode
+    state: none
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.gabriel
+        state: home
+      - condition: state
+        entity_id: person.shanna
+        state: not_home
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          temperature: 20
+    - conditions:
+      - condition: state
+        entity_id: person.gabriel
+        state: not_home
+      - condition: state
+        entity_id: person.shanna
+        state: home
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          temperature: 21.5
+    - conditions:
+      - condition: state
+        entity_id: person.gabriel
+        state: home
+      - condition: state
+        entity_id: person.shanna
+        state: home
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.woonkamer_centrale_verwarming
+        data:
+          temperature: 21.5
+    default: []
+  mode: single
+  icon: mdi:hvac
