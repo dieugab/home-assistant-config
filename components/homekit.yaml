@@ -17,7 +17,7 @@
     media_player.playstation_4:
       feature_list:
         - feature: on_off
-    media_player.xbox_one_s:
+    media_player.xbox_series_s:
       feature_list:
         - feature: on_off
     media_player.ikea_symfonisk:
