@@ -145,9 +145,13 @@ views:
       - entities:
         - entity: input_select.play_gradient_scenes
           name: Gradient Scenes
+        - entity: light.woonkamer_play_lichtbalk
+          name: Play Lichtbalk
         - type: divider
         - entity: light.woonkamer_kerstboom
           name: Kerstboom
+        - entity: light.woonkamer_kastverlichting
+          name: Kastverlichting
         - entity: light.woonkamer_eettafel_lamp
           name: Eettafel Lamp
         - entity: light.woonkamer_lamp
@@ -603,7 +607,7 @@ views:
           name: Sync
         - entity: media_player.playstation_4
           name: PS4
-        - entity: media_player.xbox_one_s
+        - entity: media_player.xbox_series_s
           name: Xbox
         state_color: true
         type: glance
@@ -811,13 +815,13 @@ views:
       - entities:
         - binary_sensor.badkamer_motion_sensor
         - entities:
-          - binary_sensor.badkamer_hygrostat_on
-          - binary_sensor.badkamer_hygrostat_off
+          - binary_sensor.badkamer_hygrostat
           group_config:
             secondary_info: last-changed
             state_color: true
           head:
             entity: input_boolean.douche_occupancy_state
+            name: Douche Occupancy
             secondary_info: last-changed
             state_color: true
           type: custom:fold-entity-row
@@ -1013,9 +1017,6 @@ views:
               '2': mdi:fan-speed-2
               '3': mdi:fan-speed-3
             state_styles:
-              '1':
-                button:
-                  color: var(--label-badge-green)
               '2':
                 button:
                   color: var(--state-climate-heat-color)
