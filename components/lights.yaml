@@ -62,18 +62,32 @@
           {% else %}
             mdi:string-lights-off
           {% endif %}
-        value_template: >-
-          {% if is_state('switch.woonkamer_plug', 'on') %}
-            on
-          {% else %}
-            off
-          {% endif %}
+        value_template: "{{ states('switch.woonkamer_plug') }}"
         turn_on:
           service: switch.turn_on
           entity_id: switch.woonkamer_plug
         turn_off:
           service: switch.turn_off
           entity_id: switch.woonkamer_plug
+          
+
+      # Template light for closset lighting
+      woonkamer_kastverlichting:
+        friendly_name: "Woonkamer Kastverlichting"
+        unique_id: woonkamer_kastverlichting
+        icon_template: >-
+          {% if is_state('switch.woonkamer_eettafel_plug', 'on') %}
+            mdi:string-lights
+          {% else %}
+            mdi:string-lights-off
+          {% endif %}
+        value_template: "{{ states('switch.woonkamer_eettafel_plug') }}"
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.woonkamer_eettafel_plug
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.woonkamer_eettafel_plug
 
 # █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
 # █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
@@ -86,6 +100,7 @@
       - light.woonkamer_lamp
       - light.woonkamer_eettafel_lamp
       - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
 #      - light.filament_lamps
       - light.globe_lamp
       - light.edison_lamp
