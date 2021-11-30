@@ -239,6 +239,7 @@ mode_cinema:
       - light.filament_lamps
       - light.woonkamer_lamp
       - light.woonkamer_kerstboom
+      - light.woonkamer_kastverlichting
   mode: single
   icon: mdi:movie-roll
 scenes_woonkamer:
@@ -345,6 +346,7 @@ action_all_lights_off:
       entity_id:
       - light.woonkamer_groep
       - light.woonkamer_kerstboom
+      - light.woonkamer_kastverlichting
   - delay:
       hours: 0
       minutes: 0
@@ -368,7 +370,9 @@ action_all_lights_off:
       - light.zolder_groep
   - service: light.turn_off
     target:
-      entity_id: light.play_gradient_lightstrip
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
   - condition: or
     conditions:
     - condition: state
@@ -604,6 +608,7 @@ home_state_evening:
           - light.filament_lamps
           - light.play_gradient_lightstrip
           - light.woonkamer_kerstboom
+          - light.woonkamer_kastverlichting
       - service: switch.turn_off
         target:
           entity_id: switch.begane_grond_adaptive_lighting
@@ -628,6 +633,7 @@ home_state_evening:
           - light.filament_lamps
           - light.play_gradient_lightstrip
           - light.woonkamer_kerstboom
+          - light.woonkamer_kastverlichting
       - service: cover.close_cover
         target:
           entity_id:
@@ -670,7 +676,7 @@ home_state_night:
       - media_player.homepod_mini
   - service: climate.turn_off
     data: {}
-    entity_id: climate.duux_threesixty
+    entity_id: climate.tuya_duux_threesixty
   - service: script.turn_on
     target:
       entity_id: script.action_all_lights_off
@@ -843,15 +849,21 @@ scenes_play_gradient:
           milliseconds: 0
       - service: light.turn_on
         target:
-          entity_id: light.play_gradient_lightstrip
+          entity_id:
+          - light.play_gradient_lightstrip
+          - light.woonkamer_play_lichtbalk
     default:
     - service: light.turn_on
       target:
-        entity_id: light.play_gradient_lightstrip
+        entity_id:
+        - light.play_gradient_lightstrip
+        - light.woonkamer_play_lichtbalk
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_woonkamer
-      lights: light.play_gradient_lightstrip
+      lights:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
   - wait_template: "{% if 'light.play_gradient_lightstrip' in state_attr('switch.adaptive_lighting_woonkamer',\
       \ 'manual_control') %}\n  True\n{% else %}\n  False\n{% endif %}"
   - service: hue.hue_activate_scene
@@ -981,6 +993,7 @@ home_occupancy_home:
       - light.filament_lamps
       - light.play_gradient_lightstrip
       - light.woonkamer_kerstboom
+      - light.woonkamer_kastverlichting
   mode: single
   icon: mdi:home-circle
 home_occupancy_sleeping:
