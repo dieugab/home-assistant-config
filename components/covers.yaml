@@ -28,22 +28,7 @@
         device_class: curtain
         friendly_name: "Woonkamer Gordijn"
         availability_template: "{{ states('cover.woonkamer_switchbot') != 'unavailable' }}"
-        icon_template: >-
-          {% if is_state('cover.woonkamer_gordijn', 'open') %}
-            mdi:curtains
-          {% elif is_state('cover.woonkamer_gordijn', 'closed') %}
-            mdi:curtains-closed
-          {% endif %}
-        value_template: >-
-          {% if is_state('cover.woonkamer_switchbot', 'opening') %}
-            opening
-          {% elif is_state('cover.woonkamer_switchbot', 'closing') %}
-            closing
-          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') >= 95 %}
-            open
-          {% elif state_attr('cover.woonkamer_switchbot', 'current_position') <= 5 %}
-            closed
-          {% endif %}
+        value_template: "{{ states('cover.woonkamer_switchbot') }}"
         open_cover:
           service: >-
             {% if is_state('cover.woonkamer_gordijn', 'open') %}
@@ -67,22 +52,7 @@
         device_class: curtain
         friendly_name: "Achterdeur Gordijn"
         availability_template: "{{ states('cover.achterdeur_switchbot') != 'unavailable' }}"
-        icon_template: >-
-          {% if is_state('cover.achterdeur_gordijn', 'open') %}
-            mdi:curtains
-          {% elif is_state('cover.achterdeur_gordijn', 'closed') %}
-            mdi:curtains-closed
-          {% endif %}
-        value_template: >-
-          {% if is_state('cover.achterdeur_switchbot', 'opening') %}
-            opening
-          {% elif is_state('cover.achterdeur_switchbot', 'closing') %}
-            closing
-          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') >= 95 %}
-            open
-          {% elif state_attr('cover.achterdeur_switchbot', 'current_position') <= 5 %}
-            closed
-          {% endif %}
+        value_template: "{{ states('cover.achterdeur_switchbot') }}"
         open_cover:
           service: >-
             {% if is_state('cover.achterdeur_gordijn', 'open') %}
