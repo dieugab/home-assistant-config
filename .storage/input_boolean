@@ -54,7 +54,7 @@
             },
             {
                 "name": "Home State Automatic",
-                "icon": "mdi:chart-gantt",
+                "icon": "mdi:progress-clock",
                 "id": "home_state_automatic"
             },
             {
