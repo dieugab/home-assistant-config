@@ -470,6 +470,14 @@
   - service: input_boolean.turn_on
     data: {}
     entity_id: input_boolean.douche_occupancy_state
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.douche_occupancy_state
   mode: restart
 - id: '1613053612207'
   alias: Reset Control - Zolder
@@ -850,9 +858,14 @@
     to: 'on'
     from: 'off'
   condition:
-  - condition: numeric_state
-    entity_id: sensor.studiekamer_light_sensor
-    below: '50'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.studiekamer_groep
+      state: 'on'
+    - condition: numeric_state
+      entity_id: sensor.studiekamer_light_sensor
+      below: '50'
   action:
   - service: adaptive_lighting.apply
     data:
@@ -1496,34 +1509,34 @@
     conditions:
     - condition: numeric_state
       entity_id: sensor.hvc_gft
-      attribute: Days-until
       above: '0'
       below: '2'
+      attribute: Days_until
     - condition: numeric_state
       entity_id: sensor.hvc_papier
-      attribute: Days-until
       above: '0'
       below: '2'
+      attribute: Days_until
     - condition: numeric_state
       entity_id: sensor.hvc_pmd
-      attribute: Days-until
       above: '0'
       below: '2'
+      attribute: Days_until
   action:
   - service: notify.notify
     data_template:
       title: homeOS
-      message: "{% if is_state_attr('sensor.hvc_gft', 'Days-until', 1) %}\n  {{ 'De\
+      message: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 1) %}\n  {{ 'De\
         \ container voor GFT & etenresten wordt morgen opgehaald rond 07:30.' }}\n\
-        {% elif is_state_attr('sensor.hvc_papier', 'Days-until', 1) %}\n  {{ 'De container\
+        {% elif is_state_attr('sensor.hvc_papier', 'Days_until', 1) %}\n  {{ 'De container\
         \ voor papier & karton wordt morgen opgehaald rond 07:30.' }}\n{% elif is_state_attr('sensor.hvc_pmd',\
-        \ 'Days-until', 1) %}\n  {{ 'De container voor plastic, blik & drinkpakken\
+        \ 'Days_until', 1) %}\n  {{ 'De container voor plastic, blik & drinkpakken\
         \ wordt morgen opgehaald rond 07:30.' }}\n{% endif %}\n"
       data:
         group: containers
         actions:
         - action: CONTAINER_REMINDER
-          title: Herriner mij straks
+          title: Herriner mij over 1 uur
   mode: single
 - id: '1633677373376'
   alias: Notify - Backup State
@@ -1592,15 +1605,6 @@
     entity_id: light.keuken_groep
     from: 'on'
     to: 'off'
-  - platform: state
-    entity_id: binary_sensor.keuken_motion_sensor
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.keuken_control
@@ -1842,6 +1846,10 @@
     entity_id: light.play_gradient_lightstrip
     to: 'on'
     from: 'off'
+  - platform: state
+    entity_id: light.woonkamer_play_lichtbalk
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: light.ambilight
@@ -1849,8 +1857,11 @@
   action:
   - service: light.turn_off
     target:
-      entity_id: light.play_gradient_lightstrip
-  mode: single
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+  mode: parallel
+  max: 2
 - id: '1635617614980'
   alias: TV - Set Soundbar Source
   description: ''
@@ -1964,7 +1975,7 @@
     default: []
   mode: single
 - id: '1636030085546'
-  alias: TV - Ambilight-to-Lightstrip
+  alias: TV - Ambilight-to-Lightstrip (Off)
   description: Automations to run when Ambilight turns off
   trigger:
   - platform: state
@@ -1983,7 +1994,9 @@
   action:
   - service: light.turn_on
     target:
-      entity_id: light.play_gradient_lightstrip
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
   mode: single
 - id: '1636030887029'
   alias: TV - Lightstrip-to-Ambilight
@@ -2002,11 +2015,15 @@
   action:
   - service: light.turn_off
     target:
-      entity_id: light.play_gradient_lightstrip
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_woonkamer
-      lights: light.play_gradient_lightstrip
+      lights:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
   mode: single
 - id: '1636111326399'
   alias: deCONZ - Woonkamer Friends of Hue Switch
@@ -2225,3 +2242,91 @@
   action:
   - service: shell_command.lovelace_convert
   mode: restart
+- id: '1638273581987'
+  alias: TV - Ambilight-to-Lightstrip (Pause)
+  description: Automations to run when Ambilight turns off
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.woonkamer_eettafel_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.tarnaby_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.globe_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.edison_lamp
+      state: 'off'
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+  mode: single
+- id: '1639064553312'
+  alias: TV - Ensure Apple TV turns off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.sony_bravia_tv
+    from: playing
+    to: 'off'
+  condition: []
+  action:
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.apple_tv
+  mode: single
+- id: '1639308181050'
+  alias: Housekeeping - Keep blinds alive
+  description: ''
+  trigger:
+  - platform: time
+    at: '12:00'
+  - platform: time
+    at: '15:00'
+  - platform: time
+    at: '18:00'
+  condition:
+  - condition: state
+    entity_id: cover.slaapkamer_l
+    state: open
+  - condition: state
+    entity_id: cover.slaapkamer_r
+    state: open
+  action:
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.slaapkamer_rolgordijnen
+    data:
+      position: 99
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: cover.set_cover_position
+    target:
+      entity_id: cover.slaapkamer_rolgordijnen
+    data:
+      position: 100
+  mode: single
