@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "minor_version": 1,
     "key": "lovelace_resources",
     "data": {
         "items": [
@@ -39,7 +40,7 @@
                 "id": "8d1028dfaaa74a80bf32a48873ab2ad8"
             },
             {
-                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157222",
+                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157230",
                 "type": "module",
                 "id": "236581b1812b4f288c1778ac0ae7a74e"
             },
@@ -49,7 +50,7 @@
                 "id": "e98cc9c4099942c895ef1f29fd4ff9b2"
             },
             {
-                "url": "/hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js?hacstag=244872232060",
+                "url": "/hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js?hacstag=244872232062",
                 "type": "module",
                 "id": "ffa1f6270c164aad89297f7e3c0b8e1c"
             },
