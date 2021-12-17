@@ -866,10 +866,16 @@ scenes_play_gradient:
       - light.woonkamer_play_lichtbalk
   - wait_template: "{% if 'light.play_gradient_lightstrip' in state_attr('switch.adaptive_lighting_woonkamer',\
       \ 'manual_control') %}\n  True\n{% else %}\n  False\n{% endif %}"
-  - service: hue.hue_activate_scene
+  - service: scene.turn_on
     data_template:
-      group_name: Woonkamer
-      scene_name: '{{ states(''input_select.play_gradient_scenes'') }}'
+      entity_id: "{% if states(\"input_select.play_gradient_scenes\") == 'Soho' %}\n\
+        \  scene.woonkamer_soho\n{% elif states(\"input_select.play_gradient_scenes\"\
+        ) == 'Tokyo' %}\n  scene.woonkamer_tokyo\n{% elif states(\"input_select.play_gradient_scenes\"\
+        ) == 'Savanna sunset' %}\n  scene.woonkamer_savanna_sunset\n{% elif states(\"\
+        input_select.play_gradient_scenes\") == 'Sundown' %}\n  scene.woonkamer_sundown\n\
+        {% elif states(\"input_select.play_gradient_scenes\") == 'Tropical twilight'\
+        \ %}\n  scene.woonkamer_tropical_twilight\n{% elif states(\"input_select.play_gradient_scenes\"\
+        ) == 'Arctic aurora' %}\n  scene.woonkamer_arctic_aurora\n{% endif %}"
   mode: restart
   icon: mdi:gradient-horizontal
 scenes_studiekamer:
@@ -1018,7 +1024,7 @@ home_occupancy_sleeping:
       entity_id:
       - climate.slaapkamer_radiator
     data:
-      preset_mode: none
+      preset_mode: away
   - service: climate.set_preset_mode
     target:
       entity_id:
