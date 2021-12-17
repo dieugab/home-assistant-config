@@ -117,6 +117,7 @@ views:
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
+          position: center
         icon: mdi:lightbulb-on
         name: Trapkast
         secondary_info: brightness
@@ -381,6 +382,7 @@ views:
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
+      state_color: false
       type: entities
     - entities:
       - entity: binary_sensor.hp_tango_x_connectivity
@@ -661,7 +663,6 @@ views:
         - entity: person.shanna
         - entity: input_select.home_state_occupancy
           name: State
-        - entity: sensor.season
         style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
           \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
           }\nha-card {\n  margin-bottom: 2px;\n}\n"
@@ -1241,7 +1242,7 @@ views:
           type: custom:multiple-entity-row
         show_empty: false
         state_filter:
-        - attribute: Days-until
+        - attribute: Days_until
           operator: ==
           value: 1
         type: entity-filter
@@ -1265,38 +1266,35 @@ views:
         \ !important;\n}\n"
       type: markdown
     - entities:
-      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days-until'', 0) }}'
+      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days_until'', 0) }}'
         entity: sensor.hvc_gft
         name: HVC gft & etenresten
-        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days-until', 0) %} \n \
-          \ Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_gft',\
-          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
-          \ over ({{ state_attr('sensor.hvc_gft', 'Days-until') }}) dagen\n{% endif\
-          \ %}"
+        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 0) %} \n \
+          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_gft', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_gft',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days-until'', 0) }}'
+      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days_until'', 0) }}'
         entity: sensor.hvc_papier
         name: HVC papier & karton
-        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days-until', 0) %} \n\
-          \  Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_papier',\
-          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
-          \ over ({{ state_attr('sensor.hvc_papier', 'Days-until') }}) dagen\n{% endif\
-          \ %}"
+        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days_until', 0) %} \n\
+          \  Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_papier', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_papier',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days-until'', 0) }}'
+      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days_until'', 0) }}'
         entity: sensor.hvc_pmd
         name: HVC plastic, blik & drinkpakken
-        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days-until', 0) %} \n \
-          \ Ophaalmoment vandaag @ 07:30!\n{% elif is_state_attr('sensor.hvc_pmd',\
-          \ 'Days-until', 1) %}\n  Ophaalmoment morgen @ 07:30  \n{% else %} \n  Opgehaald\
-          \ over ({{ state_attr('sensor.hvc_pmd', 'Days-until') }}) dagen\n{% endif\
-          \ %}"
+        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days_until', 0) %} \n \
+          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_pmd', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_pmd',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
         state: ''
         tap_action:
           action: more-info
