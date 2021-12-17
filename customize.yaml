@@ -13,9 +13,3 @@ device_tracker.gabriel:
   icon: mdi:account-search
 media_player.play_sync_box:
   device_class: tv
-binary_sensor.voordeur_sensor:
-  device_class: door
-binary_sensor.trapkast_sensor:
-  device_class: door
-binary_sensor.achterdeur_sensor:
-  device_class: door
