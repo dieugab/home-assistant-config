@@ -1,7 +1,7 @@
 """
 Sensor component for waste pickup dates from dutch and belgium waste collectors
 Original Author: Pippijn Stortelder
-Current Version: 4.7.33 20211022 - Pippijn Stortelder
+Current Version: 4.8.1 20211213 - Pippijn Stortelder
 20210112 - Updated date format for RD4
 20210114 - Fix error made in commit 9d720ec
 20210120 - Enabled textile for RecycleApp
@@ -31,6 +31,9 @@ Current Version: 4.7.33 20211022 - Pippijn Stortelder
 20211005 - Small bug fix
 20211019 - Add support for housenumber additions on the Circulus Berkel API
 20211022 - Update Mijnafvalwijzer mapping
+20211212 - Replace device_state_attributes with extra_state_attributes
+20211213 - Breaking change: replaced - with _ in Days_until and Days_until
+20211213 - Add unique ids to all sensors
 
 Example config:
 Configuration.yaml:
@@ -104,8 +107,8 @@ CONF_UPDATE_INTERVAL = 'updateinterval'
 
 ATTR_WASTE_COLLECTOR = 'Wastecollector'
 ATTR_HIDDEN = 'Hidden'
-ATTR_SORT_DATE = 'Sort-date'
-ATTR_DAYS_UNTIL = 'Days-until'
+ATTR_SORT_DATE = 'Sort_date'
+ATTR_DAYS_UNTIL = 'Days_until'
 
 NOTIFICATION_ID = "Afvalbeheer"
 
@@ -1331,6 +1334,7 @@ class WasteTypeSensor(Entity):
         self.date_only = date_only
         self.date_object = date_object
         self._name = _format_sensor(name, name_prefix, waste_collector, self.waste_type)
+        self._attr_unique_id = _format_sensor(name, name_prefix, waste_collector, self.waste_type)
         self.built_in_icons = built_in_icons
         self.disable_icons = disable_icons
         self.dutch_days = dutch_days
@@ -1363,7 +1367,7 @@ class WasteTypeSensor(Entity):
         return self._state
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         return {
             ATTR_WASTE_COLLECTOR: self.waste_collector,
             ATTR_HIDDEN: self._hidden,
@@ -1465,6 +1469,7 @@ class WasteDateSensor(Entity):
         else:
             day = ''
         self._name = _format_sensor(name, name_prefix, waste_collector, day)
+        self._attr_unique_id = _format_sensor(name, name_prefix, waste_collector, day)
         self._unit = ''
         self._hidden = False
         self._state = None
@@ -1478,7 +1483,7 @@ class WasteDateSensor(Entity):
         return self._state
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         return {
             ATTR_HIDDEN: self._hidden
         }
