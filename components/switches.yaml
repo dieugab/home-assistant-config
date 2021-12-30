@@ -61,21 +61,6 @@
           service: climate.turn_off
           entity_id: climate.tuya_duux_threesixty
 
-      # Set soundbar installation source to TV
-      soundbar_source_tv:
-        friendly_name: Soundbar TV
-        unique_id: soundbar_tv
-        value_template: "{{ is_state_attr('media_player.sonos_arc', 'source', 'TV') }}"
-        availability_template: "{{ states('media_player.sonos_arc') != 'unavailable' }}"
-        icon_template: mdi:youtube-tv
-        turn_on:
-          service: media_player.select_source
-          entity_id: media_player.sonos_arc
-          data:
-            source: TV
-        turn_off:
-          service: script.dummy
-
     # Adaptive Lighting for woonkamer area
   - platform: template
     switches:
@@ -277,11 +262,11 @@
              and is_state('input_select.home_state_occupancy', 'On vacation')
           }}
         turn_on:
-          - service: input_select.select_option
-            entity_id: input_select.home_state_occupancy
-            data:
-              option: On vacation
+          - service: script.turn_on
+            entity_id: script.home_occupancy_on_vacation
         turn_off:
+          - service: script.turn_on
+            entity_id: script.home_occupancy_from_vacation
           - service: switch.turn_on
             data_template:
               entity_id: >
@@ -290,6 +275,7 @@
                 {% else %}
                   switch.home_occupancy
                 {% endif %}
+            
 
 # █ █ █▀█ █▀▄▀█ █▀▀   █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀ █▀ #
 # █▀█ █▄█ █ ▀ █ ██▄   ▄█  █  █▀█  █  ██▄ ▄█ #
@@ -326,7 +312,6 @@
         icon_template: mdi:weather-sunny
         value_template: >-
           {{ is_state('input_select.home_state', 'Day')
-             and is_state('input_boolean.air_purifier', 'on')
              and is_state('cover.slaapkamer_rolgordijnen', 'open')
              and is_state('cover.keuken_rolgordijnen', 'open')
              }}
