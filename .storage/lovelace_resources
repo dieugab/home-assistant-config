@@ -20,7 +20,7 @@
                 "id": "6b94102141f44a7f96b3b89d6f2d6cad"
             },
             {
-                "url": "/hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js",
+                "url": "/hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js?hacstag=178921037441",
                 "type": "module",
                 "id": "54958fef7844442b9407c89985018350"
             },
@@ -60,7 +60,7 @@
                 "id": "8cd7dbf4197c4b8092a6b88939b77304"
             },
             {
-                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=350509867081",
+                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=350509867092",
                 "type": "module",
                 "id": "33f96aedc939414dacf8a248e98fb779"
             },
@@ -70,7 +70,7 @@
                 "id": "274103ba270c4e71aadf75789be8a538"
             },
             {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=3844345221115",
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522120",
                 "type": "module",
                 "id": "1d27dae02d1741f8a2b19683f30107cd"
             },
