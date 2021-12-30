@@ -27,7 +27,7 @@ fan_off:
   - service: scene.turn_on
     target:
       entity_id: scene.flex_off
-  - wait_template: '{{ is_state(''input_boolean.whisper_flex'', ''off'') }}'
+  - wait_template: '{{ is_state(''fan.tuya_whisper_flex'', ''off'') }}'
     continue_on_timeout: false
   - service: input_select.select_option
     target:
@@ -520,9 +520,16 @@ mode_party:
     data:
       entity_id: switch.adaptive_lighting_ruimten
       lights: light.keuken_groep
-  - service: light.turn_on
-    target:
-      entity_id: light.woonkamer_groep
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.woonkamer_groep
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.woonkamer_groep
+    default: []
   - service: switch.turn_off
     target:
       entity_id: switch.begane_grond_adaptive_lighting
@@ -772,6 +779,9 @@ home_state_day:
     - service: switch.turn_on
       target:
         entity_id: switch.home_occupancy
+    - service: fan.turn_on
+      target:
+        entity_id: fan.smartmi_p1
   - service: light.turn_off
     target:
       entity_id:
@@ -779,9 +789,6 @@ home_state_day:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.slaapkamer_control
-  - service: fan.turn_on
-    target:
-      entity_id: fan.smartmi_p1
   - choose:
     - conditions:
       - condition: state
@@ -1287,3 +1294,38 @@ action_conditional_heating:
     default: []
   mode: single
   icon: mdi:hvac
+home_occupancy_on_vacation:
+  alias: Home Occupancy - On vacation
+  sequence:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.home_state_occupancy
+    data:
+      option: On vacation
+  - service: climate.turn_off
+    target:
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.kledingkamer_radiator
+      - climate.studiekamer_radiator
+      - climate.slaapkamer_radiator
+  - service: fan.turn_off
+    target:
+      entity_id: fan.smartmi_p1
+  mode: single
+  icon: mdi:arrow-right-circle-outline
+home_occupancy_from_vacation:
+  alias: Home Occupancy - From vacation
+  sequence:
+  - service: climate.turn_on
+    target:
+      entity_id:
+      - climate.woonkamer_centrale_verwarming
+      - climate.kledingkamer_radiator
+      - climate.studiekamer_radiator
+      - climate.slaapkamer_radiator
+  - service: fan.turn_on
+    target:
+      entity_id: fan.smartmi_p1
+  mode: single
+  icon: mdi:arrow-left-circle
