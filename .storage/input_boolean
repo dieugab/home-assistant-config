@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "minor_version": 1,
     "key": "input_boolean",
     "data": {
         "items": [
@@ -56,11 +57,6 @@
                 "name": "Home State Automatic",
                 "icon": "mdi:progress-clock",
                 "id": "home_state_automatic"
-            },
-            {
-                "name": "Whisper Flex",
-                "icon": "mdi:fan",
-                "id": "whisper_flex"
             },
             {
                 "name": "Control - Dummy",

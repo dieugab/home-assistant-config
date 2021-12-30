@@ -7,25 +7,18 @@
       whisper_flex:
         friendly_name: "Whisper Flex"
         unique_id: template_fan_whisper_flex
-#        availability_template: "{{ states('switch.whisper_flex_ultimate') != 'unavailable' }}" #workaround: availability_template of the switch
-#        value_template: "{{ states('fan.tuya_whisper_flex') }}"
-#        value_template: "{{ states('switch.whisper_flex_ultimate') }}" #workaround: value_template of the switch
-#        percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int * 10) }}"
-        value_template: "{{ states('input_boolean.whisper_flex') }}" #2nd workaround: value_template of a helper
-        percentage_template: "{{ states('input_number.whisper_flex_percentage') }}" #workaround: percentage_template of the helper
+        availability_template: "{{ states('fan.tuya_whisper_flex') != 'unavailable' }}"
+        value_template: "{{ states('fan.tuya_whisper_flex') }}"
+        percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int * 10) }}"
         preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
         oscillating_template: "{{ states('input_select.whisper_flex_oscillating') }}"
 #        direction_template: "{{ states('input_select.whisper_flex_direction') }}" #direction not used
         turn_on:
-          - service: input_boolean.turn_on #workaround voor HA 2021.11.0
-            entity_id: input_boolean.whisper_flex
           - service: fan.turn_on
             target:
               entity_id: fan.tuya_whisper_flex
         turn_off:
-          - service: input_boolean.turn_off #workaround voor HA 2021.11.0
-            entity_id: input_boolean.whisper_flex
-          - service: script.fan_off #workaround: script wait_template set to the helper instead of fan entity
+          - service: script.fan_off
         set_percentage:
           service: script.fan_set_speed
           data:
