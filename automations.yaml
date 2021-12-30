@@ -2296,37 +2296,3 @@
     target:
       entity_id: media_player.apple_tv
   mode: single
-- id: '1639308181050'
-  alias: Housekeeping - Keep blinds alive
-  description: ''
-  trigger:
-  - platform: time
-    at: '12:00'
-  - platform: time
-    at: '15:00'
-  - platform: time
-    at: '18:00'
-  condition:
-  - condition: state
-    entity_id: cover.slaapkamer_l
-    state: open
-  - condition: state
-    entity_id: cover.slaapkamer_r
-    state: open
-  action:
-  - service: cover.set_cover_position
-    target:
-      entity_id: cover.slaapkamer_rolgordijnen
-    data:
-      position: 99
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 3
-      milliseconds: 0
-  - service: cover.set_cover_position
-    target:
-      entity_id: cover.slaapkamer_rolgordijnen
-    data:
-      position: 100
-  mode: single
