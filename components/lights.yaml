@@ -105,6 +105,13 @@
       - light.edison_lamp
       - light.tarnaby_lamp
 
+  - platform: group
+    name: Woonkamer Play Lichtbalk
+    unique_id: ha_woonkamer_play_lichtbalk
+    entities:
+      - light.woonkamer_play_lichtbalk_l
+      - light.woonkamer_play_lichtbalk_r
+
     # Filament Lamps
   - platform: group
     name: Filament Lamps
