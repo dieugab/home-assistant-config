@@ -591,7 +591,7 @@
       entity_id: light.trapkast_lamp
   mode: restart
 - id: '1613545624056'
-  alias: Security - Alarm TRIGGERED
+  alias: Security - Alarm PENDING
   description: Automation to trigger the security system
   trigger:
   - platform: state
@@ -618,28 +618,6 @@
   - service: alarm_control_panel.alarm_trigger
     data: {}
     entity_id: alarm_control_panel.security_system
-  - service: script.turn_on
-    target:
-      entity_id: script.sonos_alarm
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.woonkamer_groep
-      - light.slaapkamer_groep
-      - light.gang_lamp
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
-  - service: light.turn_on
-    data:
-      brightness_pct: 100
-    target:
-      entity_id:
-      - light.woonkamer_groep
-      - light.slaapkamer_groep
-      - light.gang_lamp
-      - light.achtertuin_buitenlamp
-      - light.voortuin_buitenlamp
   mode: single
 - id: '1613546123645'
   alias: Security - Alarm DISARMED
@@ -694,13 +672,13 @@
       - service: tts.cloud_say
         data:
           entity_id: media_player.sonos_arc
-          message: Alarm ingeschakeld over 2 minuten
+          message: Alarm ingeschakeld over 1 minuut
           options:
             gender: female
       - delay:
           hours: 0
           minutes: 0
-          seconds: 1
+          seconds: 5
           milliseconds: 0
       - wait_template: '{{ is_state(''media_player.sonos_arc'', ''paused'') }}'
       - service: sonos.restore
@@ -1697,7 +1675,7 @@
     set to On vacation
   trigger:
   - platform: time
-    at: '23:00:00'
+    at: '23:00'
   condition:
   - condition: state
     entity_id: input_select.home_state_occupancy
@@ -1717,7 +1695,7 @@
     target:
       entity_id:
       - light.woonkamer_groep
-      - light.woonkamer_kerstboom
+      - light.woonkamer_kastverlichting
   mode: single
 - id: '1634824004562'
   alias: Home State - Morning
@@ -1922,10 +1900,7 @@
     - conditions:
       - condition: trigger
         id: shanna
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id: light.woonkamer_kerstboom
+      sequence: []
     - conditions:
       - condition: trigger
         id: gabriel
@@ -1968,10 +1943,7 @@
     - conditions:
       - condition: trigger
         id: shanna
-      sequence:
-      - service: light.turn_off
-        target:
-          entity_id: light.woonkamer_kerstboom
+      sequence: []
     default: []
   mode: single
 - id: '1636030085546'
@@ -2295,4 +2267,36 @@
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
+  mode: single
+- id: '1641221018864'
+  alias: Security - Alarm TRIGGERED
+  description: Actions to run when the security system is triggered
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.security_system
+    to: triggered
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id: script.sonos_alarm
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_groep
+      - light.slaapkamer_groep
+      - light.gang_lamp
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
+  - service: light.turn_on
+    data:
+      brightness_pct: 100
+    target:
+      entity_id:
+      - light.woonkamer_groep
+      - light.slaapkamer_groep
+      - light.gang_lamp
+      - light.achtertuin_buitenlamp
+      - light.voortuin_buitenlamp
   mode: single
