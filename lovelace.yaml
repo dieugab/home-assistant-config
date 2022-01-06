@@ -149,8 +149,6 @@ views:
         - entity: light.woonkamer_play_lichtbalk
           name: Play Lichtbalk
         - type: divider
-        - entity: light.woonkamer_kerstboom
-          name: Kerstboom
         - entity: light.woonkamer_kastverlichting
           name: Kastverlichting
         - entity: light.woonkamer_eettafel_lamp
