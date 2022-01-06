@@ -186,7 +186,7 @@ mode_privacy:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 3
+      seconds: 5
       milliseconds: 0
   - service: input_select.select_option
     target:
@@ -238,7 +238,6 @@ mode_cinema:
       entity_id:
       - light.filament_lamps
       - light.woonkamer_lamp
-      - light.woonkamer_kerstboom
       - light.woonkamer_kastverlichting
   mode: single
   icon: mdi:movie-roll
@@ -345,7 +344,6 @@ action_all_lights_off:
     target:
       entity_id:
       - light.woonkamer_groep
-      - light.woonkamer_kerstboom
       - light.woonkamer_kastverlichting
   - delay:
       hours: 0
@@ -422,7 +420,6 @@ action_easy_entry:
       - light.woonkamer_eettafel_lamp
       - light.filament_lamps
       - light.play_gradient_lightstrip
-      - light.woonkamer_kerstboom
   - service: cover.open_cover
     target:
       entity_id:
@@ -445,7 +442,6 @@ action_easy_entry:
         hours: 0
         minutes: 0
         seconds: 30
-        milliseconds: 0
     - platform: state
       entity_id: binary_sensor.voordeur_sensor
       from: 'on'
@@ -614,7 +610,6 @@ home_state_evening:
           - light.woonkamer_eettafel_lamp
           - light.filament_lamps
           - light.play_gradient_lightstrip
-          - light.woonkamer_kerstboom
           - light.woonkamer_kastverlichting
       - service: switch.turn_off
         target:
@@ -639,7 +634,6 @@ home_state_evening:
           - light.woonkamer_eettafel_lamp
           - light.filament_lamps
           - light.play_gradient_lightstrip
-          - light.woonkamer_kerstboom
           - light.woonkamer_kastverlichting
       - service: cover.close_cover
         target:
@@ -965,9 +959,6 @@ home_occupancy_home:
       entity_id: input_select.home_state_occupancy
     data:
       option: Home
-  - condition: state
-    entity_id: switch.party_mode
-    state: 'off'
   - service: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.security_system
@@ -977,6 +968,10 @@ home_occupancy_home:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_woonkamer
       - switch.adaptive_lighting_sleep_mode_filaments
+      - switch.adaptive_lighting_sleep_mode_slaapkamer
+  - condition: state
+    entity_id: switch.party_mode
+    state: 'off'
   - service: climate.set_preset_mode
     target:
       entity_id:
@@ -1005,7 +1000,6 @@ home_occupancy_home:
       - light.woonkamer_eettafel_lamp
       - light.filament_lamps
       - light.play_gradient_lightstrip
-      - light.woonkamer_kerstboom
       - light.woonkamer_kastverlichting
   mode: single
   icon: mdi:home-circle
@@ -1026,6 +1020,7 @@ home_occupancy_sleeping:
       - switch.adaptive_lighting_sleep_mode_ruimten
       - switch.adaptive_lighting_sleep_mode_woonkamer
       - switch.adaptive_lighting_sleep_mode_filaments
+      - switch.adaptive_lighting_sleep_mode_slaapkamer
   - service: climate.set_preset_mode
     target:
       entity_id:
