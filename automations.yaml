@@ -1141,19 +1141,7 @@
   - platform: event
     event_type: homekit_state_change
     event_data:
-      entity_id: light.play_lichtbalk
-      service: turn_on
-    id: studiekamer
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.play_lichtbalk_l
-      service: turn_on
-    id: studiekamer
-  - platform: event
-    event_type: homekit_state_change
-    event_data:
-      entity_id: light.play_lichtbalk_r
+      entity_id: light.studiekamer_lightstrip_plus
       service: turn_on
     id: studiekamer
   - platform: event
@@ -2226,7 +2214,6 @@
       hours: 0
       minutes: 0
       seconds: 3
-      milliseconds: 0
   condition:
   - condition: and
     conditions:

@@ -216,9 +216,9 @@ views:
       - entities:
         - entity: input_select.studiekamer_scenes
           name: Scenes
-        - entity: light.play_lichtbalk_l
-        - entity: light.play_lichtbalk_r
         - type: divider
+        - entity: light.studiekamer_lightstrip_plus
+          name: Lightstrip
         - entity: light.studiekamer_lamp
           name: Hanglamp
         - entity: light.studiekamer_bureauspot
