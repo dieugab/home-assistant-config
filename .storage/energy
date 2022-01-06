@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "minor_version": 1,
     "key": "energy",
     "data": {
         "energy_sources": [
@@ -11,14 +12,14 @@
                         "stat_cost": null,
                         "entity_energy_from": "sensor.p1_meter_total_power_import_t1",
                         "entity_energy_price": null,
-                        "number_energy_price": 0.23109
+                        "number_energy_price": 0.25677
                     },
                     {
                         "stat_energy_from": "sensor.p1_meter_total_power_import_t2",
                         "stat_cost": null,
                         "entity_energy_from": "sensor.p1_meter_total_power_import_t2",
                         "entity_energy_price": null,
-                        "number_energy_price": 0.24839
+                        "number_energy_price": 0.32284
                     }
                 ],
                 "flow_to": [
@@ -27,14 +28,14 @@
                         "stat_compensation": null,
                         "entity_energy_to": "sensor.p1_meter_total_power_export_t1",
                         "entity_energy_price": null,
-                        "number_energy_price": 0.23109
+                        "number_energy_price": 0.25677
                     },
                     {
                         "stat_energy_to": "sensor.p1_meter_total_power_export_t2",
                         "stat_compensation": null,
                         "entity_energy_to": "sensor.p1_meter_total_power_export_t2",
                         "entity_energy_price": null,
-                        "number_energy_price": 0.24839
+                        "number_energy_price": 0.32284
                     }
                 ],
                 "cost_adjustment_day": 0.0
