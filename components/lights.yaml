@@ -52,23 +52,23 @@
           data:
             effect: "{{ effect }}"
 
-      # Template light for Christmas tree lighting
-      woonkamer_kerstboom:
-        friendly_name: "Woonkamer Kerstboom"
-        unique_id: woonkamer_kerstboom
-        icon_template: >-
-          {% if is_state('switch.woonkamer_plug', 'on') %}
-            mdi:string-lights
-          {% else %}
-            mdi:string-lights-off
-          {% endif %}
-        value_template: "{{ states('switch.woonkamer_plug') }}"
-        turn_on:
-          service: switch.turn_on
-          entity_id: switch.woonkamer_plug
-        turn_off:
-          service: switch.turn_off
-          entity_id: switch.woonkamer_plug
+      # Template light for Christmas tree lighting (disabled)
+#      woonkamer_kerstboom:
+#        friendly_name: "Woonkamer Kerstboom"
+#        unique_id: woonkamer_kerstboom
+#        icon_template: >-
+#          {% if is_state('switch.woonkamer_plug', 'on') %}
+#            mdi:string-lights
+#          {% else %}
+#            mdi:string-lights-off
+#          {% endif %}
+#        value_template: "{{ states('switch.woonkamer_plug') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          entity_id: switch.woonkamer_plug
+#        turn_off:
+#          service: switch.turn_off
+#          entity_id: switch.woonkamer_plug
           
 
       # Template light for closset lighting
