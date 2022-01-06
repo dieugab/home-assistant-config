@@ -1,5 +1,6 @@
 {
     "version": 2,
+    "minor_version": 1,
     "key": "scheduler.storage",
     "data": {
         "schedules": [
@@ -24,6 +25,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -52,6 +54,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -93,6 +96,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -121,6 +125,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -162,6 +167,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -190,6 +196,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -211,49 +218,7 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "",
-                "enabled": true
-            },
-            {
-                "schedule_id": "6c73b2",
-                "timeslots": [
-                    {
-                        "start": "06:45:00",
-                        "stop": null,
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Sleeping",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "or",
-                        "actions": [
-                            {
-                                "service": "light.turn_on",
-                                "entity_id": "light.woonkamer_kerstboom",
-                                "service_data": {}
-                            }
-                        ]
-                    }
-                ],
-                "weekdays": [
-                    "mon",
-                    "tue",
-                    "thu",
-                    "fri"
-                ],
-                "start_date": null,
-                "end_date": null,
-                "repeat_type": "repeat",
-                "name": "",
-                "enabled": true
+                "enabled": false
             },
             {
                 "schedule_id": "f60e14",
@@ -276,6 +241,7 @@
                             }
                         ],
                         "condition_type": "and",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "input_select.select_option",
@@ -304,6 +270,7 @@
                             }
                         ],
                         "condition_type": "and",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "input_select.select_option",
@@ -339,6 +306,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -361,6 +329,7 @@
                             }
                         ],
                         "condition_type": "or",
+                        "track_conditions": false,
                         "actions": [
                             {
                                 "service": "climate.set_preset_mode",
@@ -399,12 +368,6 @@
                 "name": "Purifier",
                 "schedules": [
                     "f60e14"
-                ]
-            },
-            {
-                "name": "Lights",
-                "schedules": [
-                    "6c73b2"
                 ]
             }
         ]
