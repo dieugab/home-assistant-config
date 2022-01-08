@@ -264,9 +264,15 @@
         turn_on:
           - service: script.turn_on
             entity_id: script.home_occupancy_on_vacation
+            data:
+              variables:
+                state: "on vacation"
         turn_off:
           - service: script.turn_on
-            entity_id: script.home_occupancy_from_vacation
+            entity_id: script.home_occupancy_on_vacation
+            data:
+              variables:
+                state: "from vacation"
           - service: switch.turn_on
             data_template:
               entity_id: >

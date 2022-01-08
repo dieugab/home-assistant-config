@@ -448,9 +448,8 @@ fan_set_preset_mode:
       option: '{{ preset_mode }}'
   - service: scene.turn_on
     data_template:
-      entity_id: "{% if preset_mode == 'Normal Mode' %}\n  scene.flex_normal_mode\n\
-        {% elif preset_mode == 'Sleep Mode' %}\n  scene.flex_sleep_mode\n{% elif preset_mode\
-        \ == 'Nature Mode' %}\n  scene.flex_nature_mode\n{% endif %}"
+      entity_id: '{{ "scene.flex_" + states("input_select.whisper_flex_preset_modes")|lower|replace("
+        ", "_")|string }}'
   mode: single
   icon: mdi:fan-plus
 fan_set_speed:
@@ -480,17 +479,8 @@ fan_set_speed:
     target:
       entity_id: fan.tuya_whisper_flex
     data_template:
-      percentage: "{% if states(\"input_number.whisper_flex_percentage\") == '10.0'\
-        \ %}\n  1\n{% elif states(\"input_number.whisper_flex_percentage\") == '20.0'\
-        \ %}\n  2\n{% elif states(\"input_number.whisper_flex_percentage\") == '30.0'\
-        \ %}\n  3\n{% elif states(\"input_number.whisper_flex_percentage\") == '40.0'\
-        \ %}\n  4\n{% elif states(\"input_number.whisper_flex_percentage\") == '50.0'\
-        \ %}\n  5\n{% elif states(\"input_number.whisper_flex_percentage\") == '60.0'\
-        \ %}\n  6\n{% elif states(\"input_number.whisper_flex_percentage\") == '70.0'\
-        \ %}\n  7\n{% elif states(\"input_number.whisper_flex_percentage\") == '80.0'\
-        \ %}\n  8\n{% elif states(\"input_number.whisper_flex_percentage\") == '90.0'\
-        \ %}\n  9\n{% elif states(\"input_number.whisper_flex_percentage\") == '100.0'\
-        \ %}\n  10\n{% endif %}"
+      percentage: '{{ states("input_number.whisper_flex_percentage")|replace("0.0",
+        "") }}'
   mode: single
   icon: mdi:fan-speed-1
 mode_party:
@@ -814,8 +804,7 @@ ambilight_set_sync_mode:
   - service: huesyncbox.set_sync_mode
     entity_id: media_player.play_sync_box
     data_template:
-      mode: "{% if effect == 'Video' %}\n  video\n{% elif effect == 'Music' %}\n \
-        \ music\n{% elif effect == 'Game' %}\n  game\n{% endif %}"
+      mode: '{{ effect|lower }}'
   mode: single
   icon: mdi:television-ambient-light
 scenes_play_gradient:
@@ -1252,38 +1241,43 @@ action_conditional_heating:
 home_occupancy_on_vacation:
   alias: Home Occupancy - On vacation
   sequence:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.home_state_occupancy
-    data:
-      option: On vacation
-  - service: climate.turn_off
-    target:
-      entity_id:
-      - climate.woonkamer_centrale_verwarming
-      - climate.kledingkamer_radiator
-      - climate.studiekamer_radiator
-      - climate.slaapkamer_radiator
-  - service: fan.turn_off
-    target:
-      entity_id: fan.smartmi_p1
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ state == ''on vacation'' }}'
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.home_state_occupancy
+        data:
+          option: On vacation
+      - service: climate.turn_off
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.kledingkamer_radiator
+          - climate.studiekamer_radiator
+          - climate.slaapkamer_radiator
+      - service: fan.turn_off
+        target:
+          entity_id: fan.smartmi_p1
+    - conditions:
+      - condition: template
+        value_template: '{{ state == ''from vacation'' }}'
+      sequence:
+      - service: climate.turn_on
+        target:
+          entity_id:
+          - climate.woonkamer_centrale_verwarming
+          - climate.kledingkamer_radiator
+          - climate.studiekamer_radiator
+          - climate.slaapkamer_radiator
+      - service: fan.turn_on
+        target:
+          entity_id: fan.smartmi_p1
+    default: []
   mode: single
   icon: mdi:arrow-right-circle-outline
-home_occupancy_from_vacation:
-  alias: Home Occupancy - From vacation
-  sequence:
-  - service: climate.turn_on
-    target:
-      entity_id:
-      - climate.woonkamer_centrale_verwarming
-      - climate.kledingkamer_radiator
-      - climate.studiekamer_radiator
-      - climate.slaapkamer_radiator
-  - service: fan.turn_on
-    target:
-      entity_id: fan.smartmi_p1
-  mode: single
-  icon: mdi:arrow-left-circle
 scenes_generic:
   alias: Scenes - Generic Component
   sequence:
