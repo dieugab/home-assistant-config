@@ -883,12 +883,10 @@ scenes_studiekamer:
   alias: Scenes - Studiekamer
   sequence:
   - service: "{% if states(\"input_select.studiekamer_scenes\") == 'Adaptive Lighting'\
-      \ %}\n  adaptive_lighting.set_manual_control\n{% else %}\n  script.dummy\n{%\
-      \ endif %}\n"
+      \ %}\n  adaptive_lighting.apply\n{% else %}\n  script.dummy\n{% endif %}\n"
     data:
       entity_id: switch.adaptive_lighting_ruimten
       lights: light.studiekamer_groep
-      manual_control: false
   - condition: template
     value_template: '{{ states("input_select.studiekamer_scenes") != ''Adaptive Lighting''
       }}'
@@ -901,9 +899,9 @@ scenes_studiekamer:
       lights: light.studiekamer_groep
   - service: scene.turn_on
     data_template:
-      entity_id: "{% if states(\"input_select.studiekamer_scenes\") == 'Red & Blue'\
-        \ %}\n  scene.studiekamer_red_blue\n{% elif states(\"input_select.studiekamer_scenes\"\
-        ) == 'Orange & Blue' %}\n  scene.studiekamer_orange_blue\n{% endif %}"
+      entity_id: "{% if states(\"input_select.studiekamer_scenes\") == 'Chinatown'\
+        \ %}\n  scene.studiekamer_chinatown\n{% elif states(\"input_select.studiekamer_scenes\"\
+        ) == 'Midwinter' %}\n  scene.studiekamer_midwinter\n{% endif %}"
   mode: restart
   icon: mdi:palette-swatch
 home_occupancy_away:
