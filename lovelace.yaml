@@ -110,14 +110,13 @@ views:
             state_text:
               'off': Closed
               'on': Opened
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
-          position: center
         icon: mdi:lightbulb-on
         name: Trapkast
         secondary_info: brightness
@@ -340,16 +339,12 @@ views:
         extend_paper_buttons_row:
           buttons:
           - entity: sensor.samba_backup
-            layout: icon|name
-            name: "{% if is_state('sensor.samba_backup', 'IDLE') %}\n  Start\n{% elif\
-              \ is_state('sensor.samba_backup', 'RUNNING') %}\n  Running\n{% elif\
-              \ is_state('sensor.samba_backup', 'SUCCEEDED') %}\n  Finished\n{% elif\
-              \ is_state('sensor.samba_backup', 'FAILED') %}\n  Failed\n{% endif %}"
+            layout: icon|state
             state_icons:
-              FAILED: mdi:alert-circle
-              IDLE: mdi:plus-circle
-              RUNNING: mdi:play-circle
-              SUCCEEDED: mdi:check-circle
+              failed: mdi:alert-circle
+              idle: mdi:plus-circle
+              running: mdi:play-circle
+              succeeded: mdi:check-circle
             state_styles:
               failed:
                 button:
@@ -360,7 +355,12 @@ views:
               succeeded:
                 button:
                   color: var(--label-badge-green)
-            style:
+            state_text:
+              failed: Failed
+              idle: Start
+              running: Running
+              succeeded: Finised
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
@@ -391,7 +391,7 @@ views:
             layout: icon|state
             state:
               postfix: '%'
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
@@ -403,7 +403,7 @@ views:
             layout: icon|state
             state:
               postfix: '%'
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
@@ -432,7 +432,7 @@ views:
               rinse: Rinse
               spin: Spin
               wash: Wash
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
@@ -555,7 +555,7 @@ views:
                 poor:
                   button:
                     color: var(--label-badge-red)
-              style:
+              styles:
                 button:
                   background-color: var(--primary-background-color)
                   border-radius: 10px
@@ -671,21 +671,21 @@ views:
         - buttons:
           - entity: switch.privacy_mode
             name: Privacy
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
                 padding: 6px
           - entity: switch.party_mode
             name: Party
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
                 padding: 6px
           - entity: switch.cinema_mode
             name: Cinema
-            style:
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
@@ -1009,8 +1009,7 @@ views:
         extend_paper_buttons_row:
           buttons:
           - entity: select.tuya_duux_threesixty_temperature_level
-            layout: icon|name
-            name: false
+            layout: icon
             state_icons:
               '1': mdi:fan-speed-1
               '2': mdi:fan-speed-2
@@ -1022,7 +1021,7 @@ views:
               '3':
                 button:
                   color: var(--label-badge-red)
-            style:
+            styles:
               button:
                 background-color: var(--table-row-alternative-background-color)
                 border-radius: 10px
@@ -1053,7 +1052,7 @@ views:
               poor:
                 button:
                   color: var(--label-badge-red)
-            style:
+            styles:
               button:
                 background-color: var(--table-row-alternative-background-color)
                 border-radius: 10px
@@ -1505,16 +1504,12 @@ views:
         extend_paper_buttons_row:
           buttons:
           - entity: sensor.samba_backup
-            layout: icon|name
-            name: "{% if is_state('sensor.samba_backup', 'IDLE') %}\n  Start\n{% elif\
-              \ is_state('sensor.samba_backup', 'RUNNING') %}\n  Running\n{% elif\
-              \ is_state('sensor.samba_backup', 'SUCCEEDED') %}\n  Finished\n{% elif\
-              \ is_state('sensor.samba_backup', 'FAILED') %}\n  Failed\n{% endif %}"
+            layout: icon|state
             state_icons:
-              FAILED: mdi:alert-circle
-              IDLE: mdi:plus-circle
-              RUNNING: mdi:play-circle
-              SUCCEEDED: mdi:check-circle
+              failed: mdi:alert-circle
+              idle: mdi:plus-circle
+              running: mdi:play-circle
+              succeeded: mdi:check-circle
             state_styles:
               failed:
                 button:
@@ -1525,7 +1520,12 @@ views:
               succeeded:
                 button:
                   color: var(--label-badge-green)
-            style:
+            state_text:
+              failed: Failed
+              idle: Start
+              running: Running
+              succeeded: Finised
+            styles:
               button:
                 background-color: var(--primary-background-color)
                 border-radius: 10px
