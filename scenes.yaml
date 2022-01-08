@@ -328,3 +328,65 @@
       supported_features: 44
       state: 'on'
   icon: mdi:palette-swatch
+- id: '1641654794238'
+  name: Slaapkamer - Nightlight
+  entities:
+    light.slaapkamer_lamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 38
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      is_deconz_group: false
+      icon: mdi:ceiling-light
+      friendly_name: Slaapkamer Lamp
+      supported_features: 40
+      state: 'on'
+    light.slaapkamer_hektar_lamp:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      is_deconz_group: false
+      icon: mdi:floor-lamp
+      friendly_name: Slaapkamer Hektar Lamp
+      supported_features: 40
+      state: 'off'
+    light.slaapkamer_nachtkastjes:
+      min_mireds: 140
+      max_mireds: 650
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 38
+      color_temp: 477
+      hs_color:
+      - 30.192
+      - 89.568
+      rgb_color:
+      - 255
+      - 141
+      - 26
+      xy_color:
+      - 0.59
+      - 0.386
+      entity_id:
+      - light.slaapkamer_nachtkastje_l
+      - light.slaapkamer_nachtkastje_r
+      icon: mdi:lamps
+      friendly_name: Slaapkamer Nachtkastjes
+      supported_features: 40
+      state: 'on'
+  icon: mdi:palette-swatch

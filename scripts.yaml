@@ -241,19 +241,6 @@ mode_cinema:
       - light.woonkamer_kastverlichting
   mode: single
   icon: mdi:movie-roll
-scenes_woonkamer:
-  alias: Scenes - Woonkamer
-  sequence:
-  - service: scene.turn_on
-    data_template:
-      entity_id: "{% if states(\"input_select.woonkamer_scenes\") == 'Woonkamer Lounge'\
-        \ %}\n  scene.woonkamer_lounge\n{% elif states(\"input_select.woonkamer_scenes\"\
-        ) == 'Woonkamer Visite' %}\n  scene.woonkamer_visite\n{% elif states(\"input_select.woonkamer_scenes\"\
-        ) == 'Woonkamer Overdag' %}\n  scene.woonkamer_overdag\n{% elif states(\"\
-        input_select.woonkamer_scenes\") == 'Woonkamer Helder' %}\n  scene.woonkamer_helder\n\
-        {% endif %}"
-  mode: restart
-  icon: mdi:palette-swatch
 sonos_alarm:
   alias: Sonos - Alarm
   sequence:
@@ -879,31 +866,6 @@ scenes_play_gradient:
         ) == 'Arctic aurora' %}\n  scene.woonkamer_arctic_aurora\n{% endif %}"
   mode: restart
   icon: mdi:gradient-horizontal
-scenes_studiekamer:
-  alias: Scenes - Studiekamer
-  sequence:
-  - service: "{% if states(\"input_select.studiekamer_scenes\") == 'Adaptive Lighting'\
-      \ %}\n  adaptive_lighting.apply\n{% else %}\n  script.dummy\n{% endif %}\n"
-    data:
-      entity_id: switch.adaptive_lighting_ruimten
-      lights: light.studiekamer_groep
-  - condition: template
-    value_template: '{{ states("input_select.studiekamer_scenes") != ''Adaptive Lighting''
-      }}'
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.studiekamer_control
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: switch.adaptive_lighting_ruimten
-      lights: light.studiekamer_groep
-  - service: scene.turn_on
-    data_template:
-      entity_id: "{% if states(\"input_select.studiekamer_scenes\") == 'Chinatown'\
-        \ %}\n  scene.studiekamer_chinatown\n{% elif states(\"input_select.studiekamer_scenes\"\
-        ) == 'Midwinter' %}\n  scene.studiekamer_midwinter\n{% endif %}"
-  mode: restart
-  icon: mdi:palette-swatch
 home_occupancy_away:
   alias: Home Occupancy - Away
   sequence:
@@ -1322,3 +1284,31 @@ home_occupancy_from_vacation:
       entity_id: fan.smartmi_p1
   mode: single
   icon: mdi:arrow-left-circle
+scenes_generic:
+  alias: Scenes - Generic Component
+  sequence:
+  - service: "{% if states(helper) == 'Adaptive Lighting' %}\n  adaptive_lighting.set_manual_control\n\
+      {% else %}\n  script.dummy\n{% endif %}\n"
+    data:
+      entity_id: '{{ adaptive_lighting }}'
+      lights: '{{ lights }}'
+      manual_control: false
+  - condition: template
+    value_template: '{{ states(helper) != ''Adaptive Lighting'' }}'
+  - service: input_boolean.turn_on
+    target:
+      entity_id: '{{ control }}'
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: '{{ adaptive_lighting }}'
+      lights: '{{ lights }}'
+  - service: scene.turn_on
+    data_template:
+      entity_id: "{% if room  == 'woonkamer' %}\n  {{ \"scene.\" + room + \"_\" +\
+        \ states(helper)|lower|replace(\" \", \"_\")|string }}\n{% elif room == 'studiekamer'\
+        \ %}\n  {{ \"scene.\" + room + \"_\" + states(helper)|lower|replace(\" \"\
+        , \"_\")|string }}\n{% elif room == 'slaapkamer' %}\n  {{ \"scene.\" + room\
+        \ + \"_\" + states(helper)|lower|replace(\" \", \"_\")|string }}\n{% endif\
+        \ %}"
+  mode: restart
+  icon: mdi:palette-swatch-variant

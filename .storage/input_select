@@ -7,10 +7,10 @@
             {
                 "name": "Scenes - Woonkamer",
                 "options": [
-                    "Woonkamer Lounge",
-                    "Woonkamer Visite",
-                    "Woonkamer Overdag",
-                    "Woonkamer Helder"
+                    "Lounge",
+                    "Visite",
+                    "Overdag",
+                    "Helder"
                 ],
                 "id": "woonkamer_scenes",
                 "icon": "mdi:palette-swatch"
@@ -129,6 +129,15 @@
                     "On vacation"
                 ],
                 "id": "home_state_occupancy"
+            },
+            {
+                "name": "Scenes - Slaapkamer",
+                "icon": "mdi:palette-swatch",
+                "options": [
+                    "Adaptive Lighting",
+                    "Nightlight"
+                ],
+                "id": "slaapkamer_scenes"
             }
         ]
     }

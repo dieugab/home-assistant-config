@@ -962,24 +962,33 @@
       take_control:
         entity_id: input_boolean.slaapkamer_control
       adaptive_lighting: switch.adaptive_lighting_slaapkamer
-      button_hue_hold:
-      - service: switch.turn_on
-        target:
-          entity_id: switch.night_state
+      button_hue_hold: []
       button_hue:
+      - service: input_select.select_next
+        target:
+          entity_id:
+          - input_select.slaapkamer_scenes
+      button_power_hold:
       - choose:
         - conditions:
           - condition: state
-            state: Evening
-            entity_id: input_select.home_state
+            entity_id: climate.slaapkamer_radiator
+            state: away
+            attribute: preset_mode
           sequence:
-          - service: switch.turn_on
+          - service: climate.set_preset_mode
             target:
-              entity_id: switch.sleeping_occupancy
+              entity_id:
+              - climate.slaapkamer_radiator
+            data:
+              preset_mode: none
         default:
-        - service: switch.turn_on
+        - service: climate.set_preset_mode
           target:
-            entity_id: switch.day_state
+            entity_id:
+            - climate.slaapkamer_radiator
+          data:
+            preset_mode: away
 - id: '1629971132565'
   alias: '@ Home Assistant - Startup'
   description: Actions to run at boot
@@ -1802,7 +1811,14 @@
   - service: script.turn_on
     target:
       entity_id:
-      - script.scenes_woonkamer
+      - script.scenes_generic
+    data:
+      variables:
+        room: woonkamer
+        lights: light.woonkamer_groep
+        helper: input_select.woonkamer_scenes
+        control: input_boolean.dummy_control
+        adaptive_lighting: switch.adaptive_lighting_woonkamer
   mode: restart
 - id: '1635416907472'
   alias: TV - Keep Lightstrip Off
@@ -1855,7 +1871,14 @@
   - service: script.turn_on
     target:
       entity_id:
-      - script.scenes_studiekamer
+      - script.scenes_generic
+    data:
+      variables:
+        room: studiekamer
+        lights: light.studiekamer_groep
+        helper: input_select.studiekamer_scenes
+        control: input_boolean.studiekamer_control
+        adaptive_lighting: switch.adaptive_lighting_ruimten
   mode: restart
 - id: '1635942495785'
   alias: deCONZ - Badkamer Hue Dimmer
@@ -2287,3 +2310,25 @@
       - light.achtertuin_buitenlamp
       - light.voortuin_buitenlamp
   mode: single
+- id: '1641654476195'
+  alias: Scenes - Slaapkamer
+  description: Change scenes based on an Input Select
+  trigger:
+  - platform: event
+    event_type: state_changed
+    event_data:
+      entity_id: input_select.slaapkamer_scenes
+  condition: []
+  action:
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.scenes_generic
+    data:
+      variables:
+        room: slaapkamer
+        lights: light.slaapkamer_groep
+        helper: input_select.slaapkamer_scenes
+        control: input_boolean.slaapkamer_control
+        adaptive_lighting: switch.adaptive_lighting_slaapkamer
+  mode: restart
