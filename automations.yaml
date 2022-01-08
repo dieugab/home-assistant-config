@@ -1844,20 +1844,6 @@
       - light.woonkamer_play_lichtbalk
   mode: parallel
   max: 2
-- id: '1635617614980'
-  alias: TV - Set Soundbar Source
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: media_player.sony_bravia_tv
-    from: 'off'
-    to: playing
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.soundbar_source_tv
-  mode: single
 - id: '1635855168121'
   alias: Scenes - Studiekamer
   description: Change scenes based on an Input Select
