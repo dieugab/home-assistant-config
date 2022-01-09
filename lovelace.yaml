@@ -176,6 +176,9 @@ views:
       type: entities
     - entities:
       - entities:
+        - entity: input_select.slaapkamer_scenes
+          name: Scenes
+        - type: divider
         - light.slaapkamer_lamp
         - light.slaapkamer_hektar_lamp
         - light.slaapkamer_nachtkastjes
@@ -1431,12 +1434,14 @@ views:
         - <b>{entity}</b>
         - '{action}'
         secondary_info: time
+      exclude: []
       include:
       - climate
       - fan
       - input_boolean
       - input_select
       - light
+      - script
       - switch
       show_add_button: true
       style: "ha-card {\n  padding-top: 0px;\n  padding-left: 10px;\n  padding-bottom:\
