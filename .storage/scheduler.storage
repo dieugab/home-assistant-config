@@ -218,7 +218,7 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "",
-                "enabled": false
+                "enabled": true
             },
             {
                 "schedule_id": "f60e14",
@@ -351,6 +351,34 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "",
+                "enabled": true
+            },
+            {
+                "schedule_id": "fd8dde",
+                "timeslots": [
+                    {
+                        "start": "04:00:00",
+                        "stop": null,
+                        "conditions": [],
+                        "condition_type": null,
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "script.action_restart_remote_assistant",
+                                "entity_id": "script.action_restart_remote_assistant",
+                                "service_data": {}
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "wed",
+                    "sun"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": null,
                 "enabled": true
             }
         ],

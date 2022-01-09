@@ -1298,11 +1298,13 @@ scenes_generic:
       lights: '{{ lights }}'
   - service: scene.turn_on
     data_template:
-      entity_id: "{% if room  == 'woonkamer' %}\n  {{ \"scene.\" + room + \"_\" +\
-        \ states(helper)|lower|replace(\" \", \"_\")|string }}\n{% elif room == 'studiekamer'\
-        \ %}\n  {{ \"scene.\" + room + \"_\" + states(helper)|lower|replace(\" \"\
-        , \"_\")|string }}\n{% elif room == 'slaapkamer' %}\n  {{ \"scene.\" + room\
-        \ + \"_\" + states(helper)|lower|replace(\" \", \"_\")|string }}\n{% endif\
-        \ %}"
+      entity_id: '{{ "scene." + room + "_" + states(helper)|lower|replace(" ", "_")|string
+        }}'
   mode: restart
   icon: mdi:palette-swatch-variant
+action_restart_remote_assistant:
+  alias: Action - Restart Remote Assistant
+  sequence:
+  - service: homeassistant.remote_assistant_restart
+  mode: single
+  icon: mdi:remote-desktop
