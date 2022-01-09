@@ -52,6 +52,9 @@
             },
             {
                 "stat_consumption": "sensor.keuken_smart_plug_consumption"
+            },
+            {
+                "stat_consumption": "sensor.studiekamer_klima10_energy"
             }
         ]
     }
