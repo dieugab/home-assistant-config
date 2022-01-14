@@ -22,6 +22,20 @@
           service: switch.turn_off
           entity_id: switch.keuken_smart_plug
 
+      # Ventilation system @ zolder
+      woonhuisventilatie:
+        friendly_name: Woonhuisventilatie
+        unique_id: woonhuisventilatie
+        value_template: "{{ is_state('switch.zolder_plug', 'on') }}"
+        availability_template: "{{ states('switch.zolder_plug') != 'unavailable' }}"
+        icon_template: mdi:home-export-outline
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.zolder_plug
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.zolder_plug
+
       # Security cam @ woonkamer
       security_cam:
         friendly_name: Security Cam
@@ -40,26 +54,6 @@
         turn_off:
           service: switch.turn_off
           entity_id: switch.aqara_g2h
-
-    # Duux ThreeSixty on/off
-  - platform: template
-    switches:
-      duux_threesixty_power:
-        friendly_name: Duux ThreeSixty Power
-        unique_id: duux_threesixty_power
-        value_template: "{{ is_state('climate.tuya_duux_threesixty', 'heat') }}"
-        icon_template: mdi:hvac
-        turn_on:
-          - service: climate.turn_on
-            entity_id: climate.tuya_duux_threesixty
-          - service: select.select_option
-            target:
-              entity_id: select.tuya_duux_threesixty_temperature_level
-            data:
-              option: '3'
-        turn_off:
-          service: climate.turn_off
-          entity_id: climate.tuya_duux_threesixty
 
     # Adaptive Lighting for woonkamer area
   - platform: template
