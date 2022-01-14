@@ -40,7 +40,7 @@
       entity_id: light.toilet_lamp
   mode: restart
 - id: '1610296743694'
-  alias: Motion - Gang (lux)
+  alias: Motion - Gang (generic)
   description: Turn on light when motion is detected, dim after inactivity and turn
     off after a delay
   trigger:
@@ -53,35 +53,12 @@
     entity_id: sensor.gang_light_sensor
     below: '50'
   action:
-  - service: adaptive_lighting.apply
+  - service: script.generic_component_motion
     data:
       lights: light.gang_lamp
-      entity_id: switch.adaptive_lighting_ruimten
-  - service: light.turn_on
-    data:
-      entity_id: light.gang_lamp
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.gang_motion_sensor
-      from: 'on'
-      to: 'off'
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 30
-        milliseconds: 0
-  - condition: state
-    entity_id: light.gang_lamp
-    state: 'on'
-  - service: light.turn_on
-    data_template:
-      entity_id: light.gang_lamp
-      brightness: '{{ (state_attr(''light.gang_lamp'', ''brightness'') / 2) | int
-        }}'
-  - delay: 00:00:30
-  - service: light.turn_off
-    data:
-      entity_id: light.gang_lamp
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      motion_sensor: binary_sensor.gang_motion_sensor
+      seconds_before_off: 30
   mode: restart
 - id: '1610298075630'
   alias: Motion - Overloop (lux)
@@ -171,6 +148,13 @@
     target:
       entity_id:
       - switch.begane_grond_adaptive_lighting
+  - service: input_select.select_option
+    target:
+      entity_id:
+      - input_select.woonkamer_scenes
+      - input_select.play_gradient_scenes
+    data:
+      option: Adaptive Lighting
   mode: single
 - id: '1610308361097'
   alias: Reset Control - Studiekamer
@@ -209,14 +193,16 @@
     entity_id: light.slaapkamer_groep
     from: 'on'
     to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.slaapkamer_control
-    state: 'on'
+  condition: []
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.slaapkamer_scenes
+    data:
+      option: Adaptive Lighting
   - condition: state
     entity_id: input_select.home_state_occupancy
     state: Home
-  action:
   - service: input_boolean.turn_off
     data: {}
     entity_id: input_boolean.slaapkamer_control
@@ -497,7 +483,7 @@
     entity_id: input_boolean.zolder_control
   mode: single
 - id: '1613139301090'
-  alias: Occupancy - Kledingkamer (lux)
+  alias: Occupancy - Kledingkamer (generic)
   description: Turn on light when activity is detected, dim after inactivity and turn
     off after a delay
   trigger:
@@ -506,39 +492,17 @@
     to: 'on'
     from: 'off'
   condition:
-  - type: is_illuminance
-    condition: device
-    device_id: 59a06333795076a244f24969e740c588
+  - condition: numeric_state
     entity_id: sensor.kledingkamer_light_sensor
-    domain: sensor
-    below: 50
+    below: '50'
   action:
-  - service: adaptive_lighting.apply
+  - service: script.generic_component_motion
     data:
       lights: light.kledingkamer_groep
-      entity_id: switch.adaptive_lighting_ruimten
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id: light.kledingkamer_groep
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.kledingkamer_occupancy
-      from: 'on'
-      to: 'off'
-      for: 00:00:30
-  - condition: state
-    entity_id: light.kledingkamer_groep
-    state: 'on'
-  - service: light.turn_on
-    data_template:
-      entity_id: light.kledingkamer_groep
-      brightness: '{{ (state_attr(''light.kledingkamer_groep'', ''brightness'') /
-        2) | int }}'
-  - delay: 00:00:30
-  - service: light.turn_off
-    data:
-      entity_id: light.kledingkamer_groep
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      motion_sensor: binary_sensor.kledingkamer_occupancy
+      seconds_before_dimmed: 30
+      seconds_before_off: 30
   mode: restart
 - id: '1613139430261'
   alias: Reset Control - Kledingkamer
@@ -826,55 +790,6 @@
       entity_id:
       - climate.woonkamer_centrale_verwarming
   mode: single
-- id: '1615373747590'
-  alias: Occupancy - Studiekamer (lux)
-  description: Turn on light when activity is detected, dim after inactivity and turn
-    off after a delay
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.studiekamer_occupancy
-    to: 'on'
-    from: 'off'
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: light.studiekamer_groep
-      state: 'on'
-    - condition: numeric_state
-      entity_id: sensor.studiekamer_light_sensor
-      below: '50'
-  action:
-  - service: adaptive_lighting.apply
-    data:
-      lights: light.studiekamer_groep
-      entity_id: switch.adaptive_lighting_ruimten
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.studiekamer_groep
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.studiekamer_occupancy
-      from: 'on'
-      to: 'off'
-      for: 00:00:30
-  - condition: state
-    entity_id: light.studiekamer_groep
-    state: 'on'
-  - service: light.turn_on
-    data_template:
-      entity_id: light.studiekamer_groep
-      brightness: '{{ (state_attr(''light.studiekamer_groep'', ''brightness'') / 2)
-        | int }}'
-  - delay: 00:00:30
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
-      - light.studiekamer_groep
-  mode: restart
 - id: '1625428959292'
   alias: deCONZ - Woonkamer STYRBAR Remote
   description: Remote to control light(s)
@@ -1006,119 +921,13 @@
       entity_id:
       - script.workaround_incorrect_person_state
       - script.workaround_incorrect_climate_temp
-  mode: single
-- id: '1630318612363'
-  alias: Notify - HACS Update
-  description: Notication when there is an update in HACS
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.hacs
-    above: '0'
-    below: '2'
-    id: single
-  - platform: numeric_state
-    entity_id: sensor.hacs
-    id: multiple
-    above: '1'
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: single
-      sequence:
-      - service: notify.notify
-        data:
-          title: homeOS
-          message: There is {{ states('sensor.hacs') }} pending update available in
-            HACS.
-          data:
-            subtitle: HACS Update
-            group: hacs_update
-            url: /hacs/entry
-    - conditions:
-      - condition: trigger
-        id: multiple
-      sequence:
-      - service: notify.notify
-        data:
-          title: homeOS
-          message: There are {{ states('sensor.hacs') }} pending updates available
-            in HACS.
-          data:
-            subtitle: HACS Update
-            group: hacs_update
-            url: /hacs/entry
-    default: []
-  mode: single
-- id: '1630333619882'
-  alias: Notify - deCONZ Update
-  description: Notification when there is an update for deCONZ
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.deconz_update_available
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      message: deCONZ {{ states('sensor.deconz_newest_version') }} is available and
-        you are currently on {{ states('sensor.deconz_version') }}.
-      title: homeOS
-      data:
-        subtitle: Add-on Update
-        group: update
-        url: /hassio/dashboard
-  mode: single
-- id: '1630659040650'
-  alias: Notify - Home Assistant OS Update
-  description: Notification when there is an update for Home Assistant
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.ha_updater
-    from: 'off'
-    to: 'on'
-    id: updater
-  - platform: event
-    event_type: timer.finished
-    id: reminder
-    event_data:
-      entity_id: timer.notification_reminder
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: updater
-      sequence:
-      - service: counter.increment
-        target:
-          entity_id: counter.notification_badge
-    default: []
   - service: notify.notify
     data_template:
-      title: homeOS
-      message: Home Assistant {{ state_attr('binary_sensor.ha_updater', 'latest_version')
-        }} is available and you are currently on {{ states('sensor.current_version')
-        }}. The last backup was created {{ states('sensor.samba_relative_backup')
-        }}.
+      message: delete_alert
       data:
-        subtitle: Software Update
-        group: update
-        url: /hassio/dashboard
-        actions:
-        - action: BACKUP
-          title: Create new backup
-          destructive: true
-        - action: LATER
-          title: Remind me later
-        - action: REMINDER
-          title: Remind me tomorrow
         push:
-          badge: '{{ states.counter.notification_badge.state }}'
+          badge: '{{ states(''sensor.software_update_badge'') }}'
   mode: single
-  max: 2
 - id: '1630663148251'
   alias: '@ HomeKit - Lighting Take Control (Ruimten)'
   description: Take manual control of lights when changed in HomeKit
@@ -1335,27 +1144,8 @@
     data:
       brightness_pct: 50
   mode: restart
-- id: '1632838313310'
-  alias: Notify - DSM Update
-  description: Notification when there is an update for Synology DSM
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.mesa_update_available
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      message: A new update for Synology DSM is available.
-      title: homeOS
-      data:
-        subtitle: DSM Update
-        group: update
-        url: http://mesa-connect.quickconnect.to
-  mode: single
 - id: '1632844874764'
-  alias: Notify - DSM Security Advisor
+  alias: Notifications - DSM Security Advisor
   description: Notificaton when there is a problem with DSM Security Advisor
   trigger:
   - platform: state
@@ -1373,130 +1163,42 @@
         group: security_advisor
         url: http://mesa-connect.quickconnect.to
   mode: single
-- id: '1633677187832'
-  alias: Notify - [Actions]
-  description: Automation to run notification actions
-  trigger:
-  - platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: BACKUP
-    id: backup
-  - platform: event
-    event_type: mobile_app_notification_action
-    id: reminder
-    event_data:
-      action: REMINDER
-  - platform: event
-    event_type: mobile_app_notification_action
-    id: later
-    event_data:
-      action: LATER
-  - platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: CONTAINER_REMINDER
-    id: container_reminder
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: backup
-      sequence:
-      - service: hassio.addon_stdin
-        data:
-          addon: 15d21743_samba_backup
-          input:
-            command: trigger
-            backup_name: Update-backup v{version} | {date}
-    - conditions:
-      - condition: trigger
-        id: reminder
-      sequence:
-      - service: timer.start
-        data:
-          duration: '86400'
-        target:
-          entity_id:
-          - timer.notification_reminder
-    - conditions:
-      - condition: trigger
-        id: later
-      sequence:
-      - service: timer.start
-        data:
-          duration: '21600'
-        target:
-          entity_id:
-          - timer.notification_reminder
-    - conditions:
-      - condition: trigger
-        id: container_reminder
-      sequence:
-      - service: timer.start
-        data:
-          duration: '3600'
-        target:
-          entity_id: timer.notification_container
-    default: []
-  mode: parallel
-  max: 2
 - id: '1633677257665'
-  alias: Notify - [Decrement Badge]
+  alias: Notifications - Clear update badge
   description: Automation to decrement the iOS app badge when an update has been completed
   trigger:
-  - platform: homeassistant
-    event: start
   - platform: state
     entity_id: binary_sensor.ha_updater
     to: 'off'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.ha_updater
-    state: 'off'
-  - condition: numeric_state
-    entity_id: counter.notification_badge
-    above: '0'
+  - platform: state
+    entity_id: binary_sensor.deconz_update_available
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.mesa_update_available
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.hacs_updater
+    to: 'off'
+  condition: []
   action:
-  - service: counter.decrement
-    target:
-      entity_id: counter.notification_badge
   - service: notify.notify
     data_template:
       message: delete_alert
       data:
         push:
-          badge: '{{ states.counter.notification_badge.state }}'
-  mode: single
+          badge: '{{ states(''sensor.software_update_badge'') }}'
+  mode: queued
+  max: 10
 - id: '1633677326484'
-  alias: Notify - HVC inzameling
+  alias: Notifications - Afvalbeheer
   description: Notification when the trash is being picked up the next day
   trigger:
   - platform: time
     at: '18:00'
-  - platform: event
-    event_type: timer.finished
-    event_data:
-      entity_id: timer.notification_container
   condition:
-  - condition: or
-    conditions:
-    - condition: numeric_state
-      entity_id: sensor.hvc_gft
-      above: '0'
-      below: '2'
-      attribute: Days_until
-    - condition: numeric_state
-      entity_id: sensor.hvc_papier
-      above: '0'
-      below: '2'
-      attribute: Days_until
-    - condition: numeric_state
-      entity_id: sensor.hvc_pmd
-      above: '0'
-      below: '2'
-      attribute: Days_until
+  - condition: numeric_state
+    entity_id: sensor.hvc_morgen
+    above: '0'
   action:
   - service: notify.notify
     data_template:
@@ -1509,12 +1211,9 @@
         \ wordt morgen opgehaald rond 07:30.' }}\n{% endif %}\n"
       data:
         group: containers
-        actions:
-        - action: CONTAINER_REMINDER
-          title: Herriner mij over 1 uur
   mode: single
 - id: '1633677373376'
-  alias: Notify - Backup State
+  alias: Notifications - Backups
   description: Notificaton when a backup is started, finished or a problem occurs
   trigger:
   - platform: state
@@ -1592,7 +1291,7 @@
       - input_boolean.keuken_control
   mode: single
 - id: '1634295922342'
-  alias: Occupancy - Keuken (lux)
+  alias: Occupancy - Keuken (generic)
   description: Turn on light when activity is detected, dim after inactivity and turn
     off after a delay
   trigger:
@@ -1605,36 +1304,12 @@
     entity_id: sensor.keuken_light_sensor
     below: '200'
   action:
-  - service: adaptive_lighting.apply
+  - service: script.generic_component_motion
     data:
       lights: light.keuken_groep
-      entity_id: switch.adaptive_lighting_ruimten
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id: light.keuken_groep
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.keuken_occupancy
-      from: 'on'
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 30
-        milliseconds: 0
-      to: 'off'
-  - condition: state
-    entity_id: light.keuken_groep
-    state: 'on'
-  - service: light.turn_on
-    data_template:
-      entity_id: light.keuken_groep
-      brightness: '{{ (state_attr(''light.keuken_groep'', ''brightness'') / 2) | int
-        }}'
-  - delay: 00:00:30
-  - service: light.turn_off
-    data:
-      entity_id: light.keuken_groep
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      motion_sensor: binary_sensor.keuken_occupancy
+      seconds_before_off: 30
   mode: restart
 - id: '1634823925779'
   alias: Home State - Evening
@@ -1782,22 +1457,6 @@
           mode: video
     default: []
   mode: single
-- id: '1635409934820'
-  alias: Scenes - Play Gradient
-  description: Change scenes based on an Input Select
-  trigger:
-  - platform: event
-    event_type: call_service
-    event_data:
-      domain: input_select
-      service_data:
-        entity_id: input_select.play_gradient_scenes
-  condition: []
-  action:
-  - service: script.turn_on
-    target:
-      entity_id: script.scenes_play_gradient
-  mode: restart
 - id: '1635414861833'
   alias: Scenes - Woonkamer
   description: Change scenes based on an Input Select
@@ -1808,17 +1467,13 @@
       entity_id: input_select.woonkamer_scenes
   condition: []
   action:
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.scenes_generic
+  - service: script.generic_component_scenes
     data:
-      variables:
-        room: woonkamer
-        lights: light.woonkamer_groep
-        helper: input_select.woonkamer_scenes
-        control: input_boolean.dummy_control
-        adaptive_lighting: switch.adaptive_lighting_woonkamer
+      room: Woonkamer
+      lights: light.woonkamer_groep
+      adaptive_lighting: switch.adaptive_lighting_woonkamer
+      control: input_boolean.dummy_control
+      helper: input_select.woonkamer_scenes
   mode: restart
 - id: '1635416907472'
   alias: TV - Keep Lightstrip Off
@@ -1854,17 +1509,13 @@
       entity_id: input_select.studiekamer_scenes
   condition: []
   action:
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.scenes_generic
+  - service: script.generic_component_scenes
     data:
-      variables:
-        room: studiekamer
-        lights: light.studiekamer_groep
-        helper: input_select.studiekamer_scenes
-        control: input_boolean.studiekamer_control
-        adaptive_lighting: switch.adaptive_lighting_ruimten
+      room: Studiekamer
+      lights: light.studiekamer_groep
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      control: input_boolean.studiekamer_control
+      helper: input_select.studiekamer_scenes
   mode: restart
 - id: '1635942495785'
   alias: deCONZ - Badkamer Hue Dimmer
@@ -2306,15 +1957,148 @@
       entity_id: input_select.slaapkamer_scenes
   condition: []
   action:
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.scenes_generic
+  - service: script.generic_component_scenes
     data:
-      variables:
-        room: slaapkamer
-        lights: light.slaapkamer_groep
-        helper: input_select.slaapkamer_scenes
-        control: input_boolean.slaapkamer_control
-        adaptive_lighting: switch.adaptive_lighting_slaapkamer
+      room: Slaapkamer
+      lights: light.slaapkamer_groep
+      adaptive_lighting: switch.adaptive_lighting_slaapkamer
+      control: input_boolean.slaapkamer_control
+      helper: input_select.slaapkamer_scenes
+  mode: restart
+- id: '1641810613374'
+  alias: Occupancy - Studiekamer (generic)
+  description: Turn on light when activity is detected, dim after inactivity and turn
+    off after a delay
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.studiekamer_occupancy
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.studiekamer_light_sensor
+    below: '50'
+  action:
+  - service: script.generic_component_motion
+    data:
+      lights: light.studiekamer_groep
+      adaptive_lighting: switch.adaptive_lighting_ruimten
+      motion_sensor: binary_sensor.studiekamer_occupancy
+      seconds_before_off: 30
+  mode: restart
+- id: '1642085148007'
+  alias: Notifications - Software Update
+  description: Notification when there is an update for software
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.deconz_update_available
+    from: 'off'
+    to: 'on'
+    id: deconz
+  - platform: state
+    entity_id: binary_sensor.mesa_update_available
+    from: 'off'
+    to: 'on'
+    id: dsm
+  - platform: state
+    entity_id: binary_sensor.ha_updater
+    from: 'off'
+    to: 'on'
+    id: homeassistant
+  - platform: numeric_state
+    entity_id: sensor.hacs
+    above: '0'
+    id: community
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: deconz
+      sequence:
+      - service: script.generic_component_notifications
+        data:
+          software: deCONZ
+          newest_version: '{{ states(''sensor.deconz_newest_version'') }}'
+          version: '{{ states(''sensor.deconz_version'') }}'
+          url: /hassio/dashboard
+    - conditions:
+      - condition: trigger
+        id: dsm
+      sequence:
+      - service: script.generic_component_notifications
+        data:
+          software: Synology DSM
+          newest_version: '{{ state_attr(''binary_sensor.mesa_update_available'',
+            ''latest_available_version'') }}'
+          version: '{{ state_attr(''binary_sensor.mesa_update_available'', ''installed_version'')
+            }}'
+          url: http://mesa-connect.quickconnect.to
+    - conditions:
+      - condition: trigger
+        id: homeassistant
+      sequence:
+      - service: script.generic_component_notifications
+        data:
+          software: Home Assistant
+          newest_version: '{{ state_attr(''binary_sensor.ha_updater'', ''latest_version'')
+            }}'
+          version: '{{ states(''sensor.current_version'') }}'
+          more_information: The last backup was created {{ states('sensor.samba_relative_backup')
+            }}.
+          url: /config/dashboard
+    - conditions:
+      - condition: trigger
+        id: community
+      sequence:
+      - service: notify.notify
+        data:
+          title: homeOS
+          message: "{% if is_state('sensor.hacs', '1') %}\n  There is {{ states('sensor.hacs')\
+            \ }} pending community update available.\n{% else %}\n  There are {{ states('sensor.hacs')\
+            \ }} pending community updates available.\n{% endif %}\n"
+          data:
+            subtitle: Software Update
+            group: hacs_update
+            url: /hacs/entry
+            push:
+              badge: '{{ states(''sensor.software_update_badge'') }}'
+    default: []
+  mode: parallel
+  max: 10
+- id: '1642093402129'
+  alias: Scenes - Play Gradient
+  description: Change scenes based on an Input Select
+  trigger:
+  - platform: state
+    entity_id: input_select.play_gradient_scenes
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.ambilight
+        state: 'on'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.ambilight
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.play_gradient_lightstrip
+          - light.woonkamer_play_lichtbalk
+    default: []
+  - service: script.generic_component_scenes
+    data:
+      room: Woonkamer
+      lights: light.play_gradient_lightstrip, light.woonkamer_play_lichtbalk
+      adaptive_lighting: switch.adaptive_lighting_woonkamer
+      control: input_boolean.dummy_control
+      helper: input_select.play_gradient_scenes
   mode: restart
