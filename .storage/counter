@@ -1,18 +1,8 @@
 {
     "version": 1,
+    "minor_version": 1,
     "key": "counter",
     "data": {
-        "items": [
-            {
-                "name": "Notification - Badge",
-                "icon": "mdi:counter",
-                "minimum": 0,
-                "initial": 0,
-                "maximum": null,
-                "restore": true,
-                "step": 1,
-                "id": "notification_badge"
-            }
-        ]
+        "items": []
     }
 }
