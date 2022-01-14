@@ -41,61 +41,6 @@ fan_off:
       option: reverse
   mode: restart
   icon: mdi:fan-off
-fan_auto_mode:
-  alias: Fan - Auto Mode
-  sequence:
-  - choose:
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.slaapkamer_temperature_multi_sensor
-        above: '22.9'
-        below: '24.1'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          percentage: 10
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.slaapkamer_temperature_multi_sensor
-        above: '24'
-        below: '24.6'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          percentage: 20
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.slaapkamer_temperature_multi_sensor
-        above: '24.5'
-        below: '25.1'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          percentage: 30
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.slaapkamer_temperature_multi_sensor
-        above: '25'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id: fan.whisper_flex
-        data:
-          percentage: 40
-    default:
-    - service: notify.mobile_app_iphone_a14
-      data:
-        message: Het is {{ states.sensor.slaapkamer_temperature_multi_sensor.state
-          }}°C in de slaapkamer, de ventilator blijft uit
-        title: homeOS
-  mode: single
-  icon: mdi:fan-auto
 fan_direction:
   alias: Fan - Direction
   sequence:
@@ -155,9 +100,10 @@ mode_privacy:
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.keuken_control
-  - service: light.turn_on
-    target:
-      entity_id: light.keuken_groep
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_ruimten
+      lights: light.keuken_groep
   - service: light.turn_on
     target:
       entity_id: light.keuken_groep
@@ -193,9 +139,6 @@ mode_privacy:
       entity_id: input_select.play_gradient_scenes
     data_template:
       option: '{{ ["Soho", "Tokyo", "Sundown", "Tropical twilight"] | random }}'
-  - service: script.turn_on
-    target:
-      entity_id: script.scenes_play_gradient
   mode: single
   icon: mdi:heart-circle
 mode_cinema:
@@ -371,25 +314,6 @@ action_all_lights_off:
       entity_id: light.slaapkamer_groep
   mode: single
   icon: mdi:lightbulb-group-off
-purifier_set_preset_mode:
-  alias: Purifier - Set Preset Mode
-  sequence:
-  - service: input_select.select_option
-    data_template:
-      entity_id: input_select.smartmi_p1_preset_modes
-      option: '{{ preset_mode }}'
-  mode: single
-  icon: mdi:fan-plus
-purifier_set_speed:
-  alias: Purifier - Set Speed
-  sequence:
-  - service: input_select.select_option
-    target:
-      entity_id: input_select.smartmi_p1_percentage
-    data_template:
-      option: '{{ percentage }}'
-  mode: single
-  icon: mdi:fan-speed-1
 action_easy_entry:
   alias: Action - Easy Entry
   sequence:
@@ -448,41 +372,9 @@ fan_set_preset_mode:
       option: '{{ preset_mode }}'
   - service: scene.turn_on
     data_template:
-      entity_id: '{{ "scene.flex_" + states("input_select.whisper_flex_preset_modes")|lower|replace("
-        ", "_")|string }}'
+      entity_id: '{{ "scene.flex_" + preset_mode|lower|replace(" ", "_")|string }}'
   mode: single
   icon: mdi:fan-plus
-fan_set_speed:
-  alias: Fan - Set Speed
-  sequence:
-  - service: input_number.set_value
-    data_template:
-      entity_id: input_number.whisper_flex_percentage
-      value: '{{ percentage }}'
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: fan.tuya_whisper_flex
-        state: 'off'
-      sequence:
-      - service: fan.turn_on
-        target:
-          entity_id:
-          - fan.tuya_whisper_flex
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-    default: []
-  - service: fan.set_percentage
-    target:
-      entity_id: fan.tuya_whisper_flex
-    data_template:
-      percentage: '{{ states("input_number.whisper_flex_percentage")|replace("0.0",
-        "") }}'
-  mode: single
-  icon: mdi:fan-speed-1
 mode_party:
   alias: Mode - Party
   sequence:
@@ -794,67 +686,6 @@ home_state_day:
       entity_id: script.action_curtains_opened
   mode: single
   icon: mdi:weather-sunny
-ambilight_set_sync_mode:
-  alias: Ambilight - Set Sync Mode
-  sequence:
-  - service: input_select.select_option
-    data_template:
-      entity_id: input_select.ambilight_sync_modes
-      option: '{{ effect }}'
-  - service: huesyncbox.set_sync_mode
-    entity_id: media_player.play_sync_box
-    data_template:
-      mode: '{{ effect|lower }}'
-  mode: single
-  icon: mdi:television-ambient-light
-scenes_play_gradient:
-  alias: Scenes - Play Gradient
-  sequence:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: light.ambilight
-        state: 'on'
-      sequence:
-      - service: light.turn_off
-        target:
-          entity_id: light.ambilight
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 2
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.play_gradient_lightstrip
-          - light.woonkamer_play_lichtbalk
-    default:
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.play_gradient_lightstrip
-        - light.woonkamer_play_lichtbalk
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: switch.adaptive_lighting_woonkamer
-      lights:
-      - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
-  - wait_template: "{% if 'light.play_gradient_lightstrip' in state_attr('switch.adaptive_lighting_woonkamer',\
-      \ 'manual_control') %}\n  True\n{% else %}\n  False\n{% endif %}"
-  - service: scene.turn_on
-    data_template:
-      entity_id: "{% if states(\"input_select.play_gradient_scenes\") == 'Soho' %}\n\
-        \  scene.woonkamer_soho\n{% elif states(\"input_select.play_gradient_scenes\"\
-        ) == 'Tokyo' %}\n  scene.woonkamer_tokyo\n{% elif states(\"input_select.play_gradient_scenes\"\
-        ) == 'Savanna sunset' %}\n  scene.woonkamer_savanna_sunset\n{% elif states(\"\
-        input_select.play_gradient_scenes\") == 'Sundown' %}\n  scene.woonkamer_sundown\n\
-        {% elif states(\"input_select.play_gradient_scenes\") == 'Tropical twilight'\
-        \ %}\n  scene.woonkamer_tropical_twilight\n{% elif states(\"input_select.play_gradient_scenes\"\
-        ) == 'Arctic aurora' %}\n  scene.woonkamer_arctic_aurora\n{% endif %}"
-  mode: restart
-  icon: mdi:gradient-horizontal
 home_occupancy_away:
   alias: Home Occupancy - Away
   sequence:
@@ -1278,8 +1109,179 @@ home_occupancy_on_vacation:
     default: []
   mode: single
   icon: mdi:arrow-right-circle-outline
-scenes_generic:
-  alias: Scenes - Generic Component
+action_restart_remote_assistant:
+  alias: Action - Restart Remote Assistant
+  sequence:
+  - service: homeassistant.remote_assistant_restart
+  mode: single
+  icon: mdi:remote-desktop
+generic_component_motion:
+  alias: Generic Component | Motion
+  description: Generic component to turn on light(s) when motion is detected, dims
+    lights when no motion is detected and turns light(s) off after a delay
+  fields:
+    lights:
+      name: Lights
+      description: The light(s) to turn on/off and dim
+      required: true
+      selector:
+        entity:
+          domain: light
+    adaptive_lighting:
+      name: Adaptive Lighting
+      description: The corresponding Adaptive Lighting master switch
+      required: true
+      selector:
+        entity:
+          domain: switch
+          integration: adaptive_lighting
+    motion_sensor:
+      name: Motion Sensor
+      description: Motion or occupancy sensor to monitor
+      required: true
+      selector:
+        entity:
+    seconds_before_dimmed:
+      name: Time before lights dim
+      description: The time required after no motion is detected for lights to dim
+      required: true
+      default: 30
+      selector:
+        number:
+          min: 30
+          max: 30
+          mode: box
+          unit_of_measurement: second(s)
+    seconds_before_off:
+      name: Time before lights off
+      description: The time required after lights are dimmed to turn them off
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 120
+          unit_of_measurement: second(s)
+  sequence:
+  - service: adaptive_lighting.apply
+    data:
+      lights: '{{ lights }}'
+      entity_id: '{{ adaptive_lighting }}'
+  - service: light.turn_on
+    data:
+      entity_id: '{{ lights }}'
+  - wait_for_trigger:
+    - platform: template
+      value_template: '{{ is_state(motion_sensor, ''off'') }}'
+      for:
+        seconds: 30
+  - condition: template
+    value_template: '{{ states(lights) == "on" }}'
+  - service: light.turn_on
+    data_template:
+      entity_id: '{{ lights }}'
+      brightness: '{{ (state_attr(lights, ''brightness'') / 2) | int }}'
+  - delay:
+      seconds: '{{ seconds_before_off }}'
+  - condition: template
+    value_template: '{{ states(motion_sensor) == "off" }}'
+  - service: light.turn_off
+    target:
+      entity_id: '{{ lights }}'
+  mode: parallel
+  icon: mdi:motion
+  max: 100
+generic_component_notifications:
+  alias: Generic Component | Notifications
+  description: Generic component to handle software update notifications
+  fields:
+    software:
+      name: Software
+      required: true
+      selector:
+        text:
+    version:
+      name: Current version
+      required: true
+      selector:
+        text:
+    newest_version:
+      name: Newest version
+      required: true
+      selector:
+        text:
+    url:
+      name: URL
+      required: false
+      selector:
+        text:
+    more_information:
+      name: More information
+      required: false
+      selector:
+        text:
+  sequence:
+  - service: notify.notify
+    data:
+      message: '{{ software }} {{ newest_version }} is available and you are currently
+        on {{ version }}. {{ more_information if more_information is defined }}
+
+        '
+      title: homeOS
+      data:
+        subtitle: Software Update
+        group: update
+        url: '{{ url }}'
+        push:
+          badge: '{{ states(''sensor.software_update_badge'') }}'
+  mode: parallel
+  icon: mdi:checkbox-blank-badge
+  max: 10
+generic_component_scenes:
+  alias: Generic Component | Scenes
+  description: Generic component to handle scene switching based on select entities
+  fields:
+    room:
+      name: Room
+      description: The corresponding room in which the scenes are called
+      required: true
+      selector:
+        select:
+          options:
+          - Woonkamer
+          - Badkamer
+          - Kledingkamer
+          - Slaapkamer
+          - Studiekamer
+          - Zolder
+    lights:
+      name: Light(s)
+      description: The Adaptive Lighting light(s) to apply or set manual control
+      required: true
+      selector:
+        entity:
+          domain: light
+    adaptive_lighting:
+      name: Adaptive Lighting
+      description: The corresponding Adaptive Lighting master switch
+      required: true
+      selector:
+        entity:
+          domain: switch
+          integration: adaptive_lighting
+    control:
+      name: Room control
+      description: The room control entity that keeps the lights from going off
+      required: true
+      selector:
+        entity:
+          domain: input_boolean
+    helper:
+      name: Scene selector
+      description: The select entity used to cycle scenes
+      required: true
+      selector:
+        entity:
+          domain: input_select
   sequence:
   - service: "{% if states(helper) == 'Adaptive Lighting' %}\n  adaptive_lighting.set_manual_control\n\
       {% else %}\n  script.dummy\n{% endif %}\n"
@@ -1302,9 +1304,3 @@ scenes_generic:
         }}'
   mode: restart
   icon: mdi:palette-swatch-variant
-action_restart_remote_assistant:
-  alias: Action - Restart Remote Assistant
-  sequence:
-  - service: homeassistant.remote_assistant_restart
-  mode: single
-  icon: mdi:remote-desktop
