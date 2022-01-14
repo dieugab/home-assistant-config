@@ -20,9 +20,12 @@
         turn_off:
           - service: script.fan_off
         set_percentage:
-          service: script.fan_set_speed
-          data:
-            percentage: "{{ percentage }}"
+          - service: fan.turn_on
+            entity_id: fan.tuya_whisper_flex
+          - service: fan.set_percentage
+            data:
+              entity_id: fan.tuya_whisper_flex
+              percentage: '{{ percentage / 10 }}'
         set_preset_mode:
           service: script.fan_set_preset_mode
           data:
@@ -57,13 +60,15 @@
           target:
             entity_id: input_boolean.air_purifier
         set_percentage:
-          service: script.purifier_set_speed
+          service: input_select.select_option
           data:
-            percentage: "{{ percentage }}"
+            entity_id: input_select.smartmi_p1_percentage
+            option: '{{ percentage }}'
         set_preset_mode:
-          service: script.purifier_set_preset_mode
+          service: input_select.select_option
           data:
-            preset_mode: "{{ preset_mode }}"
+            entity_id: input_select.smartmi_p1_preset_modes
+            option: '{{ preset_mode }}'
         speed_count: 3
         preset_modes:
           - 'Manual'
