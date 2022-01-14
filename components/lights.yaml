@@ -9,6 +9,7 @@
         friendly_name: "Ambilight"
         unique_id: ambi_light
         effect_list_template: "{{ state_attr('input_select.ambilight_sync_modes', 'options') }}"
+        effect_template: "{{ state_attr('media_player.play_sync_box', 'mode')|capitalize }}"
         icon_template: >-
           {% if is_state('media_player.play_sync_box', 'playing') %}
             hue:lightstrip-tv
@@ -27,14 +28,6 @@
           {% else %}
             off
           {% endif %}
-        effect_template: >-
-          {% if is_state_attr('media_player.play_sync_box', 'mode', 'video') %}
-            Video
-          {% elif is_state_attr('media_player.play_sync_box', 'mode', 'music') %}
-            Music
-          {% elif is_state_attr('media_player.play_sync_box', 'mode', 'game') %}
-            Game
-          {% endif %}
         turn_on:
           service: media_player.media_play
           entity_id: media_player.play_sync_box
@@ -48,9 +41,10 @@
           data:
             volume_level: "{{ (brightness / 255 * 100)|int / 100 }}"
         set_effect:
-          service: script.ambilight_set_sync_mode
-          data:
-            effect: "{{ effect }}"
+          service: huesyncbox.set_sync_mode
+          entity_id: media_player.play_sync_box
+          data_template:
+            mode: '{{ effect|lower }}'
 
       # Template light for Christmas tree lighting (disabled)
 #      woonkamer_kerstboom:
