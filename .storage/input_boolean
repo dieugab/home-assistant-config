@@ -42,16 +42,12 @@
             {
                 "name": "HomeKit - Cam Motion Sensor",
                 "id": "homekit_cam_motion_sensor",
-                "icon": "mdi:camera-account"
-            },
-            {
-                "name": "Task - Container",
-                "id": "task_container",
-                "icon": "mdi:trash-can"
+                "icon": "mdi:walk"
             },
             {
                 "name": "Control - Keuken",
-                "id": "keuken_control"
+                "id": "keuken_control",
+                "icon": "mdi:light-switch"
             },
             {
                 "name": "Home State Automatic",
