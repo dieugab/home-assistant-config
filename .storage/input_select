@@ -7,6 +7,7 @@
             {
                 "name": "Scenes - Woonkamer",
                 "options": [
+                    "Adaptive Lighting",
                     "Lounge",
                     "Visite",
                     "Overdag",
@@ -87,18 +88,9 @@
                 "icon": "mdi:fan-speed-1"
             },
             {
-                "name": "Ambilight - Sync Modes",
-                "icon": "hue:lightstrip-wrap",
-                "options": [
-                    "Video",
-                    "Music",
-                    "Game"
-                ],
-                "id": "ambilight_modes"
-            },
-            {
                 "name": "Scenes - Play Gradient",
                 "options": [
+                    "Adaptive Lighting",
                     "Soho",
                     "Tokyo",
                     "Savanna sunset",
@@ -138,6 +130,18 @@
                     "Nightlight"
                 ],
                 "id": "slaapkamer_scenes"
+            },
+            {
+                "name": "Ambilight - Sync Modes",
+                "icon": "mdi:television-ambient-light",
+                "options": [
+                    "Video",
+                    "Music",
+                    "Game",
+                    "Powersave",
+                    "Passthrough"
+                ],
+                "id": "ambilight_sync_modes"
             }
         ]
     }
