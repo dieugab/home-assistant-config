@@ -1,0 +1,10 @@
+# █▀▀ █▀█ █▀█ █ █ █▀█ █▀ #
+# █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ #
+
+  software_updaters:
+    name: Software Updaters
+    icon: mdi:package
+    entities:
+      - binary_sensor.ha_updater
+      - binary_sensor.deconz_update_available
+      - binary_sensor.mesa_update_available

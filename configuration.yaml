@@ -56,6 +56,7 @@ fan: !include components/fans.yaml
 calendar: !include components/calendars.yaml
 media_player: !include components/media_players.yaml
 lock: !include components/locks.yaml
+group: !include components/groups.yaml
 # alert: !include components/alerts.yaml #(WIP)
 
 # Technical
