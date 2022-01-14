@@ -46,6 +46,21 @@
 
           {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
 
+        # Software Updates Counter Badge
+      - name: Software Update Badge
+        unique_id: software_update_badge
+        icon: mdi:numeric-{{ states('sensor.software_update_badge') }}-circle
+        state: >-
+          {% if states('group.software_updaters') == 'on' %}
+            {%- for item in states.group.software_updaters.attributes.entity_id if (states(item) == 'on') %}
+              {% if loop.last %}
+                {{ loop.index + states('sensor.hacs')|int(0) }}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {{ 0 + states('sensor.hacs')|int(0) }}
+          {% endif %}
+
 # █ █ █▀█ █▀▄▀█ █▀▀ █▄▀ █ ▀█▀ #
 # █▀█ █▄█ █ ▀ █ ██▄ █ █ █  █  #
 
@@ -76,18 +91,7 @@
           {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
             mdi:emoticon-dead
           {% endif %}    
-        state: >-
-          {% if is_state('input_select.smartmi_p1_aqi', 'Excellent') %}
-            {{ 'Excellent' }}
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Good') %}
-            {{ 'Good' }}
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Fair') %}
-            {{ 'Fair' }}
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Inferior') %}
-            {{ 'Inferior' }}
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
-            {{ 'Poor' }}
-          {% endif %}    
+        state: "{{ states('input_select.smartmi_p1_aqi') }}"
 
 # █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
 # █ ▀█ █▄█  █  █ █▀   █  #
