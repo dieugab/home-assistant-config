@@ -39,40 +39,46 @@ views:
           action: toggle
         type: button
       type: horizontal-stack
-    - cards:
-      - card:
-          card_mod:
-            style: "ha-card {\n  --ha-card-background: var(--alert-card-background);\n\
-              \  --card-mod-icon-color: var(--alert-icon-color);\n  --secondary-text-color:\
-              \ var(--alert-secondary-text-color);\n  border-radius: 0px;\n  color:\
-              \ var(--alert-primary-text-color);\n  border-bottom: 3px solid var(--alert-border-color);\n\
-              }\n"
-          type: entities
-        entities:
-        - entities:
-          - icon: mdi:close
-            state_color: true
-            tap_action:
-              action: call-service
-              service: input_boolean.turn_on
-              service_data:
-                entity_id: input_boolean.home_state_automatic
-          entity: input_boolean.home_state_automatic
-          name: Manual Home State Transition
-          secondary_info: State will not transition to Day or Evening
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
-        show_empty: false
-        state_filter:
-        - 'off'
-        type: entity-filter
-      - entities:
-        - entity: input_select.home_state
-        state_color: false
-        style: "ha-card {\n  padding-bottom: 5px;\n}\n"
-        type: entities
-      type: custom:vertical-stack-in-card
+    - entities:
+      - entity: input_select.home_state
+        extend_paper_buttons_row:
+          buttons:
+          - entity: switch.privacy_mode
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          - entity: switch.party_mode
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          - entity: switch.cinema_mode
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+        name: Home State
+        secondary_info:
+          entity: input_select.home_state
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      style: "ha-card {\n  padding: 10px 0px 10px 0px;\n  }\n"
+      type: entities
     - entities:
       - entities:
         - light.voortuin_buitenlamp
@@ -260,83 +266,49 @@ views:
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
-    - cards:
-      - card:
-          card_mod:
-            style: "ha-card {\n  --ha-card-background: var(--alert-card-background);\n\
-              \  --card-mod-icon-color: var(--alert-icon-color);\n  --secondary-text-color:\
-              \ var(--alert-secondary-text-color);\n  border-radius: 0px;\n  color:\
-              \ var(--alert-primary-text-color);\n  border-bottom: 3px solid var(--alert-border-color);\n\
-              }\n"
-          type: entities
-        entities:
-        - entities:
-          - icon: mdi:bell-ring
-            state_color: true
-            tap_action:
-              action: call-service
-              service: timer.finish
-              service_data:
-                entity_id: timer.notification_reminder
-          entity: timer.notification_reminder
-          icon: mdi:message-text-clock
-          name: Software Update Reminder
-          secondary_info:
-            attribute: finishes_at
-            format: datetime
-            name: Notify @
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
-        show_empty: false
-        state_filter:
-        - active
-        type: entity-filter
-      - entities:
-        - active: '{{ is_state(''binary_sensor.remote_ui'', ''on'') }}'
-          entity: binary_sensor.remote_ui
-          icon: mdi:image-filter-drama
-          name: Home Assistant Cloud
-          secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote
-            UI connected {% else %} Remote UI disconnected {% endif %}'
-          state: ''
-          tap_action:
-            action: more-info
-          type: custom:template-entity-row
-        - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
-          entity: binary_sensor.ha_updater
-          icon: mdi:home-assistant
-          name: Home Assistant ({{states('sensor.current_version')}})
-          secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  Update\
-            \ available: {{states('sensor.latest_version')}} \n{% else %} \n  Up-to-date\
-            \ \n{% endif %}"
-          state: ''
-          tap_action:
-            action: more-info
-          type: custom:template-entity-row
-        - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'')
-            }}'
-          entity: binary_sensor.deconz_update_available
-          icon: mdi:usb-flash-drive
-          name: deCONZ ({{states('sensor.deconz_version')}})
-          secondary: "{% if is_state('binary_sensor.deconz_update_available', 'on')\
-            \ %} \n  Update available: {{states('sensor.deconz_newest_version')}}\
-            \ \n{% else %}\n  Up-to-date \n{% endif %}"
-          state: ''
-          tap_action:
-            action: more-info
-          type: custom:template-entity-row
-        - entity: binary_sensor.hacs_updater
-          icon: mdi:store
-          name: Community Store
-          secondary_info:
-            entity: sensor.hacs
-            name: false
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
-        type: entities
-      type: custom:vertical-stack-in-card
+    - entities:
+      - active: '{{ is_state(''binary_sensor.remote_ui'', ''on'') }}'
+        entity: binary_sensor.remote_ui
+        icon: mdi:image-filter-drama
+        name: Home Assistant Cloud
+        secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote UI
+          connected {% else %} Remote UI disconnected {% endif %}'
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
+        entity: binary_sensor.ha_updater
+        icon: mdi:home-assistant
+        name: Home Assistant ({{states('sensor.current_version')}})
+        secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  Update\
+          \ available: {{states('sensor.latest_version')}} \n{% else %} \n  Up-to-date\
+          \ \n{% endif %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'') }}'
+        entity: binary_sensor.deconz_update_available
+        icon: mdi:usb-flash-drive
+        name: deCONZ ({{states('sensor.deconz_version')}})
+        secondary: "{% if is_state('binary_sensor.deconz_update_available', 'on')\
+          \ %} \n  Update available: {{states('sensor.deconz_newest_version')}} \n\
+          {% else %}\n  Up-to-date \n{% endif %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - entity: binary_sensor.hacs_updater
+        icon: mdi:store
+        name: Community Store
+        secondary_info:
+          entity: sensor.hacs
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      type: entities
     - entities:
       - entity: sensor.samba_backup
         extend_paper_buttons_row:
@@ -471,7 +443,7 @@ views:
         - color: '#8BC34A'
           entity: sensor.slaapkamer_temperature_multi_sensor
           name: Slaapkamer
-        height: 205
+        height: 200
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -496,7 +468,7 @@ views:
         - color: '#A5D6A7'
           entity: sensor.slaapkamer_humidity_multi_sensor
           name: Slaapkamer
-        height: 205
+        height: 200
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -527,7 +499,7 @@ views:
     - cards:
       - entity: climate.woonkamer_centrale_verwarming
         name: Centrale Verwarming
-        style: "ha-card {\n  margin-bottom: 2px;\n}\n"
+        style: "ha-card {\n  margin-bottom: 0px;\n}\n"
         type: thermostat
       - type: divider
       - entities:
@@ -568,7 +540,7 @@ views:
           name: Smartmi P1
           secondary_info: last-changed
           state_color: true
-        style: "ha-card {\n  margin-top: 2px;\n}\n"
+        style: "ha-card {\n  margin-top: 0px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - artwork: cover
@@ -605,7 +577,7 @@ views:
         - entity: media_player.sony_bravia_tv
           name: TV
         - entity: media_player.apple_tv
-          name: "\uF8FFTV"
+          name: Player
         - entity: media_player.play_sync_box
           name: Sync
         - entity: media_player.playstation_4
@@ -633,37 +605,9 @@ views:
         \ !important;\n}\n"
       type: markdown
     - cards:
-      - entity: switch.home_occupancy
-        icon_height: 25px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.sleeping_occupancy
-        icon_height: 22px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.away_occupancy
-        icon_height: 24px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.on_vacation_occupancy
-        icon_height: 27px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      type: horizontal-stack
-    - cards:
       - entities:
         - entity: person.gabriel
         - entity: person.shanna
-        - entity: input_select.home_state_occupancy
-          name: State
         style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
           \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
           }\nha-card {\n  margin-bottom: 2px;\n}\n"
@@ -671,30 +615,61 @@ views:
         type: glance
       - type: divider
       - entities:
-        - buttons:
-          - entity: switch.privacy_mode
-            name: Privacy
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                padding: 6px
-          - entity: switch.party_mode
-            name: Party
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                padding: 6px
-          - entity: switch.cinema_mode
-            name: Cinema
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                padding: 6px
-          type: custom:paper-buttons-row
-        style: "ha-card {\n  margin-top: 2px;\n}\n"
+        - entity: input_select.home_state_occupancy
+          extend_paper_buttons_row:
+            buttons:
+            - entity: switch.home_occupancy
+              layout: icon
+              styles:
+                button:
+                  background-color: var(--primary-background-color)
+                  border-radius: 10px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 5px
+                icon:
+                  --mdc-icon-size: 22px
+            - entity: switch.sleeping_occupancy
+              layout: icon
+              styles:
+                button:
+                  background-color: var(--primary-background-color)
+                  border-radius: 10px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 6px
+                icon:
+                  --mdc-icon-size: 20px
+            - entity: switch.away_occupancy
+              layout: icon
+              styles:
+                button:
+                  background-color: var(--primary-background-color)
+                  border-radius: 10px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 6px
+                icon:
+                  --mdc-icon-size: 20px
+            - entity: switch.on_vacation_occupancy
+              layout: icon
+              styles:
+                button:
+                  background-color: var(--primary-background-color)
+                  border-radius: 10px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 4px
+                icon:
+                  --mdc-icon-size: 23px
+          name: Occupancy
+          secondary_info:
+            entity: input_select.home_state_occupancy
+            name: false
+          show_state: false
+          state_color: true
+          type: custom:multiple-entity-row
+        style: "ha-card {\n  padding: 5px 0px 5px 0px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - cards:
@@ -739,7 +714,7 @@ views:
         - color: var(--label-badge-green)
           entity: binary_sensor.achtertuin_motion_sensor
           name: Achtertuin
-        height: 70
+        height: 100
         hours_to_show: 6
         icon: mdi:page-layout-footer
         line_width: 3
@@ -777,7 +752,7 @@ views:
         - color: var(--label-badge-yellow)
           entity: binary_sensor.zolder_occupancy
           name: Zolder
-        height: 70
+        height: 100
         hours_to_show: 6
         icon: mdi:page-layout-body
         line_width: 3
@@ -960,8 +935,8 @@ views:
         \ !important;\n}\n"
       type: markdown
     - card_mod:
-        style: "ha-card {\n  padding-right: 15px;\n  padding-bottom: 20px;\n  padding-top:\
-          \ 20px;\n}\n"
+        style: "ha-card {\n  padding-right: 15px;\n  padding-bottom: 10px;\n  padding-top:\
+          \ 10px;\n}\n"
       cards:
       - type: energy-date-selection
       type: custom:vertical-stack-in-card
@@ -1063,6 +1038,10 @@ views:
                 margin-right: 10px
                 padding: 6px
         name: Smartmi P1
+        secondary_info: last-changed
+        state_color: true
+      - entity: switch.woonhuisventilatie
+        name: Woonhuisventilatie
         secondary_info: last-changed
         state_color: true
       style: "ha-card {\n  margin-top: 2px;\n}\n"
@@ -1209,6 +1188,41 @@ views:
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
+    - entities:
+      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days_until'', 0) }}'
+        entity: sensor.hvc_gft
+        name: HVC gft & etenresten
+        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 0) %} \n \
+          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_gft', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_gft',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days_until'', 0) }}'
+        entity: sensor.hvc_papier
+        name: HVC papier & karton
+        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days_until', 0) %} \n\
+          \  Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_papier', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_papier',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days_until'', 0) }}'
+        entity: sensor.hvc_pmd
+        name: HVC plastic, blik & drinkpakken
+        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days_until', 0) %} \n \
+          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_pmd', 'Days_until',\
+          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_pmd',\
+          \ 'Days_until') }}) dagen\n{% endif %}"
+        state: ''
+        tap_action:
+          action: more-info
+        type: custom:template-entity-row
+      type: entities
     - cards:
       - card:
           card_mod:
@@ -1261,168 +1275,6 @@ views:
       type: custom:vertical-stack-in-card
     type: vertical-stack
   - cards:
-    - content: '# Tasks'
-      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
-        \ !important;\n}\n"
-      type: markdown
-    - entities:
-      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_gft
-        name: HVC gft & etenresten
-        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 0) %} \n \
-          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_gft', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_gft',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_papier
-        name: HVC papier & karton
-        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days_until', 0) %} \n\
-          \  Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_papier', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_papier',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_pmd
-        name: HVC plastic, blik & drinkpakken
-        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days_until', 0) %} \n \
-          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_pmd', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_pmd',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      type: entities
-    - entities:
-      - entities:
-        - entity: input_datetime.task_onkruid
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_onkruid
-        entity: input_datetime.task_onkruid
-        name: Onkruid wieden
-        secondary_info:
-          entity: input_datetime.task_onkruid
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      type: entities
-    - entities:
-      - entities:
-        - entity: input_datetime.task_afstoffen
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_afstoffen
-        entity: input_datetime.task_afstoffen
-        name: Afstoffen
-        secondary_info:
-          entity: input_datetime.task_afstoffen
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      - entities:
-        - entity: input_datetime.task_dweilen
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_dweilen
-        entity: input_datetime.task_dweilen
-        name: Dweilen
-        secondary_info:
-          entity: input_datetime.task_dweilen
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      - entities:
-        - entity: input_datetime.task_stofzuigen
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_stofzuigen
-        entity: input_datetime.task_stofzuigen
-        name: Stofzuigen
-        secondary_info:
-          entity: input_datetime.task_stofzuigen
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      - entities:
-        - entity: input_datetime.task_stofzuiger_filter
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_stofzuiger_filter
-        entity: input_datetime.task_stofzuiger_filter
-        name: Stofzuiger filter wassen
-        secondary_info:
-          entity: input_datetime.task_stofzuiger_filter
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      type: entities
-    - entities:
-      - entities:
-        - entity: input_datetime.task_beddengoed
-          format: yyyymmdd
-          name: Laatst gedaan
-        - icon: mdi:calendar-check-outline
-          state_color: true
-          tap_action:
-            action: call-service
-            service: script.action_mark_task_as_done
-            service_data:
-              task_id: input_datetime.task_beddengoed
-        entity: input_datetime.task_beddengoed
-        name: Beddengoed verschonen
-        secondary_info:
-          entity: input_datetime.task_beddengoed
-          format: relative
-          name: false
-        show_state: false
-        type: custom:multiple-entity-row
-      state_color: false
-      type: entities
-    type: vertical-stack
-  - cards:
     - content: '# Scheduler'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
@@ -1433,7 +1285,9 @@ views:
         primary_info:
         - <b>{entity}</b>
         - '{action}'
-        secondary_info: time
+        secondary_info:
+        - relative-time
+        - time
       exclude: []
       include:
       - climate
