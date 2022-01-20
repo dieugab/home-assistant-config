@@ -124,6 +124,27 @@
             dev_id: shanna
             location_name: not_home
 
+      # Tracker for Zora
+      zora_home:
+        friendly_name: Zora Home
+        unique_id: switch_zora_home
+        icon_template: >-
+          {% if is_state('device_tracker.zora', 'home') %}
+            mdi:account-check
+          {% else %}
+            mdi:account-cancel
+          {% endif %}
+        turn_on:
+          service: device_tracker.see
+          data:
+            dev_id: zora
+            location_name: home
+        turn_off:
+          service: device_tracker.see
+          data:
+            dev_id: zora
+            location_name: not_home
+
 # █▀▄▀█ █▀█ █▀▄ █▀▀ █▀ #
 # █ ▀ █ █▄█ █▄▀ ██▄ ▄█ #
 
@@ -220,7 +241,7 @@
       sleeping_occupancy:
         friendly_name: Sleeping Occupancy
         unique_id: switch_sleeping_occupancy
-        icon_template: mdi:bell
+        icon_template: mdi:bell-sleep
         value_template: >-
           {{ is_state('input_select.home_state_occupancy', 'Sleeping') }}
         turn_on:
