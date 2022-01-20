@@ -47,15 +47,6 @@
                 "icon": "mdi:axis-z-rotate-clockwise"
             },
             {
-                "name": "Whisper Flex - Direction",
-                "options": [
-                    "forward",
-                    "reverse"
-                ],
-                "id": "whisper_flex_direction",
-                "icon": "mdi:horizontal-rotate-counterclockwise"
-            },
-            {
                 "name": "Smartmi P1 - AQI",
                 "options": [
                     "Excellent",
