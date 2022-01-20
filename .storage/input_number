@@ -3,6 +3,47 @@
     "minor_version": 1,
     "key": "input_number",
     "data": {
-        "items": []
+        "items": [
+            {
+                "min": 17.0,
+                "max": 23.0,
+                "name": "Climate - Comfort",
+                "step": 0.5,
+                "mode": "slider",
+                "id": "climate_comfort",
+                "unit_of_measurement": "\u00b0C",
+                "icon": "mdi:fire"
+            },
+            {
+                "min": 17.0,
+                "max": 23.0,
+                "name": "Climate - Eco",
+                "icon": "mdi:leaf",
+                "step": 0.5,
+                "unit_of_measurement": "\u00b0C",
+                "mode": "slider",
+                "id": "climate_eco"
+            },
+            {
+                "min": 17.0,
+                "max": 23.0,
+                "name": "Climate - Away",
+                "icon": "mdi:snowflake",
+                "step": 0.5,
+                "mode": "slider",
+                "id": "climate_away",
+                "unit_of_measurement": "\u00b0C"
+            },
+            {
+                "min": 17.0,
+                "max": 23.0,
+                "name": "Climate - Sleep",
+                "icon": "mdi:power-sleep",
+                "step": 0.5,
+                "mode": "slider",
+                "id": "climate_sleep",
+                "unit_of_measurement": "\u00b0C"
+            }
+        ]
     }
 }
