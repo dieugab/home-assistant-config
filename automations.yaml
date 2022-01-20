@@ -850,22 +850,21 @@
       button_power_hold:
       - choose:
         - conditions:
-          - condition: state
-            entity_id: climate.studiekamer_radiator
-            state: away
-            attribute: preset_mode
+          - condition: template
+            value_template: '{{ state_attr(''climate.studiekamer_radiator'', ''temperature'')
+              == states(''input_number.climate_comfort'')|float(0) }}'
           sequence:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.studiekamer_radiator
+          - service: script.generic_component_climate
             data:
-              preset_mode: none
+              climate:
+                entity_id: climate.studiekamer_radiator
+              mode: Away
         default:
-        - service: climate.set_preset_mode
-          target:
-            entity_id: climate.studiekamer_radiator
+        - service: script.generic_component_climate
           data:
-            preset_mode: away
+            climate:
+              entity_id: climate.studiekamer_radiator
+            mode: Comfort
 - id: '1627322789979'
   alias: deCONZ - Slaapkamer Hue Dimmer
   description: Switch to control light(s)
@@ -886,26 +885,23 @@
       button_power_hold:
       - choose:
         - conditions:
-          - condition: state
-            entity_id: climate.slaapkamer_radiator
-            state: away
-            attribute: preset_mode
+          - condition: template
+            value_template: '{{ state_attr(''climate.slaapkamer_radiator'', ''temperature'')
+              == states(''input_number.climate_comfort'')|float(0) }}'
           sequence:
-          - service: climate.set_preset_mode
-            target:
-              entity_id:
-              - climate.slaapkamer_radiator
+          - service: script.generic_component_climate
             data:
-              preset_mode: none
+              climate:
+                entity_id: climate.slaapkamer_radiator
+              mode: Away
         default:
-        - service: climate.set_preset_mode
-          target:
-            entity_id:
-            - climate.slaapkamer_radiator
+        - service: script.generic_component_climate
           data:
-            preset_mode: away
+            climate:
+              entity_id: climate.studiekamer_radiator
+            mode: Eco
 - id: '1629971132565'
-  alias: '@ Home Assistant - Startup'
+  alias: '@ Home Assistant Startup'
   description: Actions to run at boot
   trigger:
   - platform: homeassistant
@@ -919,8 +915,7 @@
   - service: script.turn_on
     target:
       entity_id:
-      - script.workaround_incorrect_person_state
-      - script.workaround_incorrect_climate_temp
+      - script.logic_set_device_tracker_state
   - service: notify.notify
     data_template:
       message: delete_alert
@@ -1196,9 +1191,17 @@
   - platform: time
     at: '18:00'
   condition:
-  - condition: numeric_state
-    entity_id: sensor.hvc_morgen
-    above: '0'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.hvc_morgen
+      state: gft
+    - condition: state
+      entity_id: sensor.hvc_morgen
+      state: papier
+    - condition: state
+      entity_id: sensor.hvc_morgen
+      state: pmd
   action:
   - service: notify.notify
     data_template:
@@ -1555,7 +1558,8 @@
       sequence:
       - service: script.turn_on
         target:
-          entity_id: script.action_easy_entry
+          entity_id:
+          - script.logic_easy_entry
     default: []
   mode: parallel
   max: 2
@@ -1580,18 +1584,22 @@
       - condition: trigger
         id: gabriel
       sequence:
-      - service: climate.set_preset_mode
-        target:
-          entity_id: climate.studiekamer_radiator
+      - service: script.generic_component_climate
         data:
-          preset_mode: away
+          climate:
+            entity_id: climate.studiekamer_radiator
+          mode: Away
       - service: climate.turn_off
         target:
           entity_id: climate.tuya_duux_threesixty
     - conditions:
       - condition: trigger
         id: shanna
-      sequence: []
+      sequence:
+      - service: script.turn_on
+        target:
+          entity_id:
+          - script.logic_conditional_heating
     default: []
   mode: single
 - id: '1636030085546'
@@ -1836,22 +1844,6 @@
     data:
       option: On vacation
   mode: single
-- id: '1637656471598'
-  alias: Heater - Auto conditional heating
-  description: Activate conditional heating whenever the CV preset mode is set to
-    none
-  trigger:
-  - platform: state
-    entity_id: climate.woonkamer_centrale_verwarming
-    attribute: preset_mode
-    from: away
-    to: none
-  condition: []
-  action:
-  - service: script.turn_on
-    target:
-      entity_id: script.action_conditional_heating
-  mode: single
 - id: '1637656559452'
   alias: Shell - Auto Convert Lovelace
   description: Automatically convert Lovelace UI to readable yaml for git
@@ -1926,7 +1918,8 @@
   action:
   - service: script.turn_on
     target:
-      entity_id: script.sonos_alarm
+      entity_id:
+      - script.action_sound_alarm
   - service: light.turn_on
     data: {}
     target:
@@ -2051,18 +2044,10 @@
       - condition: trigger
         id: community
       sequence:
-      - service: notify.notify
+      - service: script.generic_component_notifications
         data:
-          title: homeOS
-          message: "{% if is_state('sensor.hacs', '1') %}\n  There is {{ states('sensor.hacs')\
-            \ }} pending community update available.\n{% else %}\n  There are {{ states('sensor.hacs')\
-            \ }} pending community updates available.\n{% endif %}\n"
-          data:
-            subtitle: Software Update
-            group: hacs_update
-            url: /hacs/entry
-            push:
-              badge: '{{ states(''sensor.software_update_badge'') }}'
+          software: Community Store
+          url: /hacs/entry
     default: []
   mode: parallel
   max: 10
