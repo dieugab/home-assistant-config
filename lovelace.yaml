@@ -42,34 +42,19 @@ views:
     - entities:
       - entity: input_select.home_state
         extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
           buttons:
           - entity: switch.privacy_mode
-            layout: icon
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
           - entity: switch.party_mode
-            layout: icon
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
           - entity: switch.cinema_mode
-            layout: icon
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
         name: Home State
         secondary_info:
           entity: input_select.home_state
@@ -151,6 +136,7 @@ views:
       - entities:
         - entity: input_select.play_gradient_scenes
           name: Gradient Scenes
+        - entity: light.play_gradient_lightstrip
         - entity: light.woonkamer_play_lichtbalk
           name: Play Lichtbalk
         - type: divider
@@ -174,8 +160,6 @@ views:
           secondary_info: brightness
           state_color: true
         type: custom:fold-entity-row
-      - entity: light.play_gradient_lightstrip
-        secondary_info: brightness
       - entity: light.ambilight
         secondary_info: brightness
       state_color: true
@@ -346,7 +330,7 @@ views:
               action: call-service
               confirmation:
                 text: Create a new backup?
-              service: script.action_manual_backup
+              service: script.action_start_backup
         icon: mdi:upload-network
         name: Remote Backup
         secondary_info:
@@ -360,31 +344,24 @@ views:
     - entities:
       - entity: binary_sensor.hp_tango_x_connectivity
         extend_paper_buttons_row:
+          base_config:
+            layout: icon|state
+            state:
+              postfix: '%'
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 10px
+                margin-bottom: 0px
+                padding: 6px
           buttons:
           - entity: sensor.hp_tango_x_inkcartridge_black
             icon: mdi:water
-            layout: icon|state
-            state:
-              postfix: '%'
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                margin-bottom: 0px
                 margin-right: 10px
-                padding: 6px
           - entity: sensor.hp_tango_x_inkcartridge_cyanmagentayellow
             icon: mdi:water-opacity
-            layout: icon|state
-            state:
-              postfix: '%'
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 10px
-                margin-bottom: 0px
-                margin-right: 0px
-                padding: 6px
         name: Printer
         secondary_info:
           entity: binary_sensor.hp_tango_x_connectivity
@@ -443,7 +420,7 @@ views:
         - color: '#8BC34A'
           entity: sensor.slaapkamer_temperature_multi_sensor
           name: Slaapkamer
-        height: 200
+        height: 135
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -468,7 +445,7 @@ views:
         - color: '#A5D6A7'
           entity: sensor.slaapkamer_humidity_multi_sensor
           name: Slaapkamer
-        height: 200
+        height: 135
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -501,6 +478,95 @@ views:
         name: Centrale Verwarming
         style: "ha-card {\n  margin-bottom: 0px;\n}\n"
         type: thermostat
+      - entities:
+        - base_config:
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-top: -20px
+                padding: 5px
+          buttons:
+          - hold_action:
+              action: more-info
+              entity: input_number.climate_comfort
+            icon: '{{ state_attr(''input_number.climate_comfort'', ''icon'') }}'
+            name: Comfort
+            styles:
+              button:
+                color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ 'temperature') == states('input_number.climate_comfort')|float(0)\
+                  \ %}\n var(--state-climate-heat-color)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  {% endif %}"
+            tap_action:
+              action: call-service
+              service: script.generic_component_climate
+              service_data:
+                climate:
+                  entity_id: climate.woonkamer_centrale_verwarming
+                mode: Comfort
+          - hold_action:
+              action: more-info
+              entity: input_number.climate_eco
+            icon: '{{ state_attr(''input_number.climate_eco'', ''icon'') }}'
+            name: Eco
+            styles:
+              button:
+                color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ 'temperature') == states('input_number.climate_eco')|float(0)\
+                  \ %} \n var(--label-badge-green)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  {% endif %}"
+            tap_action:
+              action: call-service
+              service: script.generic_component_climate
+              service_data:
+                climate:
+                  entity_id: climate.woonkamer_centrale_verwarming
+                mode: Eco
+          - hold_action:
+              action: more-info
+              entity: input_number.climate_away
+            icon: '{{ state_attr(''input_number.climate_away'', ''icon'') }}'
+            name: Away
+            styles:
+              button:
+                color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ 'temperature') == states('input_number.climate_away')|float(0)\
+                  \ %}\n var(--paper-item-icon-active-color)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  {% endif %}"
+            tap_action:
+              action: call-service
+              service: script.generic_component_climate
+              service_data:
+                climate:
+                  entity_id: climate.woonkamer_centrale_verwarming
+                mode: Away
+          - hold_action:
+              action: more-info
+              entity: input_number.climate_sleep
+            icon: '{{ state_attr(''input_number.climate_sleep'', ''icon'') }}'
+            name: Sleep
+            styles:
+              button:
+                color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ 'temperature') == states('input_number.climate_sleep')|float(0)\
+                  \ %}\n var(--label-badge-turquoise)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  {% endif %}"
+            tap_action:
+              action: call-service
+              service: script.generic_component_climate
+              service_data:
+                climate:
+                  entity_id: climate.woonkamer_centrale_verwarming
+                mode: Sleep
+          type: custom:paper-buttons-row
+        style: "ha-card {\n  margin-bottom: 10px;\n}\n"
+        type: entities
       - type: divider
       - entities:
         - entity: fan.whisper_flex
@@ -540,7 +606,7 @@ views:
           name: Smartmi P1
           secondary_info: last-changed
           state_color: true
-        style: "ha-card {\n  margin-top: 0px;\n}\n"
+        style: "ha-card {\n  margin-top: 10px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - artwork: cover
@@ -552,16 +618,6 @@ views:
       toggle_power: false
       type: custom:mini-media-player
       volume_stateless: false
-    - artwork: cover
-      entity: media_player.homepod_mini
-      group: false
-      hide:
-        power: true
-      info: short
-      name: HomePod
-      toggle_power: false
-      type: custom:mini-media-player
-      volume_stateless: true
     - cards:
       - entity: media_player.sonos_roam
         name: Roam
@@ -608,6 +664,7 @@ views:
       - entities:
         - entity: person.gabriel
         - entity: person.shanna
+        - entity: person.zora
         style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
           \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
           }\nha-card {\n  margin-bottom: 2px;\n}\n"
@@ -617,51 +674,40 @@ views:
       - entities:
         - entity: input_select.home_state_occupancy
           extend_paper_buttons_row:
-            buttons:
-            - entity: switch.home_occupancy
+            base_config:
               layout: icon
               styles:
                 button:
                   background-color: var(--primary-background-color)
-                  border-radius: 10px
+                  border-radius: 25px
+            buttons:
+            - entity: switch.home_occupancy
+              styles:
+                button:
                   margin-bottom: 0px
                   margin-right: 10px
                   padding: 5px
+            - entity: switch.sleeping_occupancy
+              styles:
+                button:
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 6px
                 icon:
                   --mdc-icon-size: 22px
-            - entity: switch.sleeping_occupancy
-              layout: icon
-              styles:
-                button:
-                  background-color: var(--primary-background-color)
-                  border-radius: 10px
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 6px
-                icon:
-                  --mdc-icon-size: 20px
             - entity: switch.away_occupancy
-              layout: icon
               styles:
                 button:
-                  background-color: var(--primary-background-color)
-                  border-radius: 10px
                   margin-bottom: 0px
                   margin-right: 10px
                   padding: 6px
-                icon:
-                  --mdc-icon-size: 20px
-            - entity: switch.on_vacation_occupancy
-              layout: icon
-              styles:
-                button:
-                  background-color: var(--primary-background-color)
-                  border-radius: 10px
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 4px
                 icon:
                   --mdc-icon-size: 23px
+            - entity: switch.on_vacation_occupancy
+              styles:
+                button:
+                  margin-bottom: 0px
+                  padding: 4px
           name: Occupancy
           secondary_info:
             entity: input_select.home_state_occupancy
@@ -669,7 +715,7 @@ views:
           show_state: false
           state_color: true
           type: custom:multiple-entity-row
-        style: "ha-card {\n  padding: 5px 0px 5px 0px;\n}\n"
+        style: "ha-card {\n  padding: 0px 0px 0px 0px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
     - cards:
@@ -714,7 +760,7 @@ views:
         - color: var(--label-badge-green)
           entity: binary_sensor.achtertuin_motion_sensor
           name: Achtertuin
-        height: 100
+        height: 50
         hours_to_show: 6
         icon: mdi:page-layout-footer
         line_width: 3
@@ -752,7 +798,7 @@ views:
         - color: var(--label-badge-yellow)
           entity: binary_sensor.zolder_occupancy
           name: Zolder
-        height: 100
+        height: 50
         hours_to_show: 6
         icon: mdi:page-layout-body
         line_width: 3
@@ -964,17 +1010,91 @@ views:
     type: markdown
     view_layout:
       position: sidebar
-  - entity: weather.de_veste_hourly
-    name: De Veste
-    show_forecast: false
-    type: weather-forecast
-    view_layout:
-      position: sidebar
   - cards:
     - entity: climate.woonkamer_centrale_verwarming
       name: Centrale Verwarming
       style: "ha-card {\n  margin-bottom: 2px;\n}\n"
       type: thermostat
+    - entities:
+      - base_config:
+          layout: icon
+          styles:
+            button:
+              background-color: var(--primary-background-color)
+              border-radius: 25px
+              margin-top: -20px
+              padding: 5px
+        buttons:
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_comfort
+          icon: '{{ state_attr(''input_number.climate_comfort'', ''icon'') }}'
+          name: Comfort
+          styles:
+            button:
+              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
+                \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.woonkamer_centrale_verwarming
+              mode: Comfort
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_eco
+          icon: '{{ state_attr(''input_number.climate_eco'', ''icon'') }}'
+          name: Eco
+          styles:
+            button:
+              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
+                \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.woonkamer_centrale_verwarming
+              mode: Eco
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_away
+          icon: '{{ state_attr(''input_number.climate_away'', ''icon'') }}'
+          name: Away
+          styles:
+            button:
+              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
+                \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.woonkamer_centrale_verwarming
+              mode: Away
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_sleep
+          icon: '{{ state_attr(''input_number.climate_sleep'', ''icon'') }}'
+          name: Sleep
+          styles:
+            button:
+              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
+                \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.woonkamer_centrale_verwarming
+              mode: Sleep
+        type: custom:paper-buttons-row
+      type: entities
     - type: divider
     - entities:
       - entity: fan.whisper_flex
@@ -1009,6 +1129,10 @@ views:
         name: Duux ThreeSixty
         secondary_info: last-changed
         state_color: true
+      style: "ha-card {\n  margin-top: 2px;\n}\n"
+      type: entities
+    - type: divider
+    - entities:
       - entity: fan.smartmi_p1
         extend_paper_buttons_row:
           buttons:
@@ -1044,9 +1168,21 @@ views:
         name: Woonhuisventilatie
         secondary_info: last-changed
         state_color: true
-      style: "ha-card {\n  margin-top: 2px;\n}\n"
       type: entities
     type: custom:vertical-stack-in-card
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: input_number.climate_comfort
+      name: Comfort
+    - entity: input_number.climate_eco
+      name: Eco
+    - entity: input_number.climate_away
+      name: Away
+    - entity: input_number.climate_sleep
+      name: Sleep
+    state_color: false
+    type: glance
     view_layout:
       position: sidebar
   - entities:
@@ -1065,46 +1201,292 @@ views:
     type: entities
     view_layout:
       position: sidebar
-  - entities:
-    - entity: climate.studiekamer_radiator
-      icon: hue:room-computer
-      name: Studiekamer
-      secondary_info: last-updated
-    footer:
-      detail: 2
-      entity: sensor.studiekamer_klima10_temperature_sensor
-      hours_to_show: 24
-      type: graph
-    state_color: true
-    type: entities
+  - cards:
+    - entities:
+      - entity: climate.studiekamer_radiator
+        icon: hue:room-computer
+        name: Studiekamer
+        secondary_info: last-updated
+      footer:
+        detail: 2
+        entity: sensor.studiekamer_klima10_temperature_sensor
+        hours_to_show: 24
+        type: graph
+      state_color: true
+      type: entities
+    - entities:
+      - base_config:
+          layout: icon
+          styles:
+            button:
+              background-color: var(--primary-background-color)
+              border-radius: 25px
+              margin-top: 0px
+              padding: 5px
+        buttons:
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_comfort
+          icon: '{{ state_attr(''input_number.climate_comfort'', ''icon'') }}'
+          name: Comfort
+          styles:
+            button:
+              color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
+                \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.studiekamer_radiator
+              mode: Comfort
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_eco
+          icon: '{{ state_attr(''input_number.climate_eco'', ''icon'') }}'
+          name: Eco
+          styles:
+            button:
+              color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
+                \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.studiekamer_radiator
+              mode: Eco
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_away
+          icon: '{{ state_attr(''input_number.climate_away'', ''icon'') }}'
+          name: Away
+          styles:
+            button:
+              color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
+                \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.studiekamer_radiator
+              mode: Away
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_sleep
+          icon: '{{ state_attr(''input_number.climate_sleep'', ''icon'') }}'
+          name: Sleep
+          styles:
+            button:
+              color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
+                \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.studiekamer_radiator
+              mode: Sleep
+        type: custom:paper-buttons-row
+      type: entities
+    type: custom:vertical-stack-in-card
     view_layout:
       position: sidebar
-  - entities:
-    - entity: climate.slaapkamer_radiator
-      icon: hue:room-bedroom
-      name: Slaapkamer
-      secondary_info: last-updated
-    footer:
-      detail: 2
-      entity: sensor.slaapkamer_klima15_temperature_sensor
-      hours_to_show: 24
-      type: graph
-    state_color: true
-    type: entities
+  - cards:
+    - entities:
+      - entity: climate.slaapkamer_radiator
+        icon: hue:room-bedroom
+        name: Slaapkamer
+        secondary_info: last-updated
+      footer:
+        detail: 2
+        entity: sensor.slaapkamer_klima15_temperature_sensor
+        hours_to_show: 24
+        type: graph
+      state_color: true
+      type: entities
+    - entities:
+      - base_config:
+          layout: icon
+          styles:
+            button:
+              background-color: var(--primary-background-color)
+              border-radius: 25px
+              margin-top: 0px
+              padding: 5px
+        buttons:
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_comfort
+          icon: '{{ state_attr(''input_number.climate_comfort'', ''icon'') }}'
+          name: Comfort
+          styles:
+            button:
+              color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.slaapkamer_radiator
+              mode: Comfort
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_eco
+          icon: '{{ state_attr(''input_number.climate_eco'', ''icon'') }}'
+          name: Eco
+          styles:
+            button:
+              color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.slaapkamer_radiator
+              mode: Eco
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_away
+          icon: '{{ state_attr(''input_number.climate_away'', ''icon'') }}'
+          name: Away
+          styles:
+            button:
+              color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.slaapkamer_radiator
+              mode: Away
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_sleep
+          icon: '{{ state_attr(''input_number.climate_sleep'', ''icon'') }}'
+          name: Sleep
+          styles:
+            button:
+              color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.slaapkamer_radiator
+              mode: Sleep
+        type: custom:paper-buttons-row
+      type: entities
+    type: custom:vertical-stack-in-card
     view_layout:
       position: sidebar
-  - entities:
-    - entity: climate.kledingkamer_radiator
-      icon: hue:room-closet
-      name: Kledingkamer
-      secondary_info: last-updated
-    footer:
-      detail: 2
-      entity: sensor.kledingkamer_klima15_temperature_sensor
-      hours_to_show: 24
-      type: graph
-    state_color: true
-    type: entities
+  - cards:
+    - entities:
+      - entity: climate.kledingkamer_radiator
+        icon: hue:room-closet
+        name: Kledingkamer
+        secondary_info: last-updated
+      footer:
+        detail: 2
+        entity: sensor.kledingkamer_klima15_temperature_sensor
+        hours_to_show: 24
+        type: graph
+      state_color: true
+      type: entities
+    - entities:
+      - base_config:
+          layout: icon
+          styles:
+            button:
+              background-color: var(--primary-background-color)
+              border-radius: 25px
+              margin-top: 0px
+              padding: 5px
+        buttons:
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_comfort
+          icon: '{{ state_attr(''input_number.climate_comfort'', ''icon'') }}'
+          name: Comfort
+          styles:
+            button:
+              color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.kledingkamer_radiator
+              mode: Comfort
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_eco
+          icon: '{{ state_attr(''input_number.climate_eco'', ''icon'') }}'
+          name: Eco
+          styles:
+            button:
+              color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.kledingkamer_radiator
+              mode: Eco
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_away
+          icon: '{{ state_attr(''input_number.climate_away'', ''icon'') }}'
+          name: Away
+          styles:
+            button:
+              color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.kledingkamer_radiator
+              mode: Away
+        - hold_action:
+            action: more-info
+            entity: input_number.climate_sleep
+          icon: '{{ state_attr(''input_number.climate_sleep'', ''icon'') }}'
+          name: Sleep
+          styles:
+            button:
+              color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
+                \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
+                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+          tap_action:
+            action: call-service
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.kledingkamer_radiator
+              mode: Sleep
+        type: custom:paper-buttons-row
+      type: entities
+    type: custom:vertical-stack-in-card
     view_layout:
       position: sidebar
   - content: '# Sensors'
@@ -1188,41 +1570,6 @@ views:
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
-    - entities:
-      - active: '{{ is_state_attr(''sensor.hvc_gft'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_gft
-        name: HVC gft & etenresten
-        secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 0) %} \n \
-          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_gft', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_gft',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_papier'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_papier
-        name: HVC papier & karton
-        secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days_until', 0) %} \n\
-          \  Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_papier', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_papier',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      - active: '{{ is_state_attr(''sensor.hvc_pmd'', ''Days_until'', 0) }}'
-        entity: sensor.hvc_pmd
-        name: HVC plastic, blik & drinkpakken
-        secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days_until', 0) %} \n \
-          \ Ophaalmoment vandaag\n{% elif is_state_attr('sensor.hvc_pmd', 'Days_until',\
-          \ 1) %}\n  Ophaalmoment morgen\n{% else %} \n  Opgehaald over ({{ state_attr('sensor.hvc_pmd',\
-          \ 'Days_until') }}) dagen\n{% endif %}"
-        state: ''
-        tap_action:
-          action: more-info
-        type: custom:template-entity-row
-      type: entities
     - cards:
       - card:
           card_mod:
@@ -1234,60 +1581,169 @@ views:
           type: entities
         entities:
         - entity: sensor.hvc_gft
-          icon: mdi:calendar-alert
-          name: HVC gft & etensresten
-          secondary_info: Ophaalmoment morgen @ 07:30
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
+          icon: mdi:trash-can
+          name: HVC GFT
+          secondary: "{% if is_state_attr('sensor.hvc_gft', 'Days_until', 0) %} \n\
+            \  Trash pickup is today\n{% elif is_state_attr('sensor.hvc_gft', 'Days_until',\
+            \ 1) %}\n  Trash pickup is tomorrow\n{% else %} \n  Trash pickup in {{\
+            \ state_attr('sensor.hvc_gft', 'Days_until') }} days\n{% endif %}"
+          state: ''
+          type: custom:template-entity-row
         - entity: sensor.hvc_papier
-          icon: mdi:calendar-alert
-          name: HVC papier & karton
-          secondary_info: Ophaalmoment morgen @ 07:30
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
+          icon: mdi:trash-can
+          name: HVC Paper
+          secondary: "{% if is_state_attr('sensor.hvc_papier', 'Days_until', 0) %}\
+            \ \n  Trash pickup is today\n{% elif is_state_attr('sensor.hvc_papier',\
+            \ 'Days_until', 1) %}\n  Trash pickup is tomorrow\n{% else %} \n  Trash\
+            \ pickup in {{ state_attr('sensor.hvc_papier', 'Days_until') }} days\n\
+            {% endif %}"
+          state: ''
+          type: custom:template-entity-row
         - entity: sensor.hvc_pmd
-          icon: mdi:calendar-alert
-          name: HVC plastic, blik & drinkpakken
-          secondary_info: Ophaalmoment morgen @ 07:30
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
-        show_empty: false
+          icon: mdi:trash-can
+          name: HVC PMD
+          secondary: "{% if is_state_attr('sensor.hvc_pmd', 'Days_until', 0) %} \n\
+            \  Trash pickup is today\n{% elif is_state_attr('sensor.hvc_pmd', 'Days_until',\
+            \ 1) %}\n  Trash pickup is tomorrow\n{% else %} \n  Trash pickup in {{\
+            \ state_attr('sensor.hvc_pmd', 'Days_until') }} days\n{% endif %}"
+          state: ''
+          type: custom:template-entity-row
+        show_empty: true
         state_filter:
         - attribute: Days_until
           operator: ==
           value: 1
+        - attribute: Days_until
+          operator: ==
+          value: 0
         type: entity-filter
       - entities:
         - calendar.01_hvc_afvalkalender_papier
-        - calendar.02_huis_taken_calendar
-        - calendar.03_was_taken_calendar
+        - calendar.02
+        - calendar.03
         - calendar.04_hvc_afvalkalender_pmd
-        - calendar.05_tuin_taken_calendar
-        - calendar.06_scheduler_calendar
+        - calendar.05
+        - calendar.06
         - calendar.07_hvc_afvalkalender_gft
-        - calendar.08_heater_schedule
         initial_view: dayGridMonth
         style: "ha-card.type-calendar {\n  padding: 7px 20px 25px;\n}\n"
         type: calendar
       type: custom:vertical-stack-in-card
+    - entities:
+      - entity: sensor.hvc_gft
+        name: GFT
+      - entity: sensor.hvc_papier
+        name: Paper
+      - entity: sensor.hvc_pmd
+        name: PMD
+      state_color: false
+      type: glance
     type: vertical-stack
   - cards:
     - content: '# Scheduler'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
-    - discover_existing: true
+    - customize:
+        climate.kledingkamer_radiator:
+          actions:
+          - icon: mdi:thermostat
+            name: Generic Modes
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.kledingkamer_radiator
+            variables:
+              mode:
+                name: Mode
+                options:
+                - icon: mdi:fire
+                  value: Comfort
+                - icon: mdi:leaf
+                  value: Eco
+                - icon: mdi:snowflake
+                  value: Away
+                - icon: mdi:sleep
+                  value: Sleep
+          icon: mdi:radiator
+          name: Kledingkamer Radiator
+        climate.slaapkamer_radiator:
+          actions:
+          - icon: mdi:thermostat
+            name: Generic Modes
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.slaapkamer_radiator
+            variables:
+              mode:
+                name: Mode
+                options:
+                - icon: mdi:fire
+                  value: Comfort
+                - icon: mdi:leaf
+                  value: Eco
+                - icon: mdi:snowflake
+                  value: Away
+                - icon: mdi:sleep
+                  value: Sleep
+          icon: mdi:radiator
+          name: Slaapkamer Radiator
+        climate.studiekamer_radiator:
+          actions:
+          - icon: mdi:thermostat
+            name: Set generic mode[ to {mode}]
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.studiekamer_radiator
+            variables:
+              mode:
+                name: Mode
+                options:
+                - icon: mdi:fire
+                  value: Comfort
+                - icon: mdi:leaf
+                  value: Eco
+                - icon: mdi:snowflake
+                  value: Away
+                - icon: mdi:sleep
+                  value: Sleep
+          icon: mdi:radiator
+          name: Studiekamer Radiator
+        climate.woonkamer_centrale_verwarming:
+          actions:
+          - icon: mdi:thermostat
+            name: Generic Modes
+            service: script.generic_component_climate
+            service_data:
+              climate:
+                entity_id: climate.woonkamer_centrale_verwarming
+            variables:
+              mode:
+                name: Mode
+                options:
+                - icon: mdi:fire
+                  value: Comfort
+                - icon: mdi:leaf
+                  value: Eco
+                - icon: mdi:snowflake
+                  value: Away
+                - icon: mdi:sleep
+                  value: Sleep
+          - icon: mdi:source-branch
+            name: Conditional Heating
+            service: script.logic_conditional_heating
+          icon: mdi:thermostat
+          name: Centrale Verwarming
+      discover_existing: true
       display_options:
         icon: entity
         primary_info:
-        - <b>{entity}</b>
+        - <b>{default}</b>
         - '{action}'
         secondary_info:
         - relative-time
-        - time
       exclude: []
       include:
       - climate
@@ -1395,7 +1851,7 @@ views:
               action: call-service
               confirmation:
                 text: Create a new backup?
-              service: script.action_manual_backup
+              service: script.action_start_backup
         icon: mdi:upload-network
         name: Remote Backup
         secondary_info:
