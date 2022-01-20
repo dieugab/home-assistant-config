@@ -3,16 +3,6 @@
 
   - platform: entities_calendar
     calendars:
-        # HVC GFT
-      - name: '07 HVC afvalkalender GFT'
-        entities:
-          - entity: sensor.hvc_gft
-            name: HVC GFT
-            start_time:
-              timestamp_in_state: true
-            end_time:
-              timestamp_in_state: true
-
         # HVC Papier
       - name: '01 HVC afvalkalender Papier'
         entities:
@@ -33,93 +23,51 @@
             end_time:
               timestamp_in_state: true
 
-# ▀█▀ ▄▀█ █▀ █▄▀ █▀ #
-#  █  █▀█ ▄█ █ █ ▄█ #
-
-        # Tasks for in the garden
-      - name: '05 Tuin taken calendar'
+        # HVC GFT
+      - name: '07 HVC afvalkalender GFT'
         entities:
-          - entity: input_datetime.task_onkruid
-            name: Onkruid verwijderd
+          - entity: sensor.hvc_gft
+            name: HVC GFT
             start_time:
               timestamp_in_state: true
             end_time:
               timestamp_in_state: true
 
-        # Tasks for at home
-      - name: '02 Huis taken calendar'
+# █▀▄ █ █ █▀▄▀█ █▀▄▀█ █▄█ #
+# █▄▀ █▄█ █ ▀ █ █ ▀ █  █  #
+
+# Below are dummy calendar entities as to get the right color for the HVC calendar entities
+      - name: '02'
         entities:
-          - entity: input_datetime.task_afstoffen
-            name: Afgestoft
-            start_time:
-              timestamp_in_state: true
-            end_time:
-              timestamp_in_state: true
-          - entity: input_datetime.task_dweilen
-            name: Gedweild
-            start_time:
-              timestamp_in_state: true
-            end_time:
-              timestamp_in_state: true
-          - entity: input_datetime.task_stofzuigen
-            name: Stofgezogen
-            start_time:
-              timestamp_in_state: true
-            end_time:
-              timestamp_in_state: true
-          - entity: input_datetime.task_stofzuiger_filter
-            name: Stofzuiger filter gewassen
+          - entity: script.dummy
+            name: Dummy calendar 02
             start_time:
               timestamp_in_state: true
             end_time:
               timestamp_in_state: true
 
-        # Tasks for the washer
-      - name: '03 Was taken calendar'
+      - name: '03'
         entities:
-          - entity: input_datetime.task_beddengoed
-            name: Beddengoed verschoond
+          - entity: script.dummy
+            name: Dummy calendar 03
             start_time:
               timestamp_in_state: true
             end_time:
               timestamp_in_state: true
 
-# █▀ █▀▀ █ █ █▀▀ █▀▄ █ █ █   █▀▀ █▀█ #
-# ▄█ █▄▄ █▀█ ██▄ █▄▀ █▄█ █▄▄ ██▄ █▀▄ #
-
-        # General schedular calendars
-      - name: '06 Scheduler calendar'
+      - name: '05'
         entities:
-          - entity: switch.schedule_ed4adf
-            name: Air Purifier schema
+          - entity: script.dummy
+            name: Dummy calendar 05
             start_time:
-              timestamp_attribute: next_trigger
+              timestamp_in_state: true
             end_time:
-              timestamp_attribute: next_trigger
+              timestamp_in_state: true
 
-        # Schedules related to home heating
-      - name: '08 Heater schedule'
+      - name: '06'
         entities:
-          - entity: switch.schedule_383113
-            name: Slaapkamer radiator schema
-            start_time:
-              timestamp_attribute: next_trigger
-            end_time:
-              timestamp_attribute: next_trigger
-          - entity: switch.schedule_773ce4
-            name: Woonkamer CV schema
-            start_time:
-              timestamp_attribute: next_trigger
-            end_time:
-              timestamp_attribute: next_trigger
-          - entity: switch.schedule_d421f4
-            name: Kledingkamer radiator schema
-            start_time:
-              timestamp_attribute: next_trigger
-            end_time:
-              timestamp_attribute: next_trigger
-          - entity: switch.schedule_747d8e
-            name: Studiekamer radiator schema
+          - entity: script.dummy
+            name: Dummy calendar 06
             start_time:
               timestamp_attribute: next_trigger
             end_time:
