@@ -70,6 +70,8 @@ homeOS Theme:
       label-badge-blue: var(--primary-color)
       label-badge-yellow: rgb(255, 193, 7) # rgb(217, 183, 87)
       label-badge-gray: rgb(95, 98, 103)
+      label-badge-purple: rgb(88, 87, 214)
+      label-badge-turquoise: rgb(0, 199, 190)
 
       # Cards
       card-background-color: rgb(254, 254, 254)
@@ -181,6 +183,8 @@ homeOS Theme:
       label-badge-blue: var(--primary-color) #google-blue rgb(138, 180, 248)
       label-badge-yellow: rgb(223, 194, 113)
       label-badge-gray: rgb(95, 98, 103)
+      label-badge-purple: rgb(95, 93, 234)
+      label-badge-turquoise: rgb(12, 244, 244)
 
       # Cards
       card-background-color: rgb(32, 33, 36) #ios rgb(28, 28, 30)
