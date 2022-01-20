@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "minor_version": 1,
     "key": "input_text",
     "data": {
         "items": [
@@ -9,7 +10,7 @@
                 "min": 0,
                 "mode": "text",
                 "id": "leverancier_normaaltarief",
-                "icon": "mdi:white-balance-sunny"
+                "icon": "mdi:cash-plus"
             },
             {
                 "name": "Leverancier daltarief",
@@ -17,7 +18,7 @@
                 "min": 0,
                 "mode": "text",
                 "id": "leverancier_daltarief",
-                "icon": "mdi:power-sleep"
+                "icon": "mdi:cash-minus"
             }
         ]
     }
