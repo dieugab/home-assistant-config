@@ -10,7 +10,7 @@
                 "id": "e085a3a26cb84ab3aa9c8b2b562e230b"
             },
             {
-                "url": "/hacsfiles/mini-graph-card/mini-graph-card-bundle.js",
+                "url": "/hacsfiles/mini-graph-card/mini-graph-card-bundle.js?hacstag=1512800620110",
                 "type": "module",
                 "id": "bbd2c9feb6d7423e904bd0ff1bc04cc6"
             },
@@ -40,7 +40,7 @@
                 "id": "8d1028dfaaa74a80bf32a48873ab2ad8"
             },
             {
-                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157230",
+                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157232",
                 "type": "module",
                 "id": "236581b1812b4f288c1778ac0ae7a74e"
             },
@@ -70,7 +70,7 @@
                 "id": "274103ba270c4e71aadf75789be8a538"
             },
             {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522125",
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522126",
                 "type": "module",
                 "id": "1d27dae02d1741f8a2b19683f30107cd"
             },
