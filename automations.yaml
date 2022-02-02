@@ -1595,11 +1595,7 @@
     - conditions:
       - condition: trigger
         id: shanna
-      sequence:
-      - service: script.turn_on
-        target:
-          entity_id:
-          - script.logic_conditional_heating
+      sequence: []
     default: []
   mode: single
 - id: '1636030085546'
@@ -1674,8 +1670,8 @@
       remote: 09fd711a90b60a0b0d4d6190a2e440c1
       cover:
         entity_id:
-        - cover.woonkamer_switchbot
-        - cover.achterdeur_switchbot
+        - cover.achterdeur_gordijn
+        - cover.woonkamer_gordijn
 - id: '1636298495983'
   alias: deCONZ - Badkamer IKEA Shortcut Button
   description: Button to control the light(s)
@@ -1998,6 +1994,11 @@
     from: 'off'
     to: 'on'
     id: homeassistant
+  - platform: state
+    entity_id: binary_sensor.home_assistant_operating_system_update_available
+    id: os
+    from: 'off'
+    to: 'on'
   - platform: numeric_state
     entity_id: sensor.hacs
     above: '0'
@@ -2037,6 +2038,20 @@
           newest_version: '{{ state_attr(''binary_sensor.ha_updater'', ''latest_version'')
             }}'
           version: '{{ states(''sensor.current_version'') }}'
+          more_information: The last backup was created {{ states('sensor.samba_relative_backup')
+            }}.
+          url: /config/dashboard
+    - conditions:
+      - condition: trigger
+        id: os
+      sequence:
+      - service: script.generic_component_notifications
+        data:
+          software: Home Assistant OS
+          newest_version: '{{ states(''sensor.home_assistant_operating_system_newest_version'')
+            }}'
+          version: '{{ states(''sensor.home_assistant_operating_system_version'')
+            }}'
           more_information: The last backup was created {{ states('sensor.samba_relative_backup')
             }}.
           url: /config/dashboard
