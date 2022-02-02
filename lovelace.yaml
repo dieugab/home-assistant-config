@@ -94,6 +94,7 @@ views:
             state_icons:
               'off': mdi:door-closed
               'on': mdi:door-open
+              unavailable: mdi:exclamation-thick
             state_styles:
               'on':
                 button:
@@ -101,6 +102,7 @@ views:
             state_text:
               'off': Closed
               'on': Opened
+              unavailable: Unavailable
             styles:
               button:
                 background-color: var(--primary-background-color)
@@ -1648,11 +1650,10 @@ views:
         climate.kledingkamer_radiator:
           actions:
           - icon: mdi:thermostat
-            name: Generic Modes
-            service: script.generic_component_climate
+            name: Set generic mode[ to {mode}]
+            service: script.generic_component_climate_scheduler
             service_data:
-              climate:
-                entity_id: climate.kledingkamer_radiator
+              climate: climate.kledingkamer_radiator
             variables:
               mode:
                 name: Mode
@@ -1670,11 +1671,10 @@ views:
         climate.slaapkamer_radiator:
           actions:
           - icon: mdi:thermostat
-            name: Generic Modes
-            service: script.generic_component_climate
+            name: Set generic mode[ to {mode}]
+            service: script.generic_component_climate_scheduler
             service_data:
-              climate:
-                entity_id: climate.slaapkamer_radiator
+              climate: climate.slaapkamer_radiator
             variables:
               mode:
                 name: Mode
@@ -1693,10 +1693,9 @@ views:
           actions:
           - icon: mdi:thermostat
             name: Set generic mode[ to {mode}]
-            service: script.generic_component_climate
+            service: script.generic_component_climate_scheduler
             service_data:
-              climate:
-                entity_id: climate.studiekamer_radiator
+              climate: climate.studiekamer_radiator
             variables:
               mode:
                 name: Mode
@@ -1714,11 +1713,10 @@ views:
         climate.woonkamer_centrale_verwarming:
           actions:
           - icon: mdi:thermostat
-            name: Generic Modes
-            service: script.generic_component_climate
+            name: Set generic mode[ to {mode}]
+            service: script.generic_component_climate_scheduler
             service_data:
-              climate:
-                entity_id: climate.woonkamer_centrale_verwarming
+              climate: climate.woonkamer_centrale_verwarming
             variables:
               mode:
                 name: Mode
@@ -1732,7 +1730,7 @@ views:
                 - icon: mdi:sleep
                   value: Sleep
           - icon: mdi:source-branch
-            name: Conditional Heating
+            name: Set Conditional Heating
             service: script.logic_conditional_heating
           icon: mdi:thermostat
           name: Centrale Verwarming
@@ -1893,7 +1891,7 @@ views:
         tooltip_first: false
       bar:
         amount: 36
-        height: 67
+        height: 70
         round: 5
       blink: {}
       color:
