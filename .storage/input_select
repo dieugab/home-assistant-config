@@ -86,8 +86,10 @@
                     "Tokyo",
                     "Savanna sunset",
                     "Sundown",
-                    "Tropical twilight",
-                    "Arctic aurora"
+                    "Disturbia",
+                    "Tyrell",
+                    "Winter beauty",
+                    "Blue Planet"
                 ],
                 "id": "hue_scenes",
                 "icon": "mdi:gradient-horizontal"
