@@ -22,50 +22,104 @@
 
   - platform: template
     covers:
-      # Template cover for SwitchBot @ living room curtains (experimental)
-      woonkamer_gordijn:
-        unique_id: template_woonkamer_gordijn
+    # Simple template covers for SwitchBot using @switchbot/homebridge-switchbot (doesn't support states or open/close actions)
+      homekit_woonkamer_gordijn:
+        unique_id: homekit_woonkamer_gordijn
         device_class: curtain
-        friendly_name: "Woonkamer Gordijn"
-        availability_template: "{{ states('cover.woonkamer_switchbot') != 'unavailable' }}"
-        value_template: "{{ states('cover.woonkamer_switchbot') }}"
+        friendly_name: "HomeKit Woonkamer Gordijn"
         open_cover:
-          service: >-
-            {% if is_state('cover.woonkamer_gordijn', 'open') %}
-              script.dummy
-            {% else %}
-              cover.open_cover
-            {% endif %}
-          entity_id: cover.woonkamer_switchbot
+          service: script.dummy
         close_cover:
-          service: >-
-            {% if is_state('cover.woonkamer_gordijn', 'closed') %}
-              script.dummy
-            {% else %}
-              cover.close_cover
-            {% endif %}
-          entity_id: cover.woonkamer_switchbot
+          service: script.dummy
 
-      # Template cover for SwitchBot @ backdoor curtains (experimental)
+      homekit_achterdeur_gordijn:
+        unique_id: homekit_achterdeur_gordijn
+        device_class: curtain
+        friendly_name: "HomeKit Achterdeur Gordijn"
+        open_cover:
+          service: script.dummy
+        close_cover:
+          service: script.dummy
+
+    # Intermediate template covers for SwitchBot using @switchbot/homebridge-switchbot (supports open/close actions, and reports state based on current_position attribute)
       achterdeur_gordijn:
         unique_id: template_achterdeur_gordijn
         device_class: curtain
         friendly_name: "Achterdeur Gordijn"
-        availability_template: "{{ states('cover.achterdeur_switchbot') != 'unavailable' }}"
-        value_template: "{{ states('cover.achterdeur_switchbot') }}"
+        value_template: >-
+          {% if is_state_attr('cover.achterdeur_switchbot', 'current_position', 0) %}
+            closed
+          {% elif is_state_attr('cover.achterdeur_switchbot', 'current_position', 100) %}
+            open
+          {% endif %}
         open_cover:
-          service: >-
-            {% if is_state('cover.achterdeur_gordijn', 'open') %}
-              script.dummy
-            {% else %}
-              cover.open_cover
-            {% endif %}
+          service: cover.open_cover
           entity_id: cover.achterdeur_switchbot
         close_cover:
-          service: >-
-            {% if is_state('cover.achterdeur_gordijn', 'closed') %}
-              script.dummy
-            {% else %}
-              cover.close_cover
-            {% endif %}
+          service: cover.close_cover
           entity_id: cover.achterdeur_switchbot
+
+      woonkamer_gordijn:
+        unique_id: template_woonkamer_gordijn
+        device_class: curtain
+        friendly_name: "Woonkamer Gordijn"
+        value_template: >-
+          {% if is_state_attr('cover.woonkamer_switchbot', 'current_position', 0) %}
+            closed
+          {% elif is_state_attr('cover.achterdeur_switchbot', 'current_position', 100) %}
+            open
+          {% endif %}
+        open_cover:
+          service: cover.open_cover
+          entity_id: cover.woonkamer_switchbot
+        close_cover:
+          service: cover.close_cover
+          entity_id: cover.woonkamer_switchbot
+
+    # (DEPRECATED) Advanced template covers for SwitchBot using @switchbot/homebridge-switchbot (supports open/close actions and full state. However, doesn't work with plugin version v1.0.0 and later)
+#      woonkamer_gordijn:
+#        unique_id: template_woonkamer_gordijn
+#        device_class: curtain
+#        friendly_name: "Woonkamer Gordijn"
+#        availability_template: "{{ states('cover.woonkamer_switchbot') != 'unavailable' }}"
+#        value_template: "{{ states('cover.woonkamer_switchbot') }}"
+#        open_cover:
+#          service: >-
+#            {% if is_state('cover.woonkamer_gordijn', 'open') %}
+#              script.dummy
+#            {% else %}
+#              cover.open_cover
+#            {% endif %}
+#          entity_id: cover.woonkamer_switchbot
+#        close_cover:
+#          service: >-
+#            {% if is_state('cover.woonkamer_gordijn', 'closed') %}
+#              script.dummy
+#            {% else %}
+#              cover.close_cover
+#            {% endif %}
+#          entity_id: cover.woonkamer_switchbot
+
+      # Template cover for SwitchBot @ backdoor curtains (experimental)
+#      achterdeur_gordijn:
+#        unique_id: template_achterdeur_gordijn
+#        device_class: curtain
+#        friendly_name: "Achterdeur Gordijn"
+#        availability_template: "{{ states('cover.achterdeur_switchbot') != 'unavailable' }}"
+#        value_template: "{{ states('cover.achterdeur_switchbot') }}"
+#        open_cover:
+#          service: >-
+#            {% if is_state('cover.achterdeur_gordijn', 'open') %}
+#              script.dummy
+#            {% else %}
+#              cover.open_cover
+#            {% endif %}
+#          entity_id: cover.achterdeur_switchbot
+#        close_cover:
+#          service: >-
+#            {% if is_state('cover.achterdeur_gordijn', 'closed') %}
+#              script.dummy
+#            {% else %}
+#              cover.close_cover
+#            {% endif %}
+#          entity_id: cover.achterdeur_switchbot
