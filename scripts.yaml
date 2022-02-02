@@ -59,7 +59,8 @@ mode_privacy:
     target:
       entity_id: input_select.play_gradient_scenes
     data_template:
-      option: '{{ ["Soho", "Tokyo", "Sundown", "Tropical twilight"] | random }}'
+      option: '{{ ["Soho", "Tokyo", "Sundown", "Disturbia", "Tyrell", "Winter beauty"]
+        | random }}'
   mode: single
   icon: mdi:heart-circle
 mode_cinema:
@@ -158,32 +159,20 @@ home_state_evening:
     data:
       position: 0
     entity_id: cover.keuken_rolgordijnen
-  - service: cover.set_cover_position
-    data:
-      position: 0
+  - service: script.turn_on
     target:
-      entity_id:
-      - cover.slaapkamer_rolgordijnen
+      entity_id: script.action_force_sleepy_blinds
+    data:
+      variables:
+        blind_group:
+          entity_id: cover.slaapkamer_rolgordijnen
+        blind_1: cover.slaapkamer_l
+        blind_2: cover.slaapkamer_r
+        action: Close
+  - service: cover.close_cover
+    target:
+      entity_id: cover.woonkamer_gordijn
   - choose:
-    - conditions:
-      - condition: state
-        entity_id: switch.party_mode
-        state: 'on'
-      sequence:
-      - service: light.turn_on
-        data: {}
-        target:
-          entity_id:
-          - light.woonkamer_eettafel_lamp
-          - light.filament_lamps
-          - light.play_gradient_lightstrip
-          - light.woonkamer_kastverlichting
-      - service: switch.turn_off
-        target:
-          entity_id: switch.begane_grond_adaptive_lighting
-      - service: cover.close_cover
-        target:
-          entity_id: cover.woonkamer_gordijn
     - conditions:
       - condition: or
         conditions:
@@ -194,32 +183,31 @@ home_state_evening:
           entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
-      - service: light.turn_on
-        data: {}
+      - service: script.turn_on
         target:
-          entity_id:
-          - light.woonkamer_eettafel_lamp
-          - light.filament_lamps
-          - light.play_gradient_lightstrip
-          - light.woonkamer_kastverlichting
+          entity_id: script.action_turn_evening_lights_on
+      - condition: state
+        entity_id: switch.party_mode
+        state: 'off'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
       - service: cover.close_cover
         target:
           entity_id:
           - cover.achterdeur_gordijn
-          - cover.woonkamer_gordijn
-      - condition: state
-        entity_id: input_select.home_state_occupancy
-        state: Home
-      - service: script.turn_on
-        target:
-          entity_id:
-          - script.logic_conditional_heating
     default:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
     - service: cover.close_cover
       target:
         entity_id:
         - cover.achterdeur_gordijn
-        - cover.woonkamer_gordijn
   mode: single
   icon: mdi:weather-sunset
 home_state_night:
@@ -248,6 +236,9 @@ home_state_night:
     entity_id: climate.tuya_duux_threesixty
   - service: script.turn_on
     target:
+      entity_id: script.action_close_curtains
+  - service: script.turn_on
+    target:
       entity_id:
       - script.action_turn_lights_off
   mode: single
@@ -266,20 +257,18 @@ home_state_morning:
       - light.buiten_groep
   - choose:
     - conditions:
-      - condition: and
+      - condition: or
         conditions:
         - condition: state
-          entity_id: switch.party_mode
-          state: 'off'
-        - condition: or
-          conditions:
-          - condition: state
-            entity_id: input_select.home_state_occupancy
-            state: Sleeping
-          - condition: state
-            entity_id: input_select.home_state_occupancy
-            state: Home
+          entity_id: input_select.home_state_occupancy
+          state: Home
+        - condition: state
+          entity_id: input_select.home_state_occupancy
+          state: Sleeping
       sequence:
+      - condition: state
+        entity_id: switch.party_mode
+        state: 'off'
       - service: cover.set_cover_position
         data:
           position: 100
@@ -287,8 +276,15 @@ home_state_morning:
       - service: cover.open_cover
         target:
           entity_id:
-          - cover.achterdeur_gordijn
           - cover.woonkamer_gordijn
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: cover.open_cover
+        target:
+          entity_id: cover.achterdeur_gordijn
     - conditions:
       - condition: or
         conditions:
@@ -299,21 +295,12 @@ home_state_morning:
           entity_id: input_select.home_state_occupancy
           state: On vacation
       sequence:
-      - service: cover.set_cover_position
-        data:
-          position: 100
-        target:
-          entity_id:
-          - cover.keuken_rolgordijnen
-          - cover.slaapkamer_rolgordijnen
-      - service: cover.open_cover
-        target:
-          entity_id:
-          - cover.achterdeur_gordijn
-          - cover.woonkamer_gordijn
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.slaapkamer_control
+      - service: script.turn_on
+        target:
+          entity_id: script.action_open_curtains
     default:
     - service: script.dummy
   mode: single
@@ -420,7 +407,8 @@ home_occupancy_away:
       entity_id: fan.whisper_flex
   - service: script.turn_on
     target:
-      entity_id: script.action_all_lights_off
+      entity_id:
+      - script.action_turn_lights_off
   mode: single
   icon: mdi:map-marker-circle
 home_occupancy_home:
@@ -463,13 +451,9 @@ home_occupancy_home:
     - condition: state
       entity_id: input_select.home_state
       state: Night
-  - service: light.turn_on
+  - service: script.turn_on
     target:
-      entity_id:
-      - light.woonkamer_eettafel_lamp
-      - light.filament_lamps
-      - light.play_gradient_lightstrip
-      - light.woonkamer_kastverlichting
+      entity_id: script.action_turn_evening_lights_on
   mode: single
   icon: mdi:home-circle
 home_occupancy_sleeping:
@@ -499,15 +483,19 @@ home_occupancy_sleeping:
         - climate.kledingkamer_radiator
         - climate.slaapkamer_radiator
       mode: Sleep
+  - service: script.turn_on
+    target:
+      entity_id:
+      - script.logic_set_sleep_music
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.slaapkamer_control
   - service: light.turn_on
     target:
       entity_id:
       - light.buiten_groep
     data:
       brightness_pct: 50
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.slaapkamer_control
   - delay:
       hours: 0
       minutes: 0
@@ -539,14 +527,6 @@ home_occupancy_sleeping:
     - service: fan.turn_off
       target:
         entity_id: fan.smartmi_p1
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.logic_set_sleep_music
-  - service: script.turn_on
-    target:
-      entity_id:
-      - script.action_close_curtains
   - choose:
     - conditions:
       - condition: numeric_state
@@ -616,12 +596,6 @@ home_occupancy_on_vacation:
     default: []
   mode: single
   icon: mdi:arrow-right-circle-outline
-action_restart_remote_assistant:
-  alias: Action - Restart Remote Assistant
-  sequence:
-  - service: homeassistant.remote_assistant_restart
-  mode: single
-  icon: mdi:remote-desktop
 generic_component_motion:
   alias: Generic Component | Motion
   description: Generic component to turn on light(s) when motion is detected, dims
@@ -1145,16 +1119,28 @@ action_open_curtains:
       entity_id: cover.keuken_rolgordijnen
     data:
       position: 100
-  - service: cover.set_cover_position
+  - service: script.turn_on
     target:
-      entity_id: cover.slaapkamer_rolgordijnen
+      entity_id: script.action_force_sleepy_blinds
     data:
-      position: 100
+      variables:
+        blind_group:
+          entity_id: cover.slaapkamer_rolgordijnen
+        blind_1: cover.slaapkamer_l
+        blind_2: cover.slaapkamer_r
+        action: Open
   - service: cover.open_cover
     target:
       entity_id:
       - cover.woonkamer_gordijn
-      - cover.achterdeur_gordijn
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: cover.open_cover
+    target:
+      entity_id: cover.achterdeur_gordijn
   mode: restart
   icon: mdi:brightness-5
 action_close_curtains:
@@ -1167,13 +1153,22 @@ action_close_curtains:
       position: 0
   - service: cover.set_cover_position
     target:
-      entity_id: cover.slaapkamer_rolgordijnen
+      entity_id:
+      - cover.slaapkamer_rolgordijnen
     data:
       position: 0
   - service: cover.close_cover
     target:
       entity_id:
       - cover.woonkamer_gordijn
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: cover.close_cover
+    target:
+      entity_id:
       - cover.achterdeur_gordijn
   mode: restart
   icon: mdi:brightness-1
@@ -1232,3 +1227,238 @@ action_turn_lights_off:
       - light.woonkamer_play_lichtbalk
   mode: single
   icon: mdi:lightbulb-group-off
+generic_component_climate_scheduler:
+  alias: Generic Component | Climate | Scheduler
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mode == ''Vacation'' }}'
+      sequence:
+      - service: climate.turn_off
+        data:
+          entity_id: '{{ climate }}'
+    default:
+    - service: climate.turn_on
+      data:
+        entity_id: '{{ climate }}'
+    - service: climate.set_temperature
+      data_template:
+        entity_id: '{{ climate }}'
+        temperature: '{{ states("input_number.climate_" + mode)|float }}'
+  description: Generic component to handle climate temperatures switching based on
+    number entities
+  fields:
+    climate:
+      name: Targets
+      description: What should this service use as targeted areas, devices or entities.
+      required: true
+      selector:
+        entity:
+          domain: climate
+    mode:
+      name: Mode
+      description: Mode (and temperature) to set the target to.
+      required: true
+      selector:
+        select:
+          options:
+          - Comfort
+          - Eco
+          - Sleep
+          - Away
+          - Vacation
+  mode: parallel
+  icon: mdi:table-clock
+  max: 10
+action_turn_evening_lights_on:
+  alias: Action - Turn Evening Lights On
+  sequence:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_kastverlichting
+      - light.woonkamer_groep
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    target:
+      entity_id: light.woonkamer_lamp
+    data:
+      brightness_pct: 10
+  mode: single
+  icon: mdi:lightbulb-group-outline
+mode_gaming:
+  alias: Mode - Gaming
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.xbox_series_s
+        state: 'on'
+      sequence:
+      - service: media_player.turn_on
+        target:
+          entity_id: media_player.sony_bravia_tv
+      - service: media_player.select_source
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          source: Xbox Series S
+    - conditions:
+      - condition: state
+        entity_id: media_player.playstation_4
+        state: 'on'
+      sequence:
+      - service: media_player.turn_on
+        target:
+          entity_id: media_player.sony_bravia_tv
+      - service: media_player.select_source
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          source: Playstation 4
+    default:
+    - service: media_player.turn_on
+      target:
+        entity_id: media_player.sony_bravia_tv
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.woonkamer_kastverlichting
+      - light.edison_lamp
+      - light.tarnaby_lamp
+  - service: light.turn_on
+    target:
+      entity_id: light.ambilight
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: light.turn_on
+    target:
+      entity_id: light.ambilight
+    data:
+      brightness_pct: 60
+  mode: single
+  icon: mdi:gamepad-round-outline
+action_force_sleepy_blinds:
+  alias: Action - Force Sleepy Blinds
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ action == ''Open'' }}'
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 100
+        target: '{{ blind_group }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - repeat:
+          until:
+          - condition: and
+            conditions:
+            - condition: template
+              value_template: '{{ is_state_attr(blind_1, ''current_position'', 100)
+                }}'
+            - condition: template
+              value_template: '{{ is_state_attr(blind_2, ''current_position'', 100)
+                }}'
+          sequence:
+          - service: cover.set_cover_position
+            data:
+              position: 100
+              entity_id: '{{ blind_1 }}'
+          - service: cover.set_cover_position
+            data:
+              position: 100
+              entity_id: '{{ blind_2 }}'
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+    - conditions:
+      - condition: template
+        value_template: '{{ action == ''Close'' }}'
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 0
+        target: '{{ blind_group }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - repeat:
+          until:
+          - condition: and
+            conditions:
+            - condition: template
+              value_template: '{{ is_state_attr(blind_1, ''current_position'', 0)
+                }}'
+            - condition: template
+              value_template: '{{ is_state_attr(blind_2, ''current_position'', 0)
+                }}'
+          sequence:
+          - service: cover.set_cover_position
+            data:
+              position: 0
+              entity_id: '{{ blind_1 }}'
+          - service: cover.set_cover_position
+            data:
+              position: 0
+              entity_id: '{{ blind_2 }}'
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+    default: []
+  description: Action to force sleepy blinds to open or close by looping the call
+    until open/closed state.
+  fields:
+    blind_group:
+      name: Targets
+      description: What should this service use as targeted areas, devices or entities.
+      required: true
+      selector:
+        target:
+          entity:
+            domain: cover
+    blind_1:
+      name: Blind (1)
+      description: Which entity's closed state (1) should end the loop.
+      required: true
+      selector:
+        entity:
+          domain: cover
+    blind_2:
+      name: Blind (2)
+      description: Which entity's closed state (2) should end the loop.
+      required: true
+      selector:
+        entity:
+          domain: cover
+    action:
+      name: Action
+      description: Action to send to the blind(s).
+      required: true
+      selector:
+        select:
+          options:
+          - Open
+          - Close
+  mode: restart
+  icon: mdi:blinds
