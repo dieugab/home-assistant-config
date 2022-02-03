@@ -799,10 +799,21 @@ generic_component_scenes:
       data:
         entity_id: '{{ adaptive_lighting }}'
         lights: '{{ lights }}'
-    - service: scene.turn_on
-      data_template:
-        entity_id: '{{ "scene." + room + "_" + states(helper)|lower|replace(" ", "_")|string
-          }}'
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ helper == ''input_select.play_gradient_scenes'' }}'
+        sequence:
+        - service: hue.activate_scene
+          data_template:
+            dynamic: true
+            entity_id: '{{ "scene." + room + "_" + states(helper)|lower|replace("
+              ", "_")|string }}'
+      default:
+      - service: scene.turn_on
+        data_template:
+          entity_id: '{{ "scene." + room + "_" + states(helper)|lower|replace(" ",
+            "_")|string }}'
   description: Generic component to handle scene switching based on select entities
   fields:
     room:
