@@ -1495,6 +1495,10 @@ views:
     style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
       \ !important;\n}\n"
     type: markdown
+  - graphs: null
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    type: custom:history-explorer-card
   - entities:
     - entity: sensor.smartmi_p1_aqi
       name: PM10
@@ -1861,24 +1865,70 @@ views:
       type: entities
     - entities:
       - entity: sensor.uptime
+        extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          buttons:
+          - icon: mdi:restart
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Restart Home Assistant service?
+              service: homeassistant.restart
+          - icon: mdi:power
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Stop Home Assistant service?
+              service: homeassistant.stop
         format: relative
         icon: mdi:docker
-        name: Last container boot
+        name: Home Assistant Container
         secondary_info:
           entity: sensor.uptime
           format: date
-          name: 'On'
-        show_state: true
+          name: Last restart
+        show_state: false
         type: custom:multiple-entity-row
       - entity: sensor.last_boot
+        extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          buttons:
+          - icon: mdi:restart
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Reboot the host system?
+              service: hassio.host_reboot
+          - icon: mdi:power
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Poweroff the host system?
+              service: hassio.host_shutdown
         format: relative
         icon: mdi:raspberry-pi
-        name: Last hardware boot
+        name: Raspberry Pi Host
         secondary_info:
           entity: sensor.last_boot
           format: date
-          name: 'On'
-        show_state: true
+          name: Last reboot
+        show_state: false
         type: custom:multiple-entity-row
       state_color: false
       type: entities
@@ -2001,9 +2051,11 @@ views:
         type: custom:template-entity-row
       - active: '{{ is_state(''binary_sensor.mesa_update_available'', ''on'') }}'
         entity: binary_sensor.mesa_update_available
-        name: Synology DSM 7
-        secondary: '{% if is_state(''binary_sensor.mesa_update_available'', ''on'')%}
-          New update available {% else %} Up-to-date {% endif %}'
+        name: Synology ({{ state_attr('binary_sensor.mesa_update_available', 'installed_version')
+          }})
+        secondary: "{% if is_state('binary_sensor.mesa_update_available', 'on')%}\
+          \ \n  New update available: {{ state_attr('binary_sensor.mesa_update_available',\n\
+          'latest_available_version') }}\n{% else %} \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
@@ -2015,7 +2067,7 @@ views:
         name: Synology Memory
         secondary_info:
           entity: sensor.mesa_memory_total_real
-          name: false
+          name: Total
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
@@ -2036,14 +2088,43 @@ views:
       type: entities
     - entities:
       - entity: sensor.mesa_last_boot
+        extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+          buttons:
+          - entity: button.mesa_reboot
+            icon: mdi:restart
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Reboot NAS?
+              service: button.press
+              service_data:
+                entity_id: button.mesa_reboot
+          - entity: button.mesa_shutdown
+            icon: mdi:power
+            tap_action:
+              action: call-service
+              confirmation:
+                text: Shut down NAS?
+              service: button.press
+              service_data:
+                entity_id: button.mesa_shutdown
         format: relative
         icon: mdi:nas
-        name: Last hardware boot
+        name: Synology NAS Host
         secondary_info:
           entity: sensor.mesa_last_boot
           format: date
-          name: 'On'
-        show_state: true
+          name: Last reboot
+        show_state: false
         state_color: true
         type: custom:multiple-entity-row
       type: entities
