@@ -106,7 +106,7 @@ views:
             styles:
               button:
                 background-color: var(--primary-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
@@ -257,8 +257,8 @@ views:
         entity: binary_sensor.remote_ui
         icon: mdi:image-filter-drama
         name: Home Assistant Cloud
-        secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote UI
-          connected {% else %} Remote UI disconnected {% endif %}'
+        secondary: '{{ iif(is_state(''binary_sensor.remote_ui'', ''on''), ''Remote
+          UI connected'', ''Remote UI disconnected'') }}'
         state: ''
         tap_action:
           action: more-info
@@ -324,7 +324,7 @@ views:
             styles:
               button:
                 background-color: var(--primary-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 0px
                 padding: 6px
@@ -353,7 +353,7 @@ views:
             styles:
               button:
                 background-color: var(--primary-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 padding: 6px
           buttons:
@@ -389,7 +389,7 @@ views:
             styles:
               button:
                 background-color: var(--primary-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 0px
                 padding: 6px
@@ -572,16 +572,30 @@ views:
       - type: divider
       - entities:
         - entity: fan.whisper_flex
+          extend_paper_buttons_row:
+            buttons:
+            - entity: input_select.whisper_flex_modes
+              layout: icon
+              state_icons:
+                nature mode: mdi:tailwind
+                normal mode: mdi:fan-plus
+                sleep mode: mdi:power-sleep
+              styles:
+                button:
+                  background-color: var(--table-row-alternative-background-color)
+                  border-radius: 25px
+                  margin-bottom: 0px
+                  margin-right: 10px
+                  padding: 6px
           name: Whisper Flex
           secondary_info: last-changed
           state_color: true
           toggle: true
-          type: custom:slider-entity-row
         - entity: fan.smartmi_p1
           extend_paper_buttons_row:
             buttons:
             - entity: sensor.smartmi_p1_aqi
-              name: AQI
+              layout: icon
               state_styles:
                 excellent:
                   button:
@@ -601,7 +615,7 @@ views:
               styles:
                 button:
                   background-color: var(--primary-background-color)
-                  border-radius: 10px
+                  border-radius: 25px
                   margin-bottom: 0px
                   margin-right: 10px
                   padding: 6px
@@ -1100,11 +1114,25 @@ views:
     - type: divider
     - entities:
       - entity: fan.whisper_flex
+        extend_paper_buttons_row:
+          buttons:
+          - entity: input_select.whisper_flex_modes
+            layout: icon
+            state_icons:
+              nature mode: mdi:tailwind
+              normal mode: mdi:fan-plus
+              sleep mode: mdi:power-sleep
+            styles:
+              button:
+                background-color: var(--table-row-alternative-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
         name: Whisper Flex
         secondary_info: last-changed
         state_color: true
         toggle: true
-        type: custom:slider-entity-row
       - entity: climate.tuya_duux_threesixty
         extend_paper_buttons_row:
           buttons:
@@ -1124,7 +1152,7 @@ views:
             styles:
               button:
                 background-color: var(--table-row-alternative-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
@@ -1139,7 +1167,7 @@ views:
         extend_paper_buttons_row:
           buttons:
           - entity: sensor.smartmi_p1_aqi
-            name: AQI
+            layout: icon
             state_styles:
               excellent:
                 button:
@@ -1159,7 +1187,7 @@ views:
             styles:
               button:
                 background-color: var(--table-row-alternative-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
@@ -1845,7 +1873,7 @@ views:
             styles:
               button:
                 background-color: var(--primary-background-color)
-                border-radius: 10px
+                border-radius: 25px
                 margin-bottom: 0px
                 margin-right: 0px
                 padding: 6px
