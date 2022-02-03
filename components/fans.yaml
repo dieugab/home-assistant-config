@@ -9,7 +9,7 @@
         unique_id: template_fan_whisper_flex
         availability_template: "{{ states('fan.tuya_whisper_flex') != 'unavailable' }}"
         value_template: "{{ states('fan.tuya_whisper_flex') }}"
-        percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int * 10) }}"
+        percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int) }}"
         preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
         oscillating_template: "{{ states('input_select.whisper_flex_oscillating') }}"
         turn_on:
@@ -24,7 +24,7 @@
           - service: fan.set_percentage
             data:
               entity_id: fan.tuya_whisper_flex
-              percentage: '{{ percentage / 10 }}'
+              percentage: '{{ percentage }}'
         set_preset_mode:
           - service: input_select.select_option
             data:
@@ -41,7 +41,7 @@
           - service: scene.turn_on
             data_template:
               entity_id: '{{ "scene.flex_oscillation_" + oscillating|lower|string }}'
-        speed_count: 10
+        speed_count: 100
         preset_modes:
           - 'Normal Mode'
           - 'Sleep Mode'
