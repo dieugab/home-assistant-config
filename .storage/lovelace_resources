@@ -45,11 +45,6 @@
                 "id": "236581b1812b4f288c1778ac0ae7a74e"
             },
             {
-                "url": "/hacsfiles/lovelace-slider-entity-row/slider-entity-row.js?hacstag=1448997001721",
-                "type": "module",
-                "id": "e98cc9c4099942c895ef1f29fd4ff9b2"
-            },
-            {
                 "url": "/hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js?hacstag=244872232100",
                 "type": "module",
                 "id": "ffa1f6270c164aad89297f7e3c0b8e1c"
@@ -70,7 +65,7 @@
                 "id": "274103ba270c4e71aadf75789be8a538"
             },
             {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522126",
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522127",
                 "type": "module",
                 "id": "1d27dae02d1741f8a2b19683f30107cd"
             },
@@ -78,6 +73,16 @@
                 "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524311",
                 "type": "module",
                 "id": "12a713fdad0746e59116078a08e0ad90"
+            },
+            {
+                "url": "/hacsfiles/thermal_comfort_icons/thermal_comfort_icons.js?hacstag=449218690130",
+                "type": "module",
+                "id": "3dafda4c47c34b6286cf9214dfa7c06b"
+            },
+            {
+                "url": "/hacsfiles/history-explorer-card/history-explorer-card.js?hacstag=4403747941014",
+                "type": "module",
+                "id": "2f325487d4914faabe1e24295b0b9ae8"
             }
         ]
     }
