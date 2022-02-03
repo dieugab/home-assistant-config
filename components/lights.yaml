@@ -10,24 +10,14 @@
         unique_id: ambi_light
         effect_list_template: "{{ state_attr('input_select.ambilight_sync_modes', 'options') }}"
         effect_template: "{{ state_attr('media_player.play_sync_box', 'mode')|capitalize }}"
-        icon_template: >-
-          {% if is_state('media_player.play_sync_box', 'playing') %}
-            hue:lightstrip-tv
-          {% else %}
-            hue:lightstrip-tv-off
-          {% endif %}
+        icon_template: "{{ iif(is_state('media_player.play_sync_box', 'playing'), 'hue:lightstrip-tv', 'hue:lightstrip-tv-off') }}"
         level_template: >-
           {% if states('media_player.play_sync_box') != 'off' %}
             {{ (state_attr('media_player.play_sync_box', 'brightness') * 255) | int(default=0) }}
           {% else %}
             0
           {% endif %}
-        value_template: >-
-          {% if is_state('media_player.play_sync_box', 'playing') %}
-            on
-          {% else %}
-            off
-          {% endif %}
+        value_template: "{{ iif(is_state('media_player.play_sync_box', 'playing'), 'on', 'off') }}"
         turn_on:
           service: media_player.media_play
           entity_id: media_player.play_sync_box
@@ -50,12 +40,7 @@
 #      woonkamer_kerstboom:
 #        friendly_name: "Woonkamer Kerstboom"
 #        unique_id: woonkamer_kerstboom
-#        icon_template: >-
-#          {% if is_state('switch.woonkamer_plug', 'on') %}
-#            mdi:string-lights
-#          {% else %}
-#            mdi:string-lights-off
-#          {% endif %}
+#        icon_template: "{{ iif(is_state('switch.woonkamer_plug', 'on'), 'mdi:string-lights', 'mdi:string-lights-off') }}"
 #        value_template: "{{ states('switch.woonkamer_plug') }}"
 #        turn_on:
 #          service: switch.turn_on
@@ -69,12 +54,7 @@
       woonkamer_kastverlichting:
         friendly_name: "Woonkamer Kastverlichting"
         unique_id: woonkamer_kastverlichting
-        icon_template: >-
-          {% if is_state('switch.woonkamer_eettafel_plug', 'on') %}
-            mdi:string-lights
-          {% else %}
-            mdi:string-lights-off
-          {% endif %}
+        icon_template: "{{ iif(is_state('switch.woonkamer_eettafel_plug', 'on'), 'mdi:string-lights', 'mdi:string-lights-off') }}"
         value_template: "{{ states('switch.woonkamer_eettafel_plug') }}"
         turn_on:
           service: switch.turn_on
