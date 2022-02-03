@@ -10,7 +10,7 @@
         availability_template: "{{ states('fan.tuya_whisper_flex') != 'unavailable' }}"
         value_template: "{{ states('fan.tuya_whisper_flex') }}"
         percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int) }}"
-        preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
+#        preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
         oscillating_template: "{{ states('input_select.whisper_flex_oscillating') }}"
         turn_on:
           - service: fan.turn_on
@@ -25,14 +25,14 @@
             data:
               entity_id: fan.tuya_whisper_flex
               percentage: '{{ percentage }}'
-        set_preset_mode:
-          - service: input_select.select_option
-            data:
-              entity_id: input_select.whisper_flex_preset_modes
-              option: '{{ preset_mode }}'
-          - service: scene.turn_on
-            data_template:
-              entity_id: '{{ "scene.flex_" + preset_mode|lower|replace(" ", "_")|string }}'
+#        set_preset_mode:
+#          - service: input_select.select_option
+#            data:
+#              entity_id: input_select.whisper_flex_preset_modes
+#              option: '{{ preset_mode }}'
+#          - service: scene.turn_on
+#            data_template:
+#              entity_id: '{{ "scene.flex_" + preset_mode|lower|replace(" ", "_")|string }}'
         set_oscillating:
           - service: input_select.select_option
             data:
@@ -42,10 +42,10 @@
             data_template:
               entity_id: '{{ "scene.flex_oscillation_" + oscillating|lower|string }}'
         speed_count: 100
-        preset_modes:
-          - 'Normal Mode'
-          - 'Sleep Mode'
-          - 'Nature Mode'
+#        preset_modes:
+#          - 'Normal Mode'
+#          - 'Sleep Mode'
+#          - 'Nature Mode'
 
       # Template fan for Smartmi P1 air purifier controlled by HomeKit
       smartmi_p1:

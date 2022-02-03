@@ -325,44 +325,53 @@ home_state_day:
           state: On vacation
       sequence:
       - service: script.dummy
+        data: {}
     default:
     - service: switch.turn_on
       target:
         entity_id: switch.home_occupancy
+      data: {}
     - service: fan.turn_on
       target:
         entity_id: fan.smartmi_p1
+      data: {}
   - service: light.turn_off
     target:
       entity_id:
       - light.buiten_groep
+    data: {}
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.slaapkamer_control
+    data: {}
   - service: media_player.media_pause
     target:
       entity_id:
       - media_player.sonos_roam
+    data: {}
   - choose:
     - conditions:
       - condition: state
         entity_id: fan.whisper_flex
         state: 'on'
       sequence:
-      - service: fan.set_preset_mode
-        target:
-          entity_id: fan.whisper_flex
+      - service: input_select.select_option
         data:
-          preset_mode: Normal Mode
+          option: Normal Mode
+        target:
+          entity_id: input_select.whisper_flex_modes
       - service: fan.turn_off
         target:
           entity_id:
           - fan.whisper_flex
+        data: {}
     default:
     - service: script.dummy
+      data: {}
   - service: script.turn_on
     target:
       entity_id: script.action_open_curtains
+    data: {}
   mode: single
   icon: mdi:weather-sunny
 home_occupancy_away:
@@ -802,7 +811,7 @@ generic_component_scenes:
     - choose:
       - conditions:
         - condition: template
-          value_template: '{{ helper == ''input_select.play_gradient_scenes'' }}'
+          value_template: '{{ ''gradient'' in helper  }}'
         sequence:
         - service: hue.activate_scene
           data_template:

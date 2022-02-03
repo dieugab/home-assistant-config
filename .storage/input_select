@@ -28,7 +28,7 @@
                 "icon": "mdi:timeline-check"
             },
             {
-                "name": "Whisper Flex - Preset Modes",
+                "name": "Whisper Flex - Modes",
                 "options": [
                     "Normal Mode",
                     "Sleep Mode",

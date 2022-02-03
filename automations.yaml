@@ -2102,3 +2102,29 @@
       control: input_boolean.dummy_control
       helper: input_select.play_gradient_scenes
   mode: restart
+- id: '1643900184609'
+  alias: Fan - Whisper Flex Modes
+  description: Automation to set Whisper Flex modes using a helper.
+  trigger:
+  - platform: state
+    entity_id: input_select.whisper_flex_modes
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: fan.whisper_flex
+        state: 'off'
+      sequence:
+      - service: fan.turn_on
+        data: {}
+        target:
+          entity_id: fan.whisper_flex
+    default:
+    - service: script.dummy
+      data: {}
+  - service: scene.turn_on
+    data_template:
+      entity_id: '{{ "scene.flex_" + states("input_select.whisper_flex_modes")|lower|replace("
+        ", "_")|string }}'
+  mode: single
