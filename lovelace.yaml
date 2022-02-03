@@ -1883,6 +1883,9 @@ views:
                 text: Restart Home Assistant service?
               service: homeassistant.restart
           - icon: mdi:power
+            styles:
+              button:
+                margin-right: 0px
             tap_action:
               action: call-service
               confirmation:
@@ -1916,6 +1919,9 @@ views:
                 text: Reboot the host system?
               service: hassio.host_reboot
           - icon: mdi:power
+            styles:
+              button:
+                margin-right: 0px
             tap_action:
               action: call-service
               confirmation:
@@ -2110,6 +2116,9 @@ views:
                 entity_id: button.mesa_reboot
           - entity: button.mesa_shutdown
             icon: mdi:power
+            styles:
+              button:
+                margin-right: 0px
             tap_action:
               action: call-service
               confirmation:
