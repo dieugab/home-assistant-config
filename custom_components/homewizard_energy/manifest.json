@@ -3,18 +3,15 @@
         "@DCSBL"
     ],
     "config_flow": true,
-    "dependencies": [
-        "zeroconf"
-    ],
     "documentation": "https://github.com/DCSBL/ha-homewizard-energy",
     "domain": "homewizard_energy",
     "iot_class": "local_polling",
     "issue_tracker": "https://github.com/DCSBL/ha-homewizard-energy/issues",
     "name": "HomeWizard Energy",
     "requirements": [
-        "aiohwenergy==0.4.0"
+        "aiohwenergy==0.8.0"
     ],
-    "version": "0.12.1",
+    "version": "0.12.2",
     "zeroconf": [
         "_hwenergy._tcp.local."
     ]
