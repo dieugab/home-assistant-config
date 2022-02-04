@@ -86,37 +86,17 @@ views:
       - entity: light.toilet_lamp
         icon: mdi:wall-sconce-round
         secondary_info: brightness
-      - entity: light.trapkast_lamp
-        extend_paper_buttons_row:
-          buttons:
-          - entity: binary_sensor.trapkast_sensor
-            layout: icon|state
-            state_icons:
-              'off': mdi:door-closed
-              'on': mdi:door-open
-              unavailable: mdi:exclamation-thick
-            state_styles:
-              'on':
-                button:
-                  color: var(--primary-color)
-            state_text:
-              'off': Closed
-              'on': Opened
-              unavailable: Unavailable
-            styles:
-              button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
-        icon: mdi:lightbulb-on
-        name: Trapkast
-        secondary_info: brightness
-        show_state: true
-        state_color: true
-        toggle: true
-        type: custom:multiple-entity-row
+      - entities:
+        - binary_sensor.trapkast_sensor
+        group_config:
+          state_color: true
+        head:
+          entity: light.trapkast_lamp
+          icon: mdi:lightbulb-on
+          name: Trapkast
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
       state_color: true
       type: entities
     - entities:
