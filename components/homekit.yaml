@@ -29,6 +29,9 @@
     media_player.sonos_arc:
       feature_list:
         - feature: play_pause
+    media_player.spotify:
+      feature_list:
+        - feature: play_pause
 
   # Bridge for switches displayed as outlets
 - name: HASS Bridge Outlets
