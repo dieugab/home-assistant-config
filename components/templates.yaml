@@ -61,6 +61,18 @@
             {{ 0 + states('sensor.hacs')|int(0) }}
           {% endif %}
 
+        # Actief Stroomtarief
+      - name: Actief Stroomtarief
+        unique_id: actief_stroomtarief
+        icon: mdi:home-import-outline
+        unit_of_measurement: EUR
+        device_class: monetary
+        state: "{{ iif(is_state('input_select.energy_stroomtarief', 'Normaaltarief'), '0.32284', '0.25677') }}"
+        attributes:
+          actief: "{{ states('input_select.energy_stroomtarief') }}"
+          prijs_per_kWh_normaaltarief: "0.32284"
+          prijs_per_kWh_daltarief: "0.25677"
+
 # █ █ █▀█ █▀▄▀█ █▀▀ █▄▀ █ ▀█▀ #
 # █▀█ █▄█ █ ▀ █ ██▄ █ █ █  █  #
 
