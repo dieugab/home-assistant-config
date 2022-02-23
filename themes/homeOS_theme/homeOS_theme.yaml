@@ -19,6 +19,12 @@ homeOS Theme:
       alert-border-color: rgb(255, 245, 157)
       calendar-card-background: rgb(244, 67, 54)
       calendar-border-color: rgb(211, 47, 47)
+      
+      # Custom Paper buttons
+      button-icon-color: var(--disabled-text-color)
+      button-icon-active-color: rgb(33, 150, 243)
+      button-shape-color: rgba(var(--rgb-primary-text-color), 0.05) #rgb(243, 243, 243)
+      button-shape-active-color: rgb(33, 150, 243, 0.2)
 
       # Header:
       app-header-background-color: var(--primary-background-color)
@@ -131,6 +137,12 @@ homeOS Theme:
       alert-border-color: rgb(26, 35, 126)
       calendar-card-background: rgb(211, 47, 47)
       calendar-border-color: rgb(183, 28, 28)
+      
+      # Custom Paper buttons
+      button-icon-color: var(--disabled-text-color)
+      button-icon-active-color: rgb(33, 150, 243)
+      button-shape-color: rgba(var(--rgb-primary-text-color), 0.05)
+      button-shape-active-color: rgb(33, 150, 243, 0.2)
     
       # Header:
       app-header-background-color: var(--primary-background-color)
@@ -145,7 +157,7 @@ homeOS Theme:
       accent-color: var(--primary-color) #google-blue rgb(138, 180, 248)
 
       # Text
-      primary-text-color: rgb(242, 242, 242)
+#      primary-text-color: rgb(242, 242, 242) #fixes mushroom button background color
       secondary-text-color: rgb(166, 166, 166)
       text-primary-color: var(--primary-text-color)
       disabled-text-color: rgba(184, 190, 199, 0.4)
@@ -208,14 +220,14 @@ homeOS Theme:
 
       # Table
       table-row-background-color: var(--card-background-color) #var(--primary-background-color)
-      table-row-alternative-background-color: var(--primary-background-color) #grey var(--secondary-background-color)
-      data-table-background-color: var(--primary-background-color)
+      table-row-alternative-background-color: var(--card-background-color) #var(--primary-background-color) #grey var(--secondary-background-color)
+      data-table-background-color: var(--card-background-color) #var(--primary-background-color)
       mdc-checkbox-unchecked-color: rgb(169, 177, 188)
 
       # Dropdowns
       material-background-color: var(--secondary-background-color)
       material-secondary-background-color: var(--primary-background-color)
-      mdc-theme-surface: var(--primary-background-color
+      mdc-theme-surface: var(--card-background-color) #var(--primary-background-color
 
       # Pre/Code
       markdown-code-background-color: rgb(23, 23, 23)
