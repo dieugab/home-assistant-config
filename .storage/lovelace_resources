@@ -35,12 +35,7 @@
                 "id": "175326a16af348398f02dcea00540e5b"
             },
             {
-                "url": "/hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js?hacstag=366482637014",
-                "type": "module",
-                "id": "8d1028dfaaa74a80bf32a48873ab2ad8"
-            },
-            {
-                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157232",
+                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157233",
                 "type": "module",
                 "id": "236581b1812b4f288c1778ac0ae7a74e"
             },
@@ -65,12 +60,12 @@
                 "id": "274103ba270c4e71aadf75789be8a538"
             },
             {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522127",
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522128",
                 "type": "module",
                 "id": "1d27dae02d1741f8a2b19683f30107cd"
             },
             {
-                "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524311",
+                "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524312",
                 "type": "module",
                 "id": "12a713fdad0746e59116078a08e0ad90"
             },
@@ -80,9 +75,14 @@
                 "id": "3dafda4c47c34b6286cf9214dfa7c06b"
             },
             {
-                "url": "/hacsfiles/history-explorer-card/history-explorer-card.js?hacstag=4403747941014",
+                "url": "/hacsfiles/history-explorer-card/history-explorer-card.js?hacstag=4403747941016",
                 "type": "module",
                 "id": "2f325487d4914faabe1e24295b0b9ae8"
+            },
+            {
+                "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375112",
+                "type": "module",
+                "id": "9d83b014cc804128b30eda18abeb7669"
             }
         ]
     }
