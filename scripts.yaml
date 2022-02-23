@@ -4,23 +4,37 @@ mode_privacy:
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
+    data: {}
   - service: cover.close_cover
     target:
       entity_id:
       - cover.keuken_rolgordijnen
+    data: {}
   - service: cover.close_cover
     target:
       entity_id:
       - cover.woonkamer_gordijn
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: cover.close_cover
+    target:
+      entity_id:
       - cover.achterdeur_gordijn
+    data: {}
   - service: switch.turn_off
     target:
       entity_id:
       - switch.begane_grond_adaptive_lighting
       - switch.security_cam
+    data: {}
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.keuken_control
+    data: {}
   - service: adaptive_lighting.set_manual_control
     data:
       entity_id: switch.adaptive_lighting_ruimten
@@ -40,6 +54,7 @@ mode_privacy:
       entity_id:
       - light.woonkamer_eettafel_lamp
       - light.woonkamer_lamp
+    data: {}
   - service: media_player.volume_set
     target:
       entity_id: media_player.sonos_arc
@@ -255,6 +270,7 @@ home_state_morning:
     target:
       entity_id:
       - light.buiten_groep
+    data: {}
   - choose:
     - conditions:
       - condition: or
@@ -273,18 +289,27 @@ home_state_morning:
         data:
           position: 100
         entity_id: cover.keuken_rolgordijnen
-      - service: cover.open_cover
-        target:
-          entity_id:
-          - cover.woonkamer_gordijn
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 3
-          milliseconds: 0
-      - service: cover.open_cover
-        target:
-          entity_id: cover.achterdeur_gordijn
+      - repeat:
+          count: '2'
+          sequence:
+          - service: cover.open_cover
+            data: {}
+            target:
+              entity_id: cover.woonkamer_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - service: cover.open_cover
+            data: {}
+            target:
+              entity_id: cover.achterdeur_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 10
+              milliseconds: 0
     - conditions:
       - condition: or
         conditions:
@@ -298,11 +323,14 @@ home_state_morning:
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.slaapkamer_control
+        data: {}
       - service: script.turn_on
         target:
           entity_id: script.action_open_curtains
+        data: {}
     default:
     - service: script.dummy
+      data: {}
   mode: single
   icon: mdi:weather-sunset-up
 home_state_day:
@@ -890,6 +918,11 @@ action_set_tv_to_earc:
         1 195 1 && sendevent /dev/input/event3 0 0 0 && sendevent /dev/input/event3
         4 4 787395 && sendevent /dev/input/event3 1 195 0 && sendevent /dev/input/event3
         0 0 0
+  - service: media_player.select_source
+    data:
+      source: TV
+    target:
+      entity_id: media_player.sonos_arc
   mode: single
   icon: mdi:dolby
 logic_conditional_heating:
@@ -1099,6 +1132,16 @@ logic_set_sleep_music:
           source: Wellness & Healing ..... Stretching
         target:
           entity_id: media_player.sonos_roam
+    - conditions:
+      - condition: state
+        entity_id: switch.shanna_home
+        state: 'on'
+      sequence:
+      - service: media_player.select_source
+        data:
+          source: Piano for Sleeping
+        target:
+          entity_id: media_player.sonos_roam
     default:
     - service: media_player.select_source
       data_template:
@@ -1149,18 +1192,27 @@ action_open_curtains:
         blind_1: cover.slaapkamer_l
         blind_2: cover.slaapkamer_r
         action: Open
-  - service: cover.open_cover
-    target:
-      entity_id:
-      - cover.woonkamer_gordijn
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 3
-      milliseconds: 0
-  - service: cover.open_cover
-    target:
-      entity_id: cover.achterdeur_gordijn
+  - repeat:
+      count: '2'
+      sequence:
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id: cover.woonkamer_gordijn
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id: cover.achterdeur_gordijn
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
   mode: restart
   icon: mdi:brightness-5
 action_close_curtains:
