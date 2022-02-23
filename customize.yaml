@@ -11,5 +11,7 @@ device_tracker.shanna:
   icon: mdi:account-search
 device_tracker.gabriel:
   icon: mdi:account-search
+device_tracker.zora:
+  icon: mdi:account-search
 media_player.play_sync_box:
   device_class: tv
