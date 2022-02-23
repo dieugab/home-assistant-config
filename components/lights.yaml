@@ -74,7 +74,8 @@
       - light.woonkamer_lamp
       - light.woonkamer_eettafel_lamp
       - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
+      - light.woonkamer_play_lichtbalk_l
+      - light.woonkamer_play_lichtbalk_r
       - light.globe_lamp
       - light.edison_lamp
       - light.tarnaby_lamp
