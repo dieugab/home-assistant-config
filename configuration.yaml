@@ -60,6 +60,7 @@ group: !include components/groups.yaml
 
 # Technical
 shell_command: !include components/shell_commands.yaml
+multiscrape: !include components/web_scrapes.yaml
 spotify:
   client_id: !secret spotify_client_id
   client_secret: !secret spotify_client_secret
