@@ -135,6 +135,15 @@
                     "Passthrough"
                 ],
                 "id": "ambilight_sync_modes"
+            },
+            {
+                "name": "Energy - Stroomtarief",
+                "icon": "mdi:transmission-tower-import",
+                "options": [
+                    "Normaaltarief",
+                    "Daltarief"
+                ],
+                "id": "stroomtarief"
             }
         ]
     }

@@ -2128,3 +2128,45 @@
       entity_id: '{{ "scene.flex_" + states("input_select.whisper_flex_modes")|lower|replace("
         ", "_")|string }}'
   mode: single
+- id: '1645609651066'
+  alias: Energy - Set Active Tarrif
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00
+    id: normaal_doordeweeks
+  - platform: time
+    at: '23:00'
+    id: dal_doordeweeks
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: normaal_doordeweeks
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: Normaaltarief
+        target:
+          entity_id:
+          - input_select.energy_stroomtarief
+    - conditions:
+      - condition: trigger
+        id: dal_doordeweeks
+      sequence:
+      - service: input_select.select_option
+        data:
+          option: Daltarief
+        target:
+          entity_id:
+          - input_select.energy_stroomtarief
+    default: []
+  mode: single
