@@ -3,58 +3,37 @@ views:
 - badges: []
   cards:
   - cards:
-    - content: '# Switches'
+    - content: '## Switches'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
-    - cards:
-      - entity: input_boolean.home_state_automatic
-        icon_height: 23px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.morning_state
-        icon_height: 24px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.day_state
-        icon_height: 24px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.evening_state
-        icon_height: 24px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      - entity: switch.night_state
-        icon_height: 23px
-        show_name: false
-        tap_action:
-          action: toggle
-        type: button
-      type: horizontal-stack
     - entities:
       - entity: input_select.home_state
         extend_paper_buttons_row:
           base_config:
             layout: icon
+            state_styles:
+              'on':
+                button:
+                  background-color: var(--button-shape-active-color)
+                  color: var(--button-icon-active-color)
             styles:
               button:
-                background-color: var(--primary-background-color)
+                background-color: var(--button-shape-color)
                 border-radius: 25px
-                margin-bottom: 0px
+                color: var(--disabled-text-color)
                 margin-right: 10px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 21px
           buttons:
-          - entity: switch.privacy_mode
-          - entity: switch.party_mode
-          - entity: switch.cinema_mode
+          - entity: switch.morning_state
+          - entity: switch.day_state
+          - entity: switch.evening_state
+          - entity: switch.night_state
+            styles:
+              button:
+                margin-right: 0px
         name: Home State
         secondary_info:
           entity: input_select.home_state
@@ -62,7 +41,7 @@ views:
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
-      style: "ha-card {\n  padding: 10px 0px 10px 0px;\n  }\n"
+      style: "ha-card {\n  padding: 0px 0px 0px 0px;\n  }\n"
       type: entities
     - entities:
       - entities:
@@ -115,9 +94,15 @@ views:
         type: custom:fold-entity-row
       - entity: switch.keuken_waterkoker
         secondary_info: last-updated
+      state_color: true
+      type: entities
+    - entities:
+      - entity: light.ambilight
+        name: TV Ambilight
       - entities:
         - entity: input_select.play_gradient_scenes
           name: Gradient Scenes
+        - entity: light.ambilight
         - entity: light.play_gradient_lightstrip
         - entity: light.woonkamer_play_lichtbalk
           name: Play Lichtbalk
@@ -142,8 +127,36 @@ views:
           secondary_info: brightness
           state_color: true
         type: custom:fold-entity-row
-      - entity: light.ambilight
-        secondary_info: brightness
+      - base_config:
+          layout: icon|name
+          state_styles:
+            'on':
+              button:
+                background-color: var(--button-shape-active-color)
+                color: var(--button-icon-active-color)
+              name:
+                color: var(--button-icon-active-color)
+          styles:
+            button:
+              background-color: var(--button-shape-color)
+              border-radius: 10px
+              color: var(--primary-text-color)
+              margin-bottom: 0px
+              margin-right: 0px
+              padding: 6px
+            icon:
+              --mdc-icon-size: 20px
+            name:
+              color: var(--primary-text-color)
+              font-weight: 500
+        buttons:
+        - entity: switch.privacy_mode
+          name: Privacy
+        - entity: switch.party_mode
+          name: Party
+        - entity: switch.cinema_mode
+          name: Cinema
+        type: custom:paper-buttons-row
       state_color: true
       type: entities
     - entities:
@@ -161,29 +174,6 @@ views:
           entity: light.slaapkamer_groep
           icon: hue:room-bedroom
           name: Slaapkamer
-          secondary_info: brightness
-          state_color: true
-        type: custom:fold-entity-row
-      type: entities
-    - entities:
-      - entity: light.overloop_lamp
-        secondary_info: brightness
-      - entity: light.badkamer_lamp
-        icon: mdi:wall-sconce-round
-        secondary_info: brightness
-      state_color: true
-      type: entities
-    - entities:
-      - entities:
-        - light.kledingkamer_lamp
-        - light.kledingkamer_staande_lamp
-        group_config:
-          secondary_info: brightness
-          state_color: true
-        head:
-          entity: light.kledingkamer_groep
-          icon: hue:room-closet
-          name: Kledingkamer
           secondary_info: brightness
           state_color: true
         type: custom:fold-entity-row
@@ -209,6 +199,27 @@ views:
           secondary_info: brightness
           state_color: true
         type: custom:fold-entity-row
+      - entities:
+        - light.kledingkamer_lamp
+        - light.kledingkamer_staande_lamp
+        group_config:
+          secondary_info: brightness
+          state_color: true
+        head:
+          entity: light.kledingkamer_groep
+          icon: hue:room-closet
+          name: Kledingkamer
+          secondary_info: brightness
+          state_color: true
+        type: custom:fold-entity-row
+      state_color: true
+      type: entities
+    - entities:
+      - entity: light.overloop_lamp
+        secondary_info: brightness
+      - entity: light.badkamer_lamp
+        icon: mdi:wall-sconce-round
+        secondary_info: brightness
       state_color: true
       type: entities
     - entities:
@@ -228,7 +239,7 @@ views:
       type: entities
     type: vertical-stack
   - cards:
-    - content: '# Sensors'
+    - content: '## Sensors'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -289,12 +300,21 @@ views:
             state_styles:
               failed:
                 button:
+                  background-color: rgb(199, 72, 76, 0.2)
+                  color: var(--label-badge-red)
+                state:
                   color: var(--label-badge-red)
               running:
                 button:
-                  color: var(--primary-color)
+                  background-color: var(--button-shape-active-color)
+                  color: var(--button-icon-active-color)
+                state:
+                  color: var(--button-icon-active-color)
               succeeded:
                 button:
+                  background-color: rgb(76, 175, 80, 0.2)
+                  color: var(--label-badge-green)
+                state:
                   color: var(--label-badge-green)
             state_text:
               failed: Failed
@@ -303,11 +323,17 @@ views:
               succeeded: Finised
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
+                background-color: var(--button-shape-color)
+                border-radius: 10px
+                color: var(--primary-text-color)
                 margin-bottom: 0px
                 margin-right: 0px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 20px
+              state:
+                color: var(--primary-text-color)
+                font-weight: 500
             tap_action:
               action: call-service
               confirmation:
@@ -324,7 +350,7 @@ views:
       state_color: false
       type: entities
     - entities:
-      - entity: binary_sensor.hp_tango_x_connectivity
+      - entity: sensor.hp_tango
         extend_paper_buttons_row:
           base_config:
             layout: icon|state
@@ -332,21 +358,33 @@ views:
               postfix: '%'
             styles:
               button:
-                background-color: var(--primary-background-color)
+                background-color: var(--card-background-color)
                 border-radius: 25px
-                margin-bottom: 0px
-                padding: 6px
+                box-shadow: var(--ha-card-box-shadow)
+                color: var(--primary-text-color)
+                padding: 5px 10px 5px 10px
+              icon:
+                --mdc-icon-size: 16px
+                margin-top: -3px
+              state:
+                color: var(--primary-text-color)
+                font-size: 12px
+                font-weight: bold
           buttons:
-          - entity: sensor.hp_tango_x_inkcartridge_black
+          - entity: sensor.hp_tango_black_cartridge
             icon: mdi:water
             styles:
               button:
                 margin-right: 10px
-          - entity: sensor.hp_tango_x_inkcartridge_cyanmagentayellow
+          - entity: sensor.hp_tango_tri_color_cartridge
             icon: mdi:water-opacity
+            styles:
+              icon:
+                --mdc-icon-size: 17px
         name: Printer
         secondary_info:
-          entity: binary_sensor.hp_tango_x_connectivity
+          entity: sensor.hp_tango_uptime
+          format: relative
           name: false
         show_state: false
         state_color: true
@@ -361,6 +399,12 @@ views:
               rinse: mdi:circle-opacity
               spin: mdi:sync-circle
               wash: mdi:water-circle
+            state_styles:
+              none:
+                button:
+                  color: var(--primary-text-color)
+                state:
+                  color: var(--primary-text-color)
             state_text:
               none: Finished
               rinse: Rinse
@@ -368,11 +412,18 @@ views:
               wash: Wash
             styles:
               button:
-                background-color: var(--primary-background-color)
+                background-color: var(--card-background-color)
                 border-radius: 25px
-                margin-bottom: 0px
-                margin-right: 0px
-                padding: 6px
+                box-shadow: var(--ha-card-box-shadow)
+                color: var(--primary-color)
+                padding: 5px 10px 5px 10px
+              icon:
+                --mdc-icon-size: 16px
+                margin-top: -3px
+              state:
+                color: var(--primary-color)
+                font-size: 12px
+                font-weight: bold
         name: Wasmachine
         secondary_info:
           entity: sensor.wasmachine_washer_completion_time
@@ -385,8 +436,51 @@ views:
       type: entities
     - cards:
       - entities:
-        - entity: sensor.p1_meter_active_power
-          name: Live Energieverbruik
+        - base_config:
+            layout: icon|name|state
+            styles:
+              button:
+                background-color: var(--card-background-color)
+                border-radius: 25px
+                box-shadow: var(--ha-card-box-shadow)
+                padding: 5px 10px 5px 10px
+              icon:
+                --mdc-icon-size: 16px
+                margin-top: -3px
+              name:
+                color: var(--primary-text-color)
+                font-size: 12px
+                font-weight: bold
+              state:
+                color: var(--primary-text-color)
+                font-size: 12px
+                font-weight: bold
+          buttons:
+          - entity: sensor.p1_meter_active_power
+            icon: mdi:lightning-bolt
+            name: Active
+            state:
+              postfix: W
+              prefix: "\u25CF "
+            styles:
+              button:
+                color: '{{ (states(''sensor.p1_meter_active_power'') <= ''0'') | iif(''rgb(103,
+                  58, 183)'', ''rgb(33, 150, 234)'') }}'
+          - entity: sensor.pv_power
+            icon: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''mdi:power-sleep'',
+              ''mdi:white-balance-sunny'') }}'
+            layout: icon|state
+            name: "{{ iif(is_state('sensor.pv_power', 'unavailable'), 'Solar \u25CF\
+              \ 0 W', 'Solar') }}"
+            state: "{% if is_state('sensor.pv_power', 'unavailable') %}\n  Solar \u25CF\
+              \ 0 W\n{% else %}\n  Solar \u25CF {{ states('sensor.pv_power')}} W\n\
+              {% endif %}    "
+            styles:
+              button:
+                color: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''rgb(158,
+                  158, 158)'', ''rgb(255, 193, 7)'') }}'
+          type: custom:paper-buttons-row
+        state_color: true
         type: entities
       - type: energy-distribution
       type: custom:vertical-stack-in-card
@@ -402,7 +496,7 @@ views:
         - color: '#8BC34A'
           entity: sensor.slaapkamer_temperature_multi_sensor
           name: Slaapkamer
-        height: 135
+        height: 128
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -427,7 +521,7 @@ views:
         - color: '#A5D6A7'
           entity: sensor.slaapkamer_humidity_multi_sensor
           name: Slaapkamer
-        height: 135
+        height: 128
         hour24: true
         hours_to_show: 120
         line_width: 3
@@ -451,7 +545,7 @@ views:
       type: custom:swipe-card
     type: vertical-stack
   - cards:
-    - content: '# Controls'
+    - content: '## Controls'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -465,8 +559,9 @@ views:
             layout: icon
             styles:
               button:
-                background-color: var(--primary-background-color)
+                background-color: var(--button-shape-color)
                 border-radius: 25px
+                color: var(--disabled-text-color)
                 margin-top: -20px
                 padding: 5px
           buttons:
@@ -478,9 +573,9 @@ views:
             styles:
               button:
                 color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
-                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
                   \ 'temperature') == states('input_number.climate_comfort')|float(0)\
-                  \ %}\n var(--state-climate-heat-color)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  \ %}\n var(--state-climate-heat-color)\n{% else %} \n var(--disabled-text-color)\n\
                   {% endif %}"
             tap_action:
               action: call-service
@@ -497,9 +592,9 @@ views:
             styles:
               button:
                 color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
-                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
                   \ 'temperature') == states('input_number.climate_eco')|float(0)\
-                  \ %} \n var(--label-badge-green)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  \ %} \n var(--label-badge-green)\n{% else %} \n var(--disabled-text-color)\n\
                   {% endif %}"
             tap_action:
               action: call-service
@@ -516,9 +611,9 @@ views:
             styles:
               button:
                 color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
-                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
                   \ 'temperature') == states('input_number.climate_away')|float(0)\
-                  \ %}\n var(--paper-item-icon-active-color)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  \ %}\n var(--paper-item-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
                   {% endif %}"
             tap_action:
               action: call-service
@@ -535,9 +630,9 @@ views:
             styles:
               button:
                 color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
-                  \ %}\n  var(--paper-item-icon-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                  \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
                   \ 'temperature') == states('input_number.climate_sleep')|float(0)\
-                  \ %}\n var(--label-badge-turquoise)\n{% else %} \n var(--paper-item-icon-color)\n\
+                  \ %}\n var(--label-badge-turquoise)\n{% else %} \n var(--disabled-text-color)\n\
                   {% endif %}"
             tap_action:
               action: call-service
@@ -547,64 +642,75 @@ views:
                   entity_id: climate.woonkamer_centrale_verwarming
                 mode: Sleep
           type: custom:paper-buttons-row
-        style: "ha-card {\n  margin-bottom: 10px;\n}\n"
-        type: entities
-      - type: divider
-      - entities:
-        - entity: fan.whisper_flex
-          extend_paper_buttons_row:
-            buttons:
-            - entity: input_select.whisper_flex_modes
-              layout: icon
-              state_icons:
-                nature mode: mdi:tailwind
-                normal mode: mdi:fan-plus
-                sleep mode: mdi:power-sleep
-              styles:
-                button:
-                  background-color: var(--table-row-alternative-background-color)
-                  border-radius: 25px
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 6px
-          name: Whisper Flex
-          secondary_info: last-changed
-          state_color: true
-          toggle: true
-        - entity: fan.smartmi_p1
-          extend_paper_buttons_row:
-            buttons:
-            - entity: sensor.smartmi_p1_aqi
-              layout: icon
-              state_styles:
-                excellent:
-                  button:
-                    color: var(--label-badge-green)
-                fair:
-                  button:
-                    color: var(--label-badge-yellow)
-                good:
-                  button:
-                    color: var(--label-badge-green)
-                inferior:
-                  button:
-                    color: var(--state-climate-heat-color)
-                poor:
-                  button:
-                    color: var(--label-badge-red)
-              styles:
-                button:
-                  background-color: var(--primary-background-color)
-                  border-radius: 25px
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 6px
-          name: Smartmi P1
-          secondary_info: last-changed
-          state_color: true
-        style: "ha-card {\n  margin-top: 10px;\n}\n"
+        style: "ha-card {\n  margin-bottom: 0px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
+    - entities:
+      - entity: fan.whisper_flex
+        extend_paper_buttons_row:
+          buttons:
+          - entity: input_select.whisper_flex_modes
+            layout: icon
+            state_icons:
+              nature mode: mdi:tailwind
+              normal mode: mdi:fan-plus
+              sleep mode: mdi:power-sleep
+            state_styles:
+              normal mode:
+                button:
+                  background-color: var(--button-shape-color)
+                  color: var(--disabled-text-color)
+            styles:
+              button:
+                background-color: var(--button-shape-active-color)
+                border-radius: 25px
+                color: var(--button-icon-active-color)
+                margin-right: 10px
+              icon:
+                --mdc-icon-size: 21px
+        name: Whisper Flex
+        secondary_info: last-changed
+        state_color: true
+        toggle: true
+      - entity: fan.smartmi_p1
+        extend_paper_buttons_row:
+          buttons:
+          - entity: sensor.smartmi_p1_aqi
+            layout: icon
+            state_styles:
+              excellent:
+                button:
+                  background-color: rgb(76, 175, 80, 0.2)
+                  color: var(--label-badge-green)
+              fair:
+                button:
+                  background-color: rgb(223, 194, 113, 0.2)
+                  color: var(--label-badge-yellow)
+              good:
+                button:
+                  background-color: rgb(76, 175, 80, 0.2)
+                  color: var(--label-badge-green)
+              inferior:
+                button:
+                  background-color: rgb(255, 129, 0, 0.2)
+                  color: var(--state-climate-heat-color)
+              poor:
+                button:
+                  background-color: rgb(199, 72, 76, 0.2)
+                  color: var(--label-badge-red)
+            styles:
+              button:
+                background-color: var(--primary-background-color)
+                border-radius: 25px
+                margin-bottom: 0px
+                margin-right: 10px
+                padding: 6px
+              icon:
+                --mdc-icon-size: 21px
+        name: Smartmi P1
+        secondary_info: last-changed
+        state_color: true
+      type: entities
     - artwork: cover
       entity: media_player.sonos_arc
       group: false
@@ -615,12 +721,15 @@ views:
       type: custom:mini-media-player
       volume_stateless: false
     - cards:
-      - entity: media_player.sonos_roam
-        name: Roam
-        type: media-control
-      - entity: media_player.ikea_symfonisk
-        name: Symfonisk
-        type: media-control
+      - entities:
+        - entity: media_player.sonos_roam
+          name: Roam
+        state_color: false
+        type: entities
+      - entities:
+        - entity: media_player.ikea_symfonisk
+          name: Symfonisk
+        type: entities
       columns: 2
       square: false
       type: grid
@@ -652,85 +761,94 @@ views:
       type: glance
     type: vertical-stack
   - cards:
-    - content: '# Occupancy'
+    - content: '## Occupancy'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
     - cards:
-      - entities:
-        - entity: person.gabriel
-        - entity: person.shanna
-        - entity: person.zora
-        style: "h1.card-header {\n  font-size: 1.2em;\n  font-weight: var(--mcg-title-font-weight,\
-          \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 5px;\n\
-          }\nha-card {\n  margin-bottom: 2px;\n}\n"
-        title: Home
-        type: glance
-      - type: divider
-      - entities:
-        - entity: input_select.home_state_occupancy
-          extend_paper_buttons_row:
-            base_config:
-              layout: icon
-              styles:
+      - entity: person.gabriel
+        type: custom:mushroom-person-card
+        use_entity_picture: true
+        vertical: true
+      - entity: person.shanna
+        type: custom:mushroom-person-card
+        use_entity_picture: true
+        vertical: true
+      - entity: person.zora
+        type: custom:mushroom-person-card
+        use_entity_picture: true
+        vertical: true
+      square: false
+      type: grid
+    - entities:
+      - entity: input_select.home_state_occupancy
+        extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            state_styles:
+              'on':
                 button:
-                  background-color: var(--primary-background-color)
-                  border-radius: 25px
-            buttons:
-            - entity: switch.home_occupancy
-              styles:
-                button:
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 5px
-            - entity: switch.sleeping_occupancy
-              styles:
-                button:
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 6px
-                icon:
-                  --mdc-icon-size: 22px
-            - entity: switch.away_occupancy
-              styles:
-                button:
-                  margin-bottom: 0px
-                  margin-right: 10px
-                  padding: 6px
-                icon:
-                  --mdc-icon-size: 23px
-            - entity: switch.on_vacation_occupancy
-              styles:
-                button:
-                  margin-bottom: 0px
-                  padding: 4px
-          name: Occupancy
-          secondary_info:
-            entity: input_select.home_state_occupancy
-            name: false
-          show_state: false
-          state_color: true
-          type: custom:multiple-entity-row
-        style: "ha-card {\n  padding: 0px 0px 0px 0px;\n}\n"
-        type: entities
-      type: custom:vertical-stack-in-card
+                  background-color: var(--button-shape-active-color)
+                  color: var(--button-icon-active-color)
+            styles:
+              button:
+                background-color: var(--button-shape-color)
+                border-radius: 25px
+                color: var(--disabled-text-color)
+                margin-bottom: 0px
+                margin-right: 10px
+          buttons:
+          - entity: switch.home_occupancy
+            styles:
+              button:
+                padding: 5px
+              icon:
+                --mdc-icon-size: 21px
+          - entity: switch.sleeping_occupancy
+            styles:
+              button:
+                padding: 6px
+              icon:
+                --mdc-icon-size: 21px
+          - entity: switch.away_occupancy
+            styles:
+              button:
+                margin-bottom: 0px
+                padding: 6px
+              icon:
+                --mdc-icon-size: 22px
+          - entity: switch.on_vacation_occupancy
+            styles:
+              button:
+                margin-right: 0px
+                padding: 4px
+              icon:
+                --mdc-icon-size: 22px
+        name: Occupancy
+        secondary_info:
+          entity: input_select.home_state_occupancy
+          name: false
+        show_state: false
+        state_color: true
+        type: custom:multiple-entity-row
+      style: "ha-card {\n  padding: 0px 0px 0px 0px;\n}\n"
+      type: entities
     - cards:
       - entity: alarm_control_panel.security_system
         name: Security
-        state_color: true
-        type: entity
+        states:
+        - armed_home
+        - armed_away
+        - armed_night
+        type: custom:mushroom-alarm-control-panel-card
       - entity: switch.security_cam
-        name: Security Cam
-        state_color: true
-        type: entity
+        type: custom:mushroom-entity-card
       - entity: binary_sensor.voordeur_sensor
         name: Voordeur
-        state_color: true
-        type: entity
+        type: custom:mushroom-entity-card
       - entity: binary_sensor.achterdeur_sensor
         name: Achterdeur
-        state_color: true
-        type: entity
+        type: custom:mushroom-entity-card
       columns: 2
       square: false
       type: grid
@@ -756,7 +874,7 @@ views:
         - color: var(--label-badge-green)
           entity: binary_sensor.achtertuin_motion_sensor
           name: Achtertuin
-        height: 50
+        height: 90
         hours_to_show: 6
         icon: mdi:page-layout-footer
         line_width: 3
@@ -794,7 +912,7 @@ views:
         - color: var(--label-badge-yellow)
           entity: binary_sensor.zolder_occupancy
           name: Zolder
-        height: 50
+        height: 90
         hours_to_show: 6
         icon: mdi:page-layout-body
         line_width: 3
@@ -922,18 +1040,29 @@ views:
 - badges: []
   cards:
   - cards:
-    - content: '# Distribution'
+    - content: '## Distribution'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
-        \ !important;\n}\n"
+        \ !important;\n  margin-bottom: -10px\n}\n"
       type: markdown
+    - chips:
+      - content: "Active \u25CF {{ states('sensor.p1_meter_active_power') }} W"
+        icon: mdi:lightning-bolt
+        icon_color: '{{ (states(''sensor.p1_meter_active_power'') <= ''0'') | iif(''deep-purple'',
+          ''blue'') }}'
+        type: template
+      - content: "{% if is_state('sensor.pv_power', 'unavailable') %}\n  Solar \u25CF\
+          \ 0 W\n{% else %}\n  Solar \u25CF {{ states('sensor.pv_power') }} W\n{%\
+          \ endif %}"
+        icon: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''mdi:power-sleep'',
+          ''mdi:white-balance-sunny'') }}'
+        icon_color: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''grey'',
+          ''amber'') }}'
+        type: template
+      type: custom:mushroom-chips-card
+    - type: energy-distribution
     - cards:
-      - entities:
-        - entity: sensor.p1_meter_active_power
-          name: Live Energieverbruik
-        type: entities
-      - type: energy-distribution
+      - type: energy-sources-table
       type: custom:vertical-stack-in-card
-    - type: custom:sun-card
     - cards:
       - type: energy-solar-consumed-gauge
       - type: energy-grid-neutrality-gauge
@@ -941,66 +1070,50 @@ views:
       type: horizontal-stack
     type: vertical-stack
   - cards:
-    - content: '# Usage'
+    - content: '## History'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
-        \ !important;\n}\n"
+        \ !important;\n  margin-bottom: -10px\n}\n"
       type: markdown
+    - chips:
+      - entity: sensor.actief_stroomtarief
+        icon_color: teal
+        type: entity
+      - content_info: none
+        entity: button.refresh_mijnladen
+        hold_action:
+          action: more-info
+        tap_action:
+          action: call-service
+          service: button.press
+          service_data: {}
+          target:
+            entity_id: button.refresh_mijnladen
+        type: entity
+      - entity: sensor.mijnladen_verbruik_maandelijks
+        icon_color: deep-orange
+        type: entity
+      - entity: sensor.mijnladen_vergoeding_maandelijks
+        icon_color: green
+        type: entity
+      type: custom:mushroom-chips-card
     - cards:
-      - entities:
-        - entity: sensor.p1_meter_total_power_import_t2
-          icon: mdi:home-plus-outline
-          name: Normaaltarief
-        - entity: sensor.p1_meter_total_power_import_t1
-          icon: mdi:home-minus-outline
-          name: Daltarief
-        - entity: sensor.p1_meter_total_power_export_t2
-          icon: mdi:home-export-outline
-          name: Teruglevering
-        type: glance
+      - card_mod:
+          style: "ha-card {\n  padding: 15px 15px 10px 15px;\n  box-shadow: none !important;\n\
+            }\n"
+        cards:
+        - type: energy-date-selection
+        type: custom:vertical-stack-in-card
       - type: energy-usage-graph
       type: custom:vertical-stack-in-card
-    - cards:
-      - entities:
-        - entity: sensor.inverter_gw3600dns_energy
-          icon: mdi:solar-panel
-          name: Totale Zonne-productie
-        - entity: sensor.inverter_gw3600dns
-          icon: mdi:solar-power
-          name: Huidige Zonne-productie
-        type: entities
-      - type: energy-solar-graph
-      type: custom:vertical-stack-in-card
-    type: vertical-stack
-  - cards:
-    - content: '# Sources'
-      style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
-        \ !important;\n}\n"
-      type: markdown
-    - card_mod:
-        style: "ha-card {\n  padding-right: 15px;\n  padding-bottom: 10px;\n  padding-top:\
-          \ 10px;\n}\n"
-      cards:
-      - type: energy-date-selection
-      type: custom:vertical-stack-in-card
-    - cards:
-      - entity: input_text.leverancier_normaaltarief
-        name: Normaaltarief
-        type: entity
-      - entity: input_text.leverancier_daltarief
-        name: Daltarief
-        type: entity
-      columns: 2
-      square: false
-      type: grid
-    - type: energy-sources-table
+    - type: energy-solar-graph
     - type: energy-devices-graph
     type: vertical-stack
   icon: mdi:lightning-bolt
-  path: power
-  title: Power
+  path: energy
+  title: Energy+
 - badges: []
   cards:
-  - content: '# Controls'
+  - content: '## Controls'
     style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
       \ !important;\n}\n"
     type: markdown
@@ -1016,8 +1129,9 @@ views:
           layout: icon
           styles:
             button:
-              background-color: var(--primary-background-color)
+              background-color: var(--button-shape-color)
               border-radius: 25px
+              color: var(--disabled-text-color)
               margin-top: -20px
               padding: 5px
         buttons:
@@ -1028,9 +1142,11 @@ views:
           name: Comfort
           styles:
             button:
-              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
-                \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+              color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                \ 'temperature') == states('input_number.climate_comfort')|float(0)\
+                \ %}\n var(--state-climate-heat-color)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1045,9 +1161,11 @@ views:
           name: Eco
           styles:
             button:
-              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
-                \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+              color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                \ 'temperature') == states('input_number.climate_eco')|float(0) %}\
+                \ \n var(--label-badge-green)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1062,9 +1180,11 @@ views:
           name: Away
           styles:
             button:
-              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
-                \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+              color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                \ 'temperature') == states('input_number.climate_away')|float(0) %}\n\
+                \ var(--paper-item-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1079,9 +1199,11 @@ views:
           name: Sleep
           styles:
             button:
-              color: "{% if state_attr('climate.woonkamer_centrale_verwarming', 'temperature')\
-                \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+              color: "{% if is_state('climate.woonkamer_centrale_verwarming', 'off')\
+                \ %}\n  var(--disabled-text-color)\n{% elif state_attr('climate.woonkamer_centrale_verwarming',\
+                \ 'temperature') == states('input_number.climate_sleep')|float(0)\
+                \ %}\n var(--label-badge-turquoise)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1091,95 +1213,105 @@ views:
               mode: Sleep
         type: custom:paper-buttons-row
       type: entities
-    - type: divider
-    - entities:
-      - entity: fan.whisper_flex
-        extend_paper_buttons_row:
-          buttons:
-          - entity: input_select.whisper_flex_modes
-            layout: icon
-            state_icons:
-              nature mode: mdi:tailwind
-              normal mode: mdi:fan-plus
-              sleep mode: mdi:power-sleep
-            styles:
-              button:
-                background-color: var(--table-row-alternative-background-color)
-                border-radius: 25px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
-        name: Whisper Flex
-        secondary_info: last-changed
-        state_color: true
-        toggle: true
-      - entity: climate.tuya_duux_threesixty
-        extend_paper_buttons_row:
-          buttons:
-          - entity: select.tuya_duux_threesixty_temperature_level
-            layout: icon
-            state_icons:
-              '1': mdi:fan-speed-1
-              '2': mdi:fan-speed-2
-              '3': mdi:fan-speed-3
-            state_styles:
-              '2':
-                button:
-                  color: var(--state-climate-heat-color)
-              '3':
-                button:
-                  color: var(--label-badge-red)
-            styles:
-              button:
-                background-color: var(--table-row-alternative-background-color)
-                border-radius: 25px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
-        name: Duux ThreeSixty
-        secondary_info: last-changed
-        state_color: true
-      style: "ha-card {\n  margin-top: 2px;\n}\n"
-      type: entities
-    - type: divider
-    - entities:
-      - entity: fan.smartmi_p1
-        extend_paper_buttons_row:
-          buttons:
-          - entity: sensor.smartmi_p1_aqi
-            layout: icon
-            state_styles:
-              excellent:
-                button:
-                  color: var(--label-badge-green)
-              fair:
-                button:
-                  color: var(--label-badge-yellow)
-              good:
-                button:
-                  color: var(--label-badge-green)
-              inferior:
-                button:
-                  color: var(--state-climate-heat-color)
-              poor:
-                button:
-                  color: var(--label-badge-red)
-            styles:
-              button:
-                background-color: var(--table-row-alternative-background-color)
-                border-radius: 25px
-                margin-bottom: 0px
-                margin-right: 10px
-                padding: 6px
-        name: Smartmi P1
-        secondary_info: last-changed
-        state_color: true
-      - entity: switch.woonhuisventilatie
-        name: Woonhuisventilatie
-        secondary_info: last-changed
-        state_color: true
-      type: entities
     type: custom:vertical-stack-in-card
+    view_layout:
+      position: sidebar
+  - entities:
+    - entity: fan.whisper_flex
+      extend_paper_buttons_row:
+        buttons:
+        - entity: input_select.whisper_flex_modes
+          layout: icon
+          state_icons:
+            nature mode: mdi:tailwind
+            normal mode: mdi:fan-plus
+            sleep mode: mdi:power-sleep
+          state_styles:
+            normal mode:
+              button:
+                background-color: var(--button-shape-color)
+                color: var(--disabled-text-color)
+          styles:
+            button:
+              background-color: var(--button-shape-active-color)
+              border-radius: 25px
+              color: var(--button-icon-active-color)
+              margin-right: 10px
+            icon:
+              --mdc-icon-size: 21px
+      name: Whisper Flex
+      secondary_info: last-changed
+      state_color: true
+      toggle: true
+    - entity: climate.tuya_duux_threesixty
+      extend_paper_buttons_row:
+        buttons:
+        - entity: select.tuya_duux_threesixty_temperature_level
+          layout: icon
+          state_icons:
+            '1': mdi:fan-speed-1
+            '2': mdi:fan-speed-2
+            '3': mdi:fan-speed-3
+          state_styles:
+            '2':
+              button:
+                color: var(--state-climate-heat-color)
+            '3':
+              button:
+                color: var(--label-badge-red)
+          styles:
+            button:
+              background-color: var(--button-shape-color)
+              border-radius: 25px
+              color: var(--disabled-text-color)
+              margin-right: 10px
+      name: Duux ThreeSixty
+      secondary_info: last-changed
+      state_color: true
+    - type: divider
+    - entity: fan.smartmi_p1
+      extend_paper_buttons_row:
+        buttons:
+        - entity: sensor.smartmi_p1_aqi
+          layout: icon
+          state_styles:
+            excellent:
+              button:
+                background-color: rgb(76, 175, 80, 0.2)
+                color: var(--label-badge-green)
+            fair:
+              button:
+                background-color: rgb(223, 194, 113, 0.2)
+                color: var(--label-badge-yellow)
+            good:
+              button:
+                background-color: rgb(76, 175, 80, 0.2)
+                color: var(--label-badge-green)
+            inferior:
+              button:
+                background-color: rgb(255, 129, 0, 0.2)
+                color: var(--state-climate-heat-color)
+            poor:
+              button:
+                background-color: rgb(199, 72, 76, 0.2)
+                color: var(--label-badge-red)
+          styles:
+            button:
+              background-color: var(--primary-background-color)
+              border-radius: 25px
+              margin-bottom: 0px
+              margin-right: 10px
+              padding: 6px
+            icon:
+              --mdc-icon-size: 21px
+      name: Smartmi P1
+      secondary_info: last-changed
+      state_color: true
+    - entity: switch.woonhuisventilatie
+      name: Woonhuisventilatie
+      secondary_info: last-changed
+      state_color: true
+    type: entities
     view_layout:
       position: sidebar
   - entities:
@@ -1229,7 +1361,7 @@ views:
           layout: icon
           styles:
             button:
-              background-color: var(--primary-background-color)
+              background-color: var(--button-shape-color)
               border-radius: 25px
               margin-top: 0px
               padding: 5px
@@ -1243,7 +1375,7 @@ views:
             button:
               color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
                 \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1260,7 +1392,7 @@ views:
             button:
               color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
                 \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1277,7 +1409,7 @@ views:
             button:
               color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
                 \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1294,7 +1426,7 @@ views:
             button:
               color: "{% if state_attr('climate.studiekamer_radiator', 'temperature')\
                 \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1325,7 +1457,7 @@ views:
           layout: icon
           styles:
             button:
-              background-color: var(--primary-background-color)
+              background-color: var(--button-shape-color)
               border-radius: 25px
               margin-top: 0px
               padding: 5px
@@ -1339,7 +1471,7 @@ views:
             button:
               color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1356,7 +1488,7 @@ views:
             button:
               color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1373,7 +1505,7 @@ views:
             button:
               color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1390,7 +1522,7 @@ views:
             button:
               color: "{% if state_attr('climate.slaapkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1421,7 +1553,7 @@ views:
           layout: icon
           styles:
             button:
-              background-color: var(--primary-background-color)
+              background-color: var(--button-shape-color)
               border-radius: 25px
               margin-top: 0px
               padding: 5px
@@ -1435,7 +1567,7 @@ views:
             button:
               color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_comfort')|float(0) %} \n var(--state-climate-heat-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1452,7 +1584,7 @@ views:
             button:
               color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_eco')|float(0) %} \n var(--label-badge-green)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1469,7 +1601,7 @@ views:
             button:
               color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_away')|float(0) %} \n var(--paper-item-icon-active-color)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1486,7 +1618,7 @@ views:
             button:
               color: "{% if state_attr('climate.kledingkamer_radiator', 'temperature')\
                 \ == states('input_number.climate_sleep')|float(0) %} \n var(--label-badge-turquoise)\n\
-                {% else %} \n var(--paper-item-icon-color)\n{% endif %}"
+                {% else %} \n var(--disabled-text-color)\n{% endif %}"
           tap_action:
             action: call-service
             service: script.generic_component_climate
@@ -1499,7 +1631,7 @@ views:
     type: custom:vertical-stack-in-card
     view_layout:
       position: sidebar
-  - content: '# Sensors'
+  - content: '## Sensor History'
     style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
       \ !important;\n}\n"
     type: markdown
@@ -1580,7 +1712,7 @@ views:
 - badges: []
   cards:
   - cards:
-    - content: '# Calendar'
+    - content: '## Calendar'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -1654,7 +1786,7 @@ views:
       type: glance
     type: vertical-stack
   - cards:
-    - content: '# Scheduler'
+    - content: '## Scheduler'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -1777,7 +1909,7 @@ views:
 - badges: []
   cards:
   - cards:
-    - content: '# Pi Status'
+    - content: '## Host'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -1838,12 +1970,21 @@ views:
             state_styles:
               failed:
                 button:
+                  background-color: rgb(199, 72, 76, 0.2)
+                  color: var(--label-badge-red)
+                state:
                   color: var(--label-badge-red)
               running:
                 button:
-                  color: var(--primary-color)
+                  background-color: var(--button-shape-active-color)
+                  color: var(--button-icon-active-color)
+                state:
+                  color: var(--button-icon-active-color)
               succeeded:
                 button:
+                  background-color: rgb(76, 175, 80, 0.2)
+                  color: var(--label-badge-green)
+                state:
                   color: var(--label-badge-green)
             state_text:
               failed: Failed
@@ -1852,11 +1993,17 @@ views:
               succeeded: Finised
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
+                background-color: var(--button-shape-color)
+                border-radius: 10px
+                color: var(--primary-text-color)
                 margin-bottom: 0px
                 margin-right: 0px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 20px
+              state:
+                color: var(--primary-text-color)
+                font-weight: 500
             tap_action:
               action: call-service
               confirmation:
@@ -1870,6 +2017,7 @@ views:
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
+      state_color: false
       type: entities
     - entities:
       - entity: sensor.uptime
@@ -1878,11 +2026,14 @@ views:
             layout: icon
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
+                background-color: var(--button-shape-color)
+                border-radius: 10px
+                color: var(--primary-text-color)
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 20px
           buttons:
           - icon: mdi:restart
             tap_action:
@@ -1914,11 +2065,14 @@ views:
             layout: icon
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
+                background-color: var(--button-shape-color)
+                border-radius: 10px
+                color: var(--primary-text-color)
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 20px
           buttons:
           - icon: mdi:restart
             tap_action:
@@ -2020,7 +2174,7 @@ views:
       type: horizontal-stack
     type: vertical-stack
   - cards:
-    - content: '# Pi Chart'
+    - content: '## Host History'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -2048,7 +2202,7 @@ views:
       type: history-graph
     type: vertical-stack
   - cards:
-    - content: '# NAS'
+    - content: '## NAS'
       style: "ha-card {\n  --ha-card-background: none !important;\n  box-shadow: none\
         \ !important;\n}\n"
       type: markdown
@@ -2107,11 +2261,14 @@ views:
             layout: icon
             styles:
               button:
-                background-color: var(--primary-background-color)
-                border-radius: 25px
+                background-color: var(--button-shape-color)
+                border-radius: 10px
+                color: var(--primary-text-color)
                 margin-bottom: 0px
                 margin-right: 10px
                 padding: 6px
+              icon:
+                --mdc-icon-size: 20px
           buttons:
           - entity: button.mesa_reboot
             icon: mdi:restart
