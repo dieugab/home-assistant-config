@@ -53,7 +53,8 @@
                     "Good",
                     "Fair",
                     "Inferior",
-                    "Poor"
+                    "Poor",
+                    "Unknown"
                 ],
                 "id": "smartmi_p1_aqi",
                 "icon": "mdi:smoke-detector"
