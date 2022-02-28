@@ -13,11 +13,12 @@
       - media_player.apple_tv
       - media_player.homepod_mini
       - media_player.play_sync_box
+      - media_player.spotify
   entity_config:
     media_player.playstation_4:
       feature_list:
         - feature: on_off
-    media_player.xbox_series_s:
+    media_player.xbox_series_x:
       feature_list:
         - feature: on_off
     media_player.ikea_symfonisk:
@@ -27,9 +28,6 @@
       feature_list:
         - feature: play_pause
     media_player.sonos_arc:
-      feature_list:
-        - feature: play_pause
-    media_player.spotify:
       feature_list:
         - feature: play_pause
 
