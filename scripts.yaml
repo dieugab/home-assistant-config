@@ -236,9 +236,11 @@ home_state_night:
   - service: switch.turn_on
     target:
       entity_id: switch.sleeping_occupancy
+    data: {}
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
+    data: {}
   - service: media_player.media_pause
     data: {}
     target:
@@ -249,13 +251,19 @@ home_state_night:
   - service: climate.turn_off
     data: {}
     entity_id: climate.tuya_duux_threesixty
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id: fan.smartmi_p1
   - service: script.turn_on
     target:
       entity_id: script.action_close_curtains
+    data: {}
   - service: script.turn_on
     target:
       entity_id:
       - script.action_turn_lights_off
+    data: {}
   mode: single
   icon: mdi:weather-night
 home_state_morning:
@@ -361,8 +369,13 @@ home_state_day:
       data: {}
     - service: fan.turn_on
       target:
-        entity_id: fan.smartmi_p1
+        entity_id:
+        - fan.ikea_starkvind
       data: {}
+    - service: fan.turn_off
+      data: {}
+      target:
+        entity_id: fan.smartmi_p1
   - service: light.turn_off
     target:
       entity_id:
@@ -504,6 +517,7 @@ home_occupancy_sleeping:
   - service: alarm_control_panel.alarm_arm_night
     target:
       entity_id: alarm_control_panel.security_system
+    data: {}
   - service: switch.turn_on
     target:
       entity_id:
@@ -511,6 +525,7 @@ home_occupancy_sleeping:
       - switch.adaptive_lighting_sleep_mode_woonkamer
       - switch.adaptive_lighting_sleep_mode_filaments
       - switch.adaptive_lighting_sleep_mode_slaapkamer
+    data: {}
   - service: script.generic_component_climate
     data:
       climate:
@@ -524,9 +539,11 @@ home_occupancy_sleeping:
     target:
       entity_id:
       - script.logic_set_sleep_music
+    data: {}
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.slaapkamer_control
+    data: {}
   - service: light.turn_on
     target:
       entity_id:
@@ -541,29 +558,11 @@ home_occupancy_sleeping:
   - service: light.turn_off
     target:
       entity_id: light.slaapkamer_lamp
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_select.smartmi_p1_preset_modes
-        state: Manual
-      sequence:
-      - service: fan.set_preset_mode
-        target:
-          entity_id: fan.smartmi_p1
-        data:
-          preset_mode: Auto
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 2
-          milliseconds: 0
-      - service: fan.turn_off
-        target:
-          entity_id: fan.smartmi_p1
-    default:
-    - service: fan.turn_off
-      target:
-        entity_id: fan.smartmi_p1
+    data: {}
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id: fan.ikea_starkvind
   - choose:
     - conditions:
       - condition: numeric_state
@@ -576,6 +575,7 @@ home_occupancy_sleeping:
       - service: fan.turn_on
         target:
           entity_id: fan.whisper_flex
+        data: {}
       - wait_template: '{{ is_state(''fan.tuya_whisper_flex'', ''on'') }}'
       - service: fan.oscillate
         target:
@@ -589,6 +589,7 @@ home_occupancy_sleeping:
           preset_mode: Sleep Mode
     default:
     - service: script.dummy
+      data: {}
   mode: restart
   icon: mdi:bell-circle
 home_occupancy_on_vacation:
@@ -615,7 +616,10 @@ home_occupancy_on_vacation:
           mode: Vacation
       - service: fan.turn_off
         target:
-          entity_id: fan.smartmi_p1
+          entity_id:
+          - fan.smartmi_p1
+          - fan.ikea_starkvind
+        data: {}
     - conditions:
       - condition: template
         value_template: '{{ state == ''from vacation'' }}'
@@ -627,9 +631,13 @@ home_occupancy_on_vacation:
           - climate.kledingkamer_radiator
           - climate.studiekamer_radiator
           - climate.slaapkamer_radiator
+        data: {}
       - service: fan.turn_on
         target:
-          entity_id: fan.smartmi_p1
+          entity_id:
+          - fan.ikea_starkvind
+          - fan.smartmi_p1
+        data: {}
     default: []
   mode: single
   icon: mdi:arrow-right-circle-outline
@@ -1115,7 +1123,7 @@ logic_set_sleep_music:
     target:
       entity_id: media_player.sonos_roam
     data:
-      volume_level: 0.2
+      volume_level: 0.12
   - condition: not
     conditions:
     - condition: state
