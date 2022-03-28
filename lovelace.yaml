@@ -672,42 +672,33 @@ views:
         secondary_info: last-changed
         state_color: true
         toggle: true
-      - entity: fan.smartmi_p1
+      - entity: fan.ikea_starkvind
         extend_paper_buttons_row:
           buttons:
-          - entity: sensor.smartmi_p1_aqi
+          - icon: mdi:brightness-auto
             layout: icon
-            state_styles:
-              excellent:
-                button:
-                  background-color: rgb(76, 175, 80, 0.2)
-                  color: var(--label-badge-green)
-              fair:
-                button:
-                  background-color: rgb(223, 194, 113, 0.2)
-                  color: var(--label-badge-yellow)
-              good:
-                button:
-                  background-color: rgb(76, 175, 80, 0.2)
-                  color: var(--label-badge-green)
-              inferior:
-                button:
-                  background-color: rgb(255, 129, 0, 0.2)
-                  color: var(--state-climate-heat-color)
-              poor:
-                button:
-                  background-color: rgb(199, 72, 76, 0.2)
-                  color: var(--label-badge-red)
+            name: Auto Mode
             styles:
               button:
-                background-color: var(--primary-background-color)
+                background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
+                  \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n\
+                  \ var(--button-shape-color)\n{% endif %}"
                 border-radius: 25px
-                margin-bottom: 0px
+                color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto')\
+                  \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                  {% endif %}"
                 margin-right: 10px
-                padding: 6px
+                margin-top: 0px
+                padding: 5px
               icon:
                 --mdc-icon-size: 21px
-        name: Smartmi P1
+            tap_action:
+              action: call-service
+              service: fan.set_preset_mode
+              service_data:
+                entity_id: fan.ikea_starkvind
+                preset_mode: Auto
+        name: IKEA Starkvind
         secondary_info: last-changed
         state_color: true
       type: entities
@@ -743,7 +734,7 @@ views:
           name: Sync
         - entity: media_player.playstation_4
           name: PS4
-        - entity: media_player.xbox_series_s
+        - entity: media_player.xbox_series_x
           name: Xbox
         state_color: true
         type: glance
@@ -1035,8 +1026,13 @@ views:
       type: entities
     type: vertical-stack
   icon: mdi:home-variant
+  layout:
+    max_cols: 4
+    max_width: 380
   path: home
+  theme: Backend-selected
   title: home
+  type: custom:masonry-layout
 - badges: []
   cards:
   - cards:
@@ -1046,17 +1042,31 @@ views:
       type: markdown
     - chips:
       - content: "Active \u25CF {{ states('sensor.p1_meter_active_power') }} W"
+        entity: sensor.p1_meter_active_power
         icon: mdi:lightning-bolt
         icon_color: '{{ (states(''sensor.p1_meter_active_power'') <= ''0'') | iif(''deep-purple'',
           ''blue'') }}'
+        tap_action:
+          action: more-info
         type: template
       - content: "{% if is_state('sensor.pv_power', 'unavailable') %}\n  Solar \u25CF\
           \ 0 W\n{% else %}\n  Solar \u25CF {{ states('sensor.pv_power') }} W\n{%\
           \ endif %}"
+        entity: sensor.pv_power
         icon: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''mdi:power-sleep'',
           ''mdi:white-balance-sunny'') }}'
         icon_color: '{{ iif(is_state(''sensor.pv_power'', ''unavailable''), ''grey'',
           ''amber'') }}'
+        tap_action:
+          action: more-info
+        type: template
+      - content: "\u20AC {{ states('sensor.actief_stroomtarief')|round(2)|replace(\"\
+          .\", \",\") }}"
+        entity: sensor.actief_stroomtarief
+        icon: mdi:home-import-outline
+        icon_color: teal
+        tap_action:
+          action: more-info
         type: template
       type: custom:mushroom-chips-card
     - type: energy-distribution
@@ -1075,30 +1085,35 @@ views:
         \ !important;\n  margin-bottom: -10px\n}\n"
       type: markdown
     - chips:
-      - entity: sensor.actief_stroomtarief
-        icon_color: teal
-        type: entity
-      - content_info: none
-        entity: button.refresh_mijnladen
-        hold_action:
-          action: more-info
-        tap_action:
-          action: call-service
-          service: button.press
-          service_data: {}
-          target:
-            entity_id: button.refresh_mijnladen
-        type: entity
-      - entity: sensor.mijnladen_verbruik_maandelijks
+      - content: '{{ states(''sensor.laadpaal_verbruik_vandaag'')|replace(".", ",")
+          }} / {{ states(''sensor.laadpaal_verbruik'')|replace(".", ",") }} kWh'
+        entity: sensor.laadpaal_verbruik
+        icon: mdi:ev-station
         icon_color: deep-orange
-        type: entity
-      - entity: sensor.mijnladen_vergoeding_maandelijks
+        tap_action:
+          action: more-info
+        type: template
+      - content: "\u20AC {{ states('sensor.mijnladen_vergoeding_vandaag')|replace(\"\
+          .\", \",\") }} / \u20AC {{ states('sensor.mijnladen_vergoeding')|replace(\"\
+          .\", \",\") }}"
+        entity: sensor.mijnladen_vergoeding
+        icon: mdi:wallet-plus
         icon_color: green
-        type: entity
+        tap_action:
+          action: more-info
+        type: template
+      - content: "\u20AC {{ states('sensor.mijnladen_vergoedingstarief')|round(2)|replace(\"\
+          .\", \",\") }}"
+        entity: sensor.mijnladen_vergoedingstarief
+        icon: mdi:cash-refund
+        icon_color: teal
+        tap_action:
+          action: more-info
+        type: template
       type: custom:mushroom-chips-card
     - cards:
       - card_mod:
-          style: "ha-card {\n  padding: 15px 15px 10px 15px;\n  box-shadow: none !important;\n\
+          style: "ha-card {\n  padding: 15px 15px 15px 15px;\n  box-shadow: none !important;\n\
             }\n"
         cards:
         - type: energy-date-selection
@@ -1106,7 +1121,9 @@ views:
       - type: energy-usage-graph
       type: custom:vertical-stack-in-card
     - type: energy-solar-graph
-    - type: energy-devices-graph
+    - card_mod:
+        style: "ha-card {\n  padding: 5px 0px 5px 0px;\n}\n"
+      type: energy-devices-graph
     type: vertical-stack
   icon: mdi:lightning-bolt
   path: energy
@@ -1295,6 +1312,10 @@ views:
               button:
                 background-color: rgb(199, 72, 76, 0.2)
                 color: var(--label-badge-red)
+            unknown:
+              button:
+                background-color: var(--button-shape-color)
+                color: var(--disabled-text-color)
           styles:
             button:
               background-color: var(--primary-background-color)
@@ -1305,6 +1326,35 @@ views:
             icon:
               --mdc-icon-size: 21px
       name: Smartmi P1
+      secondary_info: last-changed
+      state_color: true
+    - entity: fan.ikea_starkvind
+      extend_paper_buttons_row:
+        buttons:
+        - icon: mdi:brightness-auto
+          layout: icon
+          name: Auto Mode
+          styles:
+            button:
+              background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
+                \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n var(--button-shape-color)\n\
+                {% endif %}"
+              border-radius: 25px
+              color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto') %}\
+                \ \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
+              margin-right: 10px
+              margin-top: 0px
+              padding: 5px
+            icon:
+              --mdc-icon-size: 21px
+          tap_action:
+            action: call-service
+            service: fan.set_preset_mode
+            service_data:
+              entity_id: fan.ikea_starkvind
+              preset_mode: Auto
+      name: IKEA Starkvind
       secondary_info: last-changed
       state_color: true
     - entity: switch.woonhuisventilatie
@@ -2362,5 +2412,7 @@ views:
       type: horizontal-stack
     type: vertical-stack
   icon: mdi:information
+  layout: {}
   path: hardware
+  theme: Backend-selected
   title: Hardware
