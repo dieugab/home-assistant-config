@@ -11,51 +11,32 @@
         username: !secret mijnladen_username
         password: !secret mijnladen_password
     button:
+        # Button to manually scrape Eneco MijnLaden
       - unique_id: refresh_mijnladen
         name: Refresh MijnLaden
     sensor:
-        # Eneco MijnLaden kWh thuis geladen (huidige maand)
-      - unique_id: mijnladen_verbruik_maandelijks
-        name: MijnLaden EV Verbruik
-        icon: mdi:ev-station
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: measurement
-        value_template: '{{ (value.replace(",", ".")) }}'
-        select: 'body > section > div.tiles.tiles-6 > div.tile.tile-loaded-home > div.tile-title'
-        attributes:
-          - name: Maand
-            select: 'body > section > div.month-nav > ul > li'
-
-        # Eneco MijnLaden kWh thuis geladen (totaal)
-      - unique_id: mijnladen_verbruik_totaal
-        name: Totaal MijnLaden EV Verbruik
+        # Eneco MijnLaden kWh thuis geladen
+      - unique_id: laadpaal_verbruik
+        name: Laadpaal Verbruik
         icon: mdi:ev-station
         unit_of_measurement: kWh
         device_class: energy
         state_class: total_increasing
         value_template: '{{ (value.replace(",", ".")) }}'
         select: 'body > section > div.tiles.tiles-6 > div.tile.tile-loaded-home > div.tile-title'
-
-        # Eneco MijnLaden Vergoeding in € (huidige maand)
-      - unique_id: mijnladen_vergoeding_maandelijks
-        name: MijnLaden EV Vergoeding
-        icon: mdi:cash-refund
-        unit_of_measurement: EUR
-        device_class: monetary
-        state_class: measurement
-        value_template: '{{ (value.replace(",", ".")|replace("€", " ")|trim) }}'
-        select: 'body > section > div.tiles.tiles-6 > div.tile.tile-compensation > div.tile-title'
         attributes:
           - name: Maand
             select: 'body > section > div.month-nav > ul > li'
 
-        # Eneco MijnLaden Vergoeding in € (totaal)
-      - unique_id: mijnladen_vergoeding_totaal
-        name: Totaal MijnLaden EV Vergoeding
-        icon: mdi:cash-refund
+        # Eneco MijnLaden Vergoeding in €
+      - unique_id: mijnladen_vergoeding
+        name: MijnLaden Vergoeding
+        icon: mdi:wallet-plus
         unit_of_measurement: EUR
         device_class: monetary
         state_class: total_increasing
         value_template: '{{ (value.replace(",", ".")|replace("€", " ")|trim) }}'
         select: 'body > section > div.tiles.tiles-6 > div.tile.tile-compensation > div.tile-title'
+        attributes:
+          - name: Maand
+            select: 'body > section > div.month-nav > ul > li'
