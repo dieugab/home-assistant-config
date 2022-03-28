@@ -121,7 +121,7 @@ homeOS Theme:
       mdc-select-hover-line-color: var(--accent-color)
 
       # Input
-      input-fill-color: var(--secondary-background-color)
+      input-fill-color: var(--button-shape-color) #var(--secondary-background-color)
       input-dropdown-icon-color: var(--secondary-text-color)
       input-ink-color: var(--primary-text-color)
       input-label-ink-color: var(--secondary-text-color)
@@ -241,7 +241,7 @@ homeOS Theme:
       mdc-select-hover-line-color: var(--accent-color)
 
       # Input
-      input-fill-color: var(--secondary-background-color)
+      input-fill-color: var(--button-shape-color) # default: var(--secondary-background-color)
       input-dropdown-icon-color: var(--secondary-text-color)
       input-ink-color: var(--primary-text-color)
       input-label-ink-color: var(--secondary-text-color)
