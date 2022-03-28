@@ -346,7 +346,7 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "Kledingkamer Radiator",
-                "enabled": false
+                "enabled": true
             },
             {
                 "schedule_id": "a0d8fd",
@@ -501,8 +501,8 @@
                 "schedule_id": "3c6ace",
                 "timeslots": [
                     {
-                        "start": "22:00:00",
-                        "stop": "22:30:00",
+                        "start": "07:00:00",
+                        "stop": "08:00:00",
                         "conditions": [
                             {
                                 "entity_id": "input_select.home_state_occupancy",
@@ -521,16 +521,68 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "fan.set_preset_mode",
+                                "service": "fan.turn_on",
                                 "entity_id": "fan.smartmi_p1",
-                                "service_data": {
-                                    "preset_mode": "Manual"
-                                }
+                                "service_data": {}
                             }
                         ]
                     },
                     {
-                        "start": "22:30:00",
+                        "start": "08:00:00",
+                        "stop": "12:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "switch.party_mode",
+                                "attribute": "state",
+                                "value": "off",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "and",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_off",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "12:00:00",
+                        "stop": "13:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "switch.party_mode",
+                                "attribute": "state",
+                                "value": "off",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "and",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_on",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "13:00:00",
                         "stop": "00:00:00",
                         "conditions": [
                             {
@@ -550,11 +602,43 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "fan.set_preset_mode",
+                                "service": "fan.turn_off",
                                 "entity_id": "fan.smartmi_p1",
-                                "service_data": {
-                                    "preset_mode": "Auto"
-                                }
+                                "service_data": {}
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "workday"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "Smartmi P1",
+                "enabled": true
+            },
+            {
+                "schedule_id": "3706eb",
+                "timeslots": [
+                    {
+                        "start": "21:00:00",
+                        "stop": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_off",
+                                "entity_id": "fan.ikea_starkvind",
+                                "service_data": {}
                             }
                         ]
                     }
@@ -565,7 +649,7 @@
                 "start_date": null,
                 "end_date": null,
                 "repeat_type": "repeat",
-                "name": "Smartmi P1",
+                "name": "IKEA Starkvind",
                 "enabled": true
             }
         ],
@@ -583,7 +667,8 @@
             {
                 "name": "Purifier",
                 "schedules": [
-                    "3c6ace"
+                    "3c6ace",
+                    "3706eb"
                 ]
             }
         ]
