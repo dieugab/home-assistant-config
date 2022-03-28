@@ -57,7 +57,7 @@
                 "stat_consumption": "sensor.studiekamer_klima10_energy"
             },
             {
-                "stat_consumption": "sensor.mijnladen_verbruik_totaal"
+                "stat_consumption": "sensor.laadpaal_verbruik"
             }
         ]
     }
