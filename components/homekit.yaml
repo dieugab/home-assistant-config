@@ -6,14 +6,12 @@
   port: 51827
   mode: bridge
   filter:
-    include_domains:
-      - media_player
-    exclude_entities:
-      - media_player.sony_bravia_tv
-      - media_player.apple_tv
-      - media_player.homepod_mini
-      - media_player.play_sync_box
-      - media_player.spotify
+    include_entities:
+      - media_player.playstation_4
+      - media_player.xbox_series_x
+      - media_player.ikea_symfonisk
+      - media_player.sonos_roam
+      - media_player.sonos_arc
   entity_config:
     media_player.playstation_4:
       feature_list:
