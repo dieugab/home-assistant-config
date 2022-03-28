@@ -30,12 +30,12 @@
                 "id": "61cb2e45e77e42a79a9a90bb52809a2f"
             },
             {
-                "url": "/hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381150",
+                "url": "/hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381162",
                 "type": "module",
                 "id": "175326a16af348398f02dcea00540e5b"
             },
             {
-                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157233",
+                "url": "/hacsfiles/scheduler-card/scheduler-card.js?hacstag=286270157234",
                 "type": "module",
                 "id": "236581b1812b4f288c1778ac0ae7a74e"
             },
@@ -50,7 +50,7 @@
                 "id": "8cd7dbf4197c4b8092a6b88939b77304"
             },
             {
-                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=350509867093",
+                "url": "/hacsfiles/uptime-card/uptime-card.js?hacstag=3505098670100",
                 "type": "module",
                 "id": "33f96aedc939414dacf8a248e98fb779"
             },
@@ -60,29 +60,29 @@
                 "id": "274103ba270c4e71aadf75789be8a538"
             },
             {
-                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=384434522128",
+                "url": "/hacsfiles/hass-hue-icons/hass-hue-icons.js?hacstag=3844345221210",
                 "type": "module",
                 "id": "1d27dae02d1741f8a2b19683f30107cd"
             },
             {
-                "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524312",
+                "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524313",
                 "type": "module",
                 "id": "12a713fdad0746e59116078a08e0ad90"
             },
             {
-                "url": "/hacsfiles/thermal_comfort_icons/thermal_comfort_icons.js?hacstag=449218690130",
-                "type": "module",
-                "id": "3dafda4c47c34b6286cf9214dfa7c06b"
-            },
-            {
-                "url": "/hacsfiles/history-explorer-card/history-explorer-card.js?hacstag=4403747941016",
+                "url": "/hacsfiles/history-explorer-card/history-explorer-card.js?hacstag=4403747941019",
                 "type": "module",
                 "id": "2f325487d4914faabe1e24295b0b9ae8"
             },
             {
-                "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375112",
+                "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375130",
                 "type": "module",
                 "id": "9d83b014cc804128b30eda18abeb7669"
+            },
+            {
+                "url": "/hacsfiles/lovelace-layout-card/layout-card.js?hacstag=156434866242",
+                "type": "module",
+                "id": "bea95b1e70214ee89a5b67a0eaf5d28b"
             }
         ]
     }
