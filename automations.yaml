@@ -633,12 +633,23 @@
         target:
           entity_id:
           - media_player.sonos_arc
-      - service: tts.cloud_say
-        data:
+      - service: media_player.play_media
+        target:
           entity_id: media_player.sonos_arc
-          message: Alarm ingeschakeld over 1 minuut
-          options:
-            gender: female
+        data:
+          media_content_id: media-source://tts/cloud?message=Alarm+ingeschakeld+over+1+minuut&language=nl-NL&gender=female
+          media_content_type: provider
+        metadata:
+          title: Alarm ingeschakeld over 1 minuut
+          thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
+          media_class: app
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: provider
+            media_content_id: media-source://tts/cloud?message=Alarm+ingeschakeld+over+1+minuut&language=nl-NL&gender=female
       - delay:
           hours: 0
           minutes: 0
@@ -670,12 +681,23 @@
       target:
         entity_id:
         - media_player.sonos_arc
-    - service: tts.cloud_say
-      data:
+    - service: media_player.play_media
+      target:
         entity_id: media_player.sonos_arc
-        message: Alarm uitgeschakeld
-        options:
-          gender: female
+      data:
+        media_content_id: media-source://tts/cloud?message=Alarm+uitgeschakeld&language=nl-NL&gender=female
+        media_content_type: provider
+      metadata:
+        title: Alarm uitgeschakeld
+        thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
+        media_class: app
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://tts
+        - media_content_type: provider
+          media_content_id: media-source://tts/cloud?message=Alarm+uitgeschakeld&language=nl-NL&gender=female
     - delay:
         hours: 0
         minutes: 0
@@ -2170,3 +2192,46 @@
           - input_select.energy_stroomtarief
     default: []
   mode: single
+- id: '1646153579876'
+  alias: Energy - Charge Stats Summary
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.laadpaal_verbruik_vandaag
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.laadpaal_verbruik_vandaag
+      state: '0'
+  action:
+  - service: notify.notify
+    data:
+      title: homeOS
+      data:
+        subtitle: Eneco MijnLaden
+        group: charging
+        url: lovelace/energy
+      message: Charging Stats have been updated. Today's usage is {{ states('sensor.laadpaal_verbruik_vandaag')|replace('.',
+        ',') }} kWh with a compensation of € {{ states('sensor.mijnladen_vergoeding_vandaag')|replace('.',
+        ',') }}. Compensation tariff is set to € {{ states('sensor.mijnladen_vergoedingstarief')|round(2)|replace('.',
+        ',') }}/kWh.
+  mode: single
+- id: '1648199509563'
+  alias: Notifications - SwitchBot Battery Levels
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.achterdeur_switchbot_battery
+    below: '20'
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: homeOS
+      message: Achterdeur SwitchBot battery level has dropped below 20%. Charge as
+        soon as possible.
+      data:
+        subtitle: Battery Level Critical
+        group: switchbot
+  mode: restart
