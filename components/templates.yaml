@@ -2,6 +2,39 @@
 # █▄▄ █▀█ █▄▄ █▄▄ █▄█ █▄▄ █▀█  █  ██▄ █▄▀ #
 
   - sensor:
+        # Actief Stroomtarief
+      - name: Actief Stroomtarief
+        unique_id: actief_stroomtarief
+        icon: mdi:home-import-outline
+        unit_of_measurement: EUR
+        device_class: monetary
+        state: "{{ iif(is_state('input_select.energy_stroomtarief', 'Normaaltarief'), '0.32284', '0.25677') }}"
+        attributes:
+          actief: "{{ states('input_select.energy_stroomtarief') }}"
+          prijs_per_kWh_normaaltarief: "0.32284"
+          prijs_per_kWh_daltarief: "0.25677"
+
+        # Eneco MijnLaden Vergoedingstarief
+      - name: MijnLaden Vergoedingstarief
+        unique_id: mijnladen_vergoedingstarief
+        icon: mdi:cash-refund
+        unit_of_measurement: EUR
+        device_class: monetary
+        state: >
+          {% set vergoeding = states('sensor.mijnladen_vergoeding_vandaag')|float(0) %}
+          {% set verbruik = states('sensor.laadpaal_verbruik_vandaag')|float(0) %}
+
+          {% if is_state('sensor.laadpaal_verbruik_vandaag', '0') %}
+            0
+          {% elif is_state('sensor.laadpaal_verbruik_vandaag', '0.00') %}
+            0
+          {% else %}
+            {{ (vergoeding / verbruik) | round(5) }}
+          {% endif %}
+        attributes:
+          verbruik_vandaag: "{{ states('sensor.laadpaal_verbruik_vandaag')|replace('.', ',') }} kWh"
+          vergoeding_vandaag: "€ {{ states('sensor.mijnladen_vergoeding_vandaag')|replace('.', ',') }}"
+
         # Woonkamer + Keuken temperature
       - name: "Woonkamer CV Temperature Average"
         unique_id: avg_cv_klima_temperature
@@ -61,18 +94,6 @@
             {{ 0 + states('sensor.hacs')|int(0) }}
           {% endif %}
 
-        # Actief Stroomtarief
-      - name: Actief Stroomtarief
-        unique_id: actief_stroomtarief
-        icon: mdi:home-import-outline
-        unit_of_measurement: EUR
-        device_class: monetary
-        state: "{{ iif(is_state('input_select.energy_stroomtarief', 'Normaaltarief'), '0.32284', '0.25677') }}"
-        attributes:
-          actief: "{{ states('input_select.energy_stroomtarief') }}"
-          prijs_per_kWh_normaaltarief: "0.32284"
-          prijs_per_kWh_daltarief: "0.25677"
-
 # █ █ █▀█ █▀▄▀█ █▀▀ █▄▀ █ ▀█▀ #
 # █▀█ █▄█ █ ▀ █ ██▄ █ █ █  █  #
 
@@ -102,8 +123,16 @@
             mdi:emoticon-sad
           {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
             mdi:emoticon-dead
+          {% else %}
+            mdi:cancel
           {% endif %}    
         state: "{{ states('input_select.smartmi_p1_aqi') }}"
+
+      - name: 'IKEA Starkvind PM 2.5'
+        unique_id: ikea_starkvind_pm_25
+        device_class: pm25
+        unit_of_measurement: µg/m³
+        state: "{{ states('sensor.ikea_starkvind_air_quality') }}"
 
 # █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
 # █ ▀█ █▄█  █  █ █▀   █  #
