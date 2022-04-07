@@ -240,7 +240,7 @@
     entity_id: input_boolean.badkamer_control
   - service: input_boolean.turn_off
     target:
-      entity_id: input_boolean.douche_occupancy_state
+      entity_id: input_boolean.badkamer_douche_sensor
   mode: single
 - id: '1610310358560'
   alias: Occupancy - Slaapkamer (state)
@@ -405,29 +405,74 @@
       button_single_press:
       - choose:
         - conditions:
-          - condition: state
-            entity_id: media_player.sonos_arc
-            state: playing
-          sequence:
-          - service: media_player.media_pause
-            target:
+          - condition: and
+            conditions:
+            - condition: state
               entity_id: media_player.sonos_arc
+              attribute: source
+              state: TV
+            - condition: state
+              entity_id: media_player.apple_tv
+              attribute: media_content_type
+              state: music
+          sequence:
+          - service: media_player.media_play_pause
+            data: {}
+            target:
+              entity_id: media_player.apple_tv
         default:
-        - service: media_player.media_play
+        - service: media_player.media_play_pause
+          data: {}
           target:
             entity_id: media_player.sonos_arc
       button_double_press:
-      - service: media_player.media_next_track
-        data: {}
-        target:
-          entity_id:
-          - media_player.sonos_arc
+      - choose:
+        - conditions:
+          - condition: and
+            conditions:
+            - condition: state
+              entity_id: media_player.sonos_arc
+              attribute: source
+              state: TV
+            - condition: state
+              entity_id: media_player.apple_tv
+              attribute: media_content_type
+              state: music
+          sequence:
+          - service: media_player.media_next_track
+            data: {}
+            target:
+              entity_id: media_player.apple_tv
+        default:
+        - service: media_player.media_next_track
+          data: {}
+          target:
+            entity_id:
+            - media_player.sonos_arc
       button_triple_press:
-      - service: media_player.media_previous_track
-        data: {}
-        target:
-          entity_id:
-          - media_player.sonos_arc
+      - choose:
+        - conditions:
+          - condition: and
+            conditions:
+            - condition: state
+              entity_id: media_player.sonos_arc
+              attribute: source
+              state: TV
+            - condition: state
+              entity_id: media_player.apple_tv
+              attribute: media_content_type
+              state: music
+          sequence:
+          - service: media_player.media_previous_track
+            data: {}
+            target:
+              entity_id: media_player.apple_tv
+        default:
+        - service: media_player.media_previous_track
+          data: {}
+          target:
+            entity_id:
+            - media_player.sonos_arc
       rotate_clockwise_start:
       - service: media_player.volume_up
         data: {}
@@ -455,7 +500,7 @@
   action:
   - service: input_boolean.turn_on
     data: {}
-    entity_id: input_boolean.douche_occupancy_state
+    entity_id: input_boolean.badkamer_douche_sensor
   - delay:
       hours: 1
       minutes: 0
@@ -463,7 +508,7 @@
       milliseconds: 0
   - service: input_boolean.turn_off
     target:
-      entity_id: input_boolean.douche_occupancy_state
+      entity_id: input_boolean.badkamer_douche_sensor
   mode: restart
 - id: '1613053612207'
   alias: Reset Control - Zolder
@@ -757,9 +802,12 @@
     target:
       entity_id:
       - switch.security_cam
+    data: {}
   - service: input_boolean.turn_off
     target:
-      entity_id: input_boolean.homekit_cam_motion_sensor
+      entity_id:
+      - input_boolean.woonkamer_cam_sensor
+    data: {}
   mode: single
 - id: '1614632132577'
   alias: deCONZ - Smart Plug Waterkoker
@@ -1166,7 +1214,7 @@
   description: Notificaton when there is a problem with DSM Security Advisor
   trigger:
   - platform: state
-    entity_id: binary_sensor.mesa_security_status
+    entity_id: binary_sensor.homedb_security_status
     from: 'off'
     to: 'on'
   condition: []
@@ -1185,13 +1233,19 @@
   description: Automation to decrement the iOS app badge when an update has been completed
   trigger:
   - platform: state
-    entity_id: binary_sensor.ha_updater
+    entity_id: update.home_assistant_core_update
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.deconz_update_available
+    entity_id: update.home_assistant_operating_system_update
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.mesa_update_available
+    entity_id: update.home_assistant_supervisor_update
+    to: 'off'
+  - platform: state
+    entity_id: update.deconz_update
+    to: 'off'
+  - platform: state
+    entity_id: update.homedb_dsm_update
     to: 'off'
   - platform: state
     entity_id: binary_sensor.hacs_updater
@@ -1392,7 +1446,7 @@
     target:
       entity_id:
       - light.woonkamer_groep
-      - light.woonkamer_kastverlichting
+    data: {}
   mode: single
 - id: '1634824004562'
   alias: Home State - Morning
@@ -1445,43 +1499,6 @@
         - input_boolean.studiekamer_control
       light: light.studiekamer_groep
       adaptive_lighting: switch.adaptive_lighting_ruimten
-- id: '1635362394376'
-  alias: TV - Spotify Audio Mode
-  description: Sync and desync Ambilight Mode to Audio when Spotify is playing
-  trigger:
-  - platform: state
-    entity_id: media_player.apple_tv
-    attribute: app_id
-    to: com.spotify.client
-    id: sync
-  - platform: state
-    entity_id: media_player.apple_tv
-    attribute: app_id
-    from: com.spotify.client
-    id: desync
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: sync
-      sequence:
-      - service: huesyncbox.set_sync_mode
-        target:
-          entity_id: media_player.play_sync_box
-        data:
-          mode: music
-    - conditions:
-      - condition: trigger
-        id: desync
-      sequence:
-      - service: huesyncbox.set_sync_mode
-        target:
-          entity_id: media_player.play_sync_box
-        data:
-          mode: video
-    default: []
-  mode: single
 - id: '1635414861833'
   alias: Scenes - Woonkamer
   description: Change scenes based on an Input Select
@@ -1500,30 +1517,6 @@
       control: input_boolean.dummy_control
       helper: input_select.woonkamer_scenes
   mode: restart
-- id: '1635416907472'
-  alias: TV - Keep Lightstrip Off
-  description: Turn off lightstrip if it's turned on while Ambilight is on
-  trigger:
-  - platform: state
-    entity_id: light.play_gradient_lightstrip
-    to: 'on'
-    from: 'off'
-  - platform: state
-    entity_id: light.woonkamer_play_lichtbalk
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: light.ambilight
-    state: 'on'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
-  mode: parallel
-  max: 2
 - id: '1635855168121'
   alias: Scenes - Studiekamer
   description: Change scenes based on an Input Select
@@ -1553,73 +1546,6 @@
       take_control:
         entity_id: input_boolean.badkamer_control
       adaptive_lighting: switch.adaptive_lighting_ruimten
-- id: '1636015545472'
-  alias: Location - Individual @ Home
-  description: Individual automations to run, specifically when one of us comes home
-  trigger:
-  - platform: state
-    entity_id: switch.shanna_home
-    from: 'off'
-    to: 'on'
-    id: shanna
-  - platform: state
-    entity_id: switch.gabriel_home
-    from: 'off'
-    to: 'on'
-    id: gabriel
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: shanna
-      sequence: []
-    - conditions:
-      - condition: trigger
-        id: gabriel
-      sequence:
-      - service: script.turn_on
-        target:
-          entity_id:
-          - script.logic_easy_entry
-    default: []
-  mode: parallel
-  max: 2
-- id: '1636015750070'
-  alias: Location - Individual @ Away
-  description: Individual automations to run, specifically when one of us leaves
-  trigger:
-  - platform: state
-    entity_id: switch.gabriel_home
-    from: 'on'
-    to: 'off'
-    id: gabriel
-  - platform: state
-    entity_id: switch.shanna_home
-    from: 'on'
-    to: 'off'
-    id: shanna
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: gabriel
-      sequence:
-      - service: script.generic_component_climate
-        data:
-          climate:
-            entity_id: climate.studiekamer_radiator
-          mode: Away
-      - service: climate.turn_off
-        target:
-          entity_id: climate.tuya_duux_threesixty
-    - conditions:
-      - condition: trigger
-        id: shanna
-      sequence: []
-    default: []
-  mode: single
 - id: '1636030085546'
   alias: TV - Ambilight-to-Lightstrip (Off)
   description: Automations to run when Ambilight turns off
@@ -1644,33 +1570,6 @@
       - light.play_gradient_lightstrip
       - light.woonkamer_play_lichtbalk
   mode: single
-- id: '1636030887029'
-  alias: TV - Lightstrip-to-Ambilight
-  description: Automations to run when Ambilight turns on
-  trigger:
-  - platform: state
-    entity_id: light.ambilight
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
-  - service: adaptive_lighting.set_manual_control
-    data:
-      entity_id: switch.adaptive_lighting_woonkamer
-      lights:
-      - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
-  mode: single
 - id: '1636111326399'
   alias: deCONZ - Woonkamer Friends of Hue Switch
   description: Switch to control light(s)
@@ -1683,17 +1582,6 @@
       adaptive_lighting: switch.adaptive_lighting_woonkamer
       light_L: light.woonkamer_lamp
       light_R: light.woonkamer_eettafel_lamp
-- id: '1636112922611'
-  alias: deCONZ - Woonkamer TRADFRI Cover Switch
-  description: Switch to control cover(s)
-  use_blueprint:
-    path: Gabriel/deconz-ikea-cover-switch.yaml
-    input:
-      remote: 09fd711a90b60a0b0d4d6190a2e440c1
-      cover:
-        entity_id:
-        - cover.achterdeur_gordijn
-        - cover.woonkamer_gordijn
 - id: '1636298495983'
   alias: deCONZ - Badkamer IKEA Shortcut Button
   description: Button to control the light(s)
@@ -1705,7 +1593,7 @@
       - service: input_boolean.turn_on
         target:
           entity_id:
-          - input_boolean.douche_occupancy_state
+          - input_boolean.badkamer_douche_sensor
       - condition: state
         entity_id: light.badkamer_lamp
         state: 'off'
@@ -1872,59 +1760,6 @@
   action:
   - service: shell_command.lovelace_convert
   mode: restart
-- id: '1638273581987'
-  alias: TV - Ambilight-to-Lightstrip (Pause)
-  description: Automations to run when Ambilight turns off
-  trigger:
-  - platform: state
-    entity_id: light.ambilight
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 3
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: light.woonkamer_eettafel_lamp
-      state: 'off'
-    - condition: state
-      entity_id: light.tarnaby_lamp
-      state: 'off'
-    - condition: state
-      entity_id: light.globe_lamp
-      state: 'off'
-    - condition: state
-      entity_id: light.edison_lamp
-      state: 'off'
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.play_gradient_lightstrip
-      - light.woonkamer_play_lichtbalk
-  mode: single
-- id: '1639064553312'
-  alias: TV - Ensure Apple TV turns off
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: media_player.sony_bravia_tv
-    from: playing
-    to: 'off'
-  condition: []
-  action:
-  - service: media_player.turn_off
-    target:
-      entity_id: media_player.apple_tv
-  mode: single
 - id: '1641221018864'
   alias: Security - Alarm TRIGGERED
   description: Actions to run when the security system is triggered
@@ -2002,25 +1837,30 @@
   description: Notification when there is an update for software
   trigger:
   - platform: state
-    entity_id: binary_sensor.deconz_update_available
+    entity_id: update.home_assistant_core_update
+    from: 'off'
+    to: 'on'
+    id: core
+  - platform: state
+    entity_id: update.home_assistant_operating_system_update
+    id: os
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: update.home_assistant_supervisor_update
+    from: 'off'
+    to: 'on'
+    id: supervisor
+  - platform: state
+    entity_id: update.deconz_update
     from: 'off'
     to: 'on'
     id: deconz
   - platform: state
-    entity_id: binary_sensor.mesa_update_available
+    entity_id: update.homedb_dsm_update
     from: 'off'
     to: 'on'
     id: dsm
-  - platform: state
-    entity_id: binary_sensor.ha_updater
-    from: 'off'
-    to: 'on'
-    id: homeassistant
-  - platform: state
-    entity_id: binary_sensor.home_assistant_operating_system_update_available
-    id: os
-    from: 'off'
-    to: 'on'
   - platform: numeric_state
     entity_id: sensor.hacs
     above: '0'
@@ -2030,36 +1870,15 @@
   - choose:
     - conditions:
       - condition: trigger
-        id: deconz
+        id: core
       sequence:
-      - service: script.generic_component_notifications
-        data:
-          software: deCONZ
-          newest_version: '{{ states(''sensor.deconz_newest_version'') }}'
-          version: '{{ states(''sensor.deconz_version'') }}'
-          url: /hassio/dashboard
-    - conditions:
-      - condition: trigger
-        id: dsm
-      sequence:
-      - service: script.generic_component_notifications
-        data:
-          software: Synology DSM
-          newest_version: '{{ state_attr(''binary_sensor.mesa_update_available'',
-            ''latest_available_version'') }}'
-          version: '{{ state_attr(''binary_sensor.mesa_update_available'', ''installed_version'')
-            }}'
-          url: http://mesa-connect.quickconnect.to
-    - conditions:
-      - condition: trigger
-        id: homeassistant
-      sequence:
-      - service: script.generic_component_notifications
+      - service: script.generic_component_software_notifications
         data:
           software: Home Assistant
-          newest_version: '{{ state_attr(''binary_sensor.ha_updater'', ''latest_version'')
+          newest_version: '{{ state_attr(''update.home_assistant_core_update'', ''latest_version'')
             }}'
-          version: '{{ states(''sensor.current_version'') }}'
+          version: '{{ state_attr(''update.home_assistant_core_update'', ''installed_version'')
+            }}'
           more_information: The last backup was created {{ states('sensor.samba_relative_backup')
             }}.
           url: /config/dashboard
@@ -2067,21 +1886,61 @@
       - condition: trigger
         id: os
       sequence:
-      - service: script.generic_component_notifications
+      - service: script.generic_component_software_notifications
         data:
           software: Home Assistant OS
-          newest_version: '{{ states(''sensor.home_assistant_operating_system_newest_version'')
-            }}'
-          version: '{{ states(''sensor.home_assistant_operating_system_version'')
+          newest_version: '{{ state_attr(''update.home_assistant_operating_system_update'',
+            ''latest_version'') }}'
+          version: '{{ state_attr(''update.home_assistant_operating_system_update'',
+            ''installed_version'') }}'
+          more_information: The last backup was created {{ states('sensor.samba_relative_backup')
+            }}.
+          url: /config/dashboard
+    - conditions:
+      - condition: trigger
+        id: supervisor
+      sequence:
+      - service: script.generic_component_software_notifications
+        data:
+          software: Supervisor
+          newest_version: '{{ state_attr(''update.home_assistant_supervisor_update'',
+            ''latest_version'') }}'
+          version: '{{ state_attr(''update.home_assistant_supervisor_update'', ''installed_version'')
             }}'
           more_information: The last backup was created {{ states('sensor.samba_relative_backup')
             }}.
           url: /config/dashboard
     - conditions:
       - condition: trigger
+        id: deconz
+      sequence:
+      - service: script.generic_component_software_notifications
+        data:
+          software: deCONZ
+          newest_version: '{{ state_attr(''update.deconz_update'', ''latest_version'')
+            }}'
+          version: '{{ state_attr(''update.deconz_update'', ''installed_version'')
+            }}'
+          more_information: The last backup was created {{ states('sensor.samba_relative_backup')
+            }}.
+          url: /config/dashboard
+    - conditions:
+      - condition: trigger
+        id: dsm
+      sequence:
+      - service: script.generic_component_software_notifications
+        data:
+          software: Synology DSM
+          newest_version: '{{ state_attr(''update.homedb_dsm_update'', ''latest_version'')
+            }}'
+          version: '{{ state_attr(''update.homedb_dsm_update'', ''installed_version'')
+            }}'
+          url: http://homedb-remote.quickconnect.to
+    - conditions:
+      - condition: trigger
         id: community
       sequence:
-      - service: script.generic_component_notifications
+      - service: script.generic_component_software_notifications
         data:
           software: Community Store
           url: /hacs/entry
@@ -2105,6 +1964,7 @@
       - service: light.turn_off
         target:
           entity_id: light.ambilight
+        data: {}
       - delay:
           hours: 0
           minutes: 0
@@ -2115,11 +1975,13 @@
           entity_id:
           - light.play_gradient_lightstrip
           - light.woonkamer_play_lichtbalk
+          - light.woonkamer_lightstrip_plus
+        data: {}
     default: []
   - service: script.generic_component_scenes
     data:
       room: Woonkamer
-      lights: light.play_gradient_lightstrip, light.woonkamer_play_lichtbalk
+      lights: light.play_gradient_lightstrip, light.woonkamer_play_lichtbalk, light.woonkamer_lightstrip_plus
       adaptive_lighting: switch.adaptive_lighting_woonkamer
       control: input_boolean.dummy_control
       helper: input_select.play_gradient_scenes
@@ -2179,7 +2041,7 @@
           option: Normaaltarief
         target:
           entity_id:
-          - input_select.energy_stroomtarief
+          - input_select.stroomtarieven
     - conditions:
       - condition: trigger
         id: dal_doordeweeks
@@ -2189,7 +2051,7 @@
           option: Daltarief
         target:
           entity_id:
-          - input_select.energy_stroomtarief
+          - input_select.stroomtarieven
     default: []
   mode: single
 - id: '1646153579876'
@@ -2235,3 +2097,347 @@
         subtitle: Battery Level Critical
         group: switchbot
   mode: restart
+- id: '1648823069927'
+  alias: Location - When someone comes home
+  description: Automation to run whenever someone comes home
+  trigger:
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'off'
+    to: 'on'
+    id: shanna
+  - platform: state
+    entity_id: switch.gabriel_home
+    from: 'off'
+    to: 'on'
+    id: gabriel
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.home_occupancy
+  mode: single
+- id: '1648823549704'
+  alias: Location - When the last person leaves home
+  description: Automation to run when the last person leaves home
+  trigger:
+  - platform: state
+    entity_id: switch.someone_home
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.away_occupancy
+  mode: single
+- id: '1648823615770'
+  alias: Location - When an individual leaves home
+  description: Individual automations to run, specifically when one of us leaves
+  trigger:
+  - platform: state
+    entity_id: switch.gabriel_home
+    from: 'on'
+    to: 'off'
+    id: gabriel
+  - platform: state
+    entity_id: switch.shanna_home
+    from: 'on'
+    to: 'off'
+    id: shanna
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: gabriel
+      sequence:
+      - service: script.generic_component_climate
+        data:
+          climate:
+            entity_id: climate.studiekamer_radiator
+          mode: Away
+      - service: climate.turn_off
+        target:
+          entity_id: climate.tuya_duux_threesixty
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: shanna
+      sequence: []
+    default: []
+  mode: single
+- id: '1649150712410'
+  alias: deCONZ - Woonkamer TRADFRI Cover Switch
+  description: Switch to control cover(s)
+  trigger:
+  - device_id: 09fd711a90b60a0b0d4d6190a2e440c1
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: open
+    id: open
+  - device_id: 09fd711a90b60a0b0d4d6190a2e440c1
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: close
+    id: close
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: open
+      sequence:
+      - repeat:
+          count: '2'
+          sequence:
+          - service: cover.open_cover
+            data: {}
+            target:
+              entity_id: cover.woonkamer_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - service: cover.open_cover
+            data: {}
+            target:
+              entity_id: cover.achterdeur_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+    - conditions:
+      - condition: trigger
+        id: close
+      sequence:
+      - repeat:
+          count: '2'
+          sequence:
+          - service: cover.close_cover
+            data: {}
+            target:
+              entity_id: cover.woonkamer_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - service: cover.close_cover
+            data: {}
+            target:
+              entity_id: cover.achterdeur_gordijn
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+    default:
+    - service: script.dummy
+      data: {}
+  mode: single
+- id: '1649193940628'
+  alias: TV - Set Lights and Entertainment Area
+  description: Dims lights when playing in certain apps and sets the Hue Entertainment
+    Area
+  trigger:
+  - platform: state
+    entity_id: media_player.apple_tv
+    to: playing
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: Infuse
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: TV
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: HBO Max
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: Netflix
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: Disney+
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: Plex
+    - condition: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      state: Prime Video
+  action:
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.logic_hue_entertainment_area
+  mode: restart
+- id: '1649232585398'
+  alias: TV - Keep Entertainment Lights Off during Ambilight
+  description: Turn off Hue Entertaiment Area lights if turned on while Ambilight
+    is on
+  trigger:
+  - platform: state
+    entity_id: light.play_gradient_lightstrip
+    to: 'on'
+    from: 'off'
+  - platform: state
+    entity_id: light.woonkamer_play_lichtbalk
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: light.woonkamer_lightstrip_plus
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.ambilight
+    state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+      - light.woonkamer_lightstrip_plus
+    data: {}
+  mode: parallel
+  max: 3
+- id: '1649232680342'
+  alias: TV - Set Ambilight Audio Mode during Spotify Playback
+  description: Sync and desync Ambilight Mode to Audio when Spotify is playing
+  trigger:
+  - platform: state
+    entity_id: media_player.apple_tv
+    attribute: app_id
+    to: com.spotify.client
+    id: sync
+  - platform: state
+    entity_id: media_player.apple_tv
+    attribute: app_id
+    from: com.spotify.client
+    id: desync
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: sync
+      sequence:
+      - service: huesyncbox.set_sync_mode
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          mode: music
+    - conditions:
+      - condition: trigger
+        id: desync
+      sequence:
+      - service: huesyncbox.set_sync_mode
+        target:
+          entity_id: media_player.play_sync_box
+        data:
+          mode: video
+    default: []
+  mode: single
+- id: '1649232776294'
+  alias: TV - Handoff Lights-to-Ambilight
+  description: Turn off Entertainment Area lights when when Ambilight turns on
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+      - light.woonkamer_lightstrip_plus
+    data: {}
+  - service: adaptive_lighting.set_manual_control
+    data:
+      entity_id: switch.adaptive_lighting_woonkamer
+      lights:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+      - light.woonkamer_lightstrip_plus
+  mode: single
+- id: '1649232886514'
+  alias: TV - Handoff Ambilight-to-Lights (Pause)
+  description: Turn off Entertainment Area lights when Ambilight turns off
+  trigger:
+  - platform: state
+    entity_id: light.ambilight
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.woonkamer_eettafel_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.tarnaby_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.globe_lamp
+      state: 'off'
+    - condition: state
+      entity_id: light.edison_lamp
+      state: 'off'
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.play_gradient_lightstrip
+      - light.woonkamer_play_lichtbalk
+      - light.woonkamer_lightstrip_plus
+    data: {}
+  mode: single
+- id: '1649233002633'
+  alias: TV - Sync Android TV State to Apple TV
+  description: Ensure Apple TV turns off when Android TV turns off
+  trigger:
+  - platform: state
+    entity_id: media_player.sony_bravia_tv
+    from: playing
+    to: 'off'
+  condition: []
+  action:
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.apple_tv
+    data: {}
+  mode: single
