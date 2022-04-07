@@ -19,7 +19,6 @@ recorder:
       - automation
     entity_globs:
       - switch.adaptive*
-#      - sensor.*battery*
     entities:
       - script.dummy
 
@@ -38,7 +37,6 @@ frontend:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-python_script:
 
 # Templates
 sensor: !include components/sensors.yaml
@@ -54,12 +52,12 @@ cover: !include components/covers.yaml
 climate: !include components/thermostats.yaml
 fan: !include components/fans.yaml
 calendar: !include components/calendars.yaml
-lock: !include components/locks.yaml
 group: !include components/groups.yaml
-utility_meter: !include components/utility_meters.yaml
+lock: !include components/locks.yaml
 # alert: !include components/alerts.yaml #(WIP)
 
 # Technical
+python_script:
 shell_command: !include components/shell_commands.yaml
 multiscrape: !include components/web_scrapes.yaml
 spotify:
