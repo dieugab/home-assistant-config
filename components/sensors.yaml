@@ -1,7 +1,6 @@
 # █▀█ ▄▀█ █▀ █▀█ █▄▄ █▀▀ █▀█ █▀█ █▄█   █▀█ █
 # █▀▄ █▀█ ▄█ █▀▀ █▄█ ██▄ █▀▄ █▀▄  █    █▀▀ █
-    
-  - platform: uptime
+
   - platform: systemmonitor
     resources:
       - type: memory_use_percent
