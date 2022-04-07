@@ -1,11 +1,11 @@
 {
     "version": 1,
-    "minor_version": 1,
+    "minor_version": 2,
     "key": "input_select",
     "data": {
         "items": [
             {
-                "name": "Scenes - Woonkamer",
+                "name": "Woonkamer Scenes",
                 "options": [
                     "Adaptive Lighting",
                     "Lounge",
@@ -28,7 +28,7 @@
                 "icon": "mdi:timeline-check"
             },
             {
-                "name": "Whisper Flex - Modes",
+                "name": "Whisper Flex Modes",
                 "options": [
                     "Normal Mode",
                     "Sleep Mode",
@@ -38,7 +38,7 @@
                 "icon": "mdi:fan-plus"
             },
             {
-                "name": "Whisper Flex - Oscillating",
+                "name": "Whisper Flex Oscillating",
                 "options": [
                     "True",
                     "False"
@@ -47,40 +47,7 @@
                 "icon": "mdi:axis-z-rotate-clockwise"
             },
             {
-                "name": "Smartmi P1 - AQI",
-                "options": [
-                    "Excellent",
-                    "Good",
-                    "Fair",
-                    "Inferior",
-                    "Poor",
-                    "Unknown"
-                ],
-                "id": "smartmi_p1_aqi",
-                "icon": "mdi:smoke-detector"
-            },
-            {
-                "name": "Smartmi P1 - Preset Modes",
-                "options": [
-                    "Manual",
-                    "Auto"
-                ],
-                "id": "smartmi_p1_preset_modes",
-                "icon": "mdi:fan-plus"
-            },
-            {
-                "name": "Smartmi P1 - Percentage",
-                "options": [
-                    "0",
-                    "33",
-                    "66",
-                    "100"
-                ],
-                "id": "smartmi_p1_percentage",
-                "icon": "mdi:fan-speed-1"
-            },
-            {
-                "name": "Scenes - Play Gradient",
+                "name": "Woonkamer Play Gradient Scenes",
                 "options": [
                     "Adaptive Lighting",
                     "Soho",
@@ -97,7 +64,7 @@
             },
             {
                 "icon": "mdi:palette-swatch",
-                "name": "Scenes - Studiekamer",
+                "name": "Studiekamer Scenes",
                 "options": [
                     "Adaptive Lighting",
                     "Midwinter",
@@ -117,7 +84,7 @@
                 "id": "home_state_occupancy"
             },
             {
-                "name": "Scenes - Slaapkamer",
+                "name": "Slaapkamer Scenes",
                 "icon": "mdi:palette-swatch",
                 "options": [
                     "Adaptive Lighting",
@@ -126,7 +93,7 @@
                 "id": "slaapkamer_scenes"
             },
             {
-                "name": "Ambilight - Sync Modes",
+                "name": "TV Ambilight Modes",
                 "icon": "mdi:television-ambient-light",
                 "options": [
                     "Video",
@@ -138,13 +105,13 @@
                 "id": "ambilight_sync_modes"
             },
             {
-                "name": "Energy - Stroomtarief",
-                "icon": "mdi:transmission-tower-import",
+                "name": "Energy - Stroomtarieven",
+                "icon": "mdi:home-lightning-bolt",
                 "options": [
                     "Normaaltarief",
                     "Daltarief"
                 ],
-                "id": "stroomtarief"
+                "id": "stroomtarieven"
             }
         ]
     }
