@@ -28,7 +28,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.woonkamer_centrale_verwarming",
                                 "service_data": {
                                     "climate": "climate.woonkamer_centrale_verwarming",
@@ -58,7 +58,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.woonkamer_centrale_verwarming",
                                 "service_data": {
                                     "climate": "climate.woonkamer_centrale_verwarming",
@@ -88,7 +88,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.woonkamer_centrale_verwarming",
                                 "service_data": {
                                     "climate": "climate.woonkamer_centrale_verwarming",
@@ -113,12 +113,25 @@
                     {
                         "start": "08:00:00",
                         "stop": "09:00:00",
-                        "conditions": [],
-                        "condition_type": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -130,12 +143,25 @@
                     {
                         "start": "09:00:00",
                         "stop": "12:00:00",
-                        "conditions": [],
-                        "condition_type": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -147,12 +173,25 @@
                     {
                         "start": "12:00:00",
                         "stop": "13:00:00",
-                        "conditions": [],
-                        "condition_type": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -164,12 +203,25 @@
                     {
                         "start": "13:00:00",
                         "stop": "15:00:00",
-                        "conditions": [],
-                        "condition_type": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -181,12 +233,25 @@
                     {
                         "start": "15:00:00",
                         "stop": "16:00:00",
-                        "conditions": [],
-                        "condition_type": null,
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -198,12 +263,25 @@
                     {
                         "start": "16:00:00",
                         "stop": "18:00:00",
-                        "conditions": [],
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
                         "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -215,12 +293,25 @@
                     {
                         "start": "18:00:00",
                         "stop": "00:00:00",
-                        "conditions": [],
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
                         "condition_type": "or",
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.studiekamer_radiator",
                                 "service_data": {
                                     "climate": "climate.studiekamer_radiator",
@@ -266,7 +357,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.kledingkamer_radiator",
                                 "service_data": {
                                     "climate": "climate.kledingkamer_radiator",
@@ -296,7 +387,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.kledingkamer_radiator",
                                 "service_data": {
                                     "climate": "climate.kledingkamer_radiator",
@@ -326,7 +417,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.kledingkamer_radiator",
                                 "service_data": {
                                     "climate": "climate.kledingkamer_radiator",
@@ -346,79 +437,6 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "Kledingkamer Radiator",
-                "enabled": true
-            },
-            {
-                "schedule_id": "a0d8fd",
-                "timeslots": [
-                    {
-                        "start": "08:00:00",
-                        "stop": "21:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Sleeping",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "or",
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "script.generic_component_climate_scheduler",
-                                "entity_id": "climate.slaapkamer_radiator",
-                                "service_data": {
-                                    "climate": "climate.slaapkamer_radiator",
-                                    "mode": "Away"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "start": "21:00:00",
-                        "stop": "00:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Sleeping",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": null,
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "script.generic_component_climate_scheduler",
-                                "entity_id": "climate.slaapkamer_radiator",
-                                "service_data": {
-                                    "climate": "climate.slaapkamer_radiator",
-                                    "mode": "Eco"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "weekdays": [
-                    "daily"
-                ],
-                "start_date": null,
-                "end_date": null,
-                "repeat_type": "repeat",
-                "name": "Slaapkamer Radiator",
                 "enabled": true
             },
             {
@@ -445,7 +463,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.woonkamer_centrale_verwarming",
                                 "service_data": {
                                     "climate": "climate.woonkamer_centrale_verwarming",
@@ -475,7 +493,7 @@
                         "track_conditions": false,
                         "actions": [
                             {
-                                "service": "script.generic_component_climate_scheduler",
+                                "service": "script.generic_component_climate",
                                 "entity_id": "climate.woonkamer_centrale_verwarming",
                                 "service_data": {
                                     "climate": "climate.woonkamer_centrale_verwarming",
@@ -495,127 +513,6 @@
                 "end_date": null,
                 "repeat_type": "repeat",
                 "name": "Centrale Verwarming - Early Away",
-                "enabled": true
-            },
-            {
-                "schedule_id": "3c6ace",
-                "timeslots": [
-                    {
-                        "start": "07:00:00",
-                        "stop": "08:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "switch.party_mode",
-                                "attribute": "state",
-                                "value": "off",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "and",
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "fan.turn_on",
-                                "entity_id": "fan.smartmi_p1",
-                                "service_data": {}
-                            }
-                        ]
-                    },
-                    {
-                        "start": "08:00:00",
-                        "stop": "12:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "switch.party_mode",
-                                "attribute": "state",
-                                "value": "off",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "and",
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "fan.turn_off",
-                                "entity_id": "fan.smartmi_p1",
-                                "service_data": {}
-                            }
-                        ]
-                    },
-                    {
-                        "start": "12:00:00",
-                        "stop": "13:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "switch.party_mode",
-                                "attribute": "state",
-                                "value": "off",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "and",
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "fan.turn_on",
-                                "entity_id": "fan.smartmi_p1",
-                                "service_data": {}
-                            }
-                        ]
-                    },
-                    {
-                        "start": "13:00:00",
-                        "stop": "00:00:00",
-                        "conditions": [
-                            {
-                                "entity_id": "input_select.home_state_occupancy",
-                                "attribute": "state",
-                                "value": "Home",
-                                "match_type": "is"
-                            },
-                            {
-                                "entity_id": "switch.party_mode",
-                                "attribute": "state",
-                                "value": "off",
-                                "match_type": "is"
-                            }
-                        ],
-                        "condition_type": "and",
-                        "track_conditions": false,
-                        "actions": [
-                            {
-                                "service": "fan.turn_off",
-                                "entity_id": "fan.smartmi_p1",
-                                "service_data": {}
-                            }
-                        ]
-                    }
-                ],
-                "weekdays": [
-                    "workday"
-                ],
-                "start_date": null,
-                "end_date": null,
-                "repeat_type": "repeat",
-                "name": "Smartmi P1",
                 "enabled": true
             },
             {
@@ -651,6 +548,200 @@
                 "repeat_type": "repeat",
                 "name": "IKEA Starkvind",
                 "enabled": true
+            },
+            {
+                "schedule_id": "070fb0",
+                "timeslots": [
+                    {
+                        "start": "06:00:00",
+                        "stop": "08:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_on",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "08:00:00",
+                        "stop": "12:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_off",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "12:00:00",
+                        "stop": "13:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_on",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "13:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "fan.turn_off",
+                                "entity_id": "fan.smartmi_p1",
+                                "service_data": {}
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "workday"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "Smartmi P1",
+                "enabled": true
+            },
+            {
+                "schedule_id": "651e8d",
+                "timeslots": [
+                    {
+                        "start": "08:00:00",
+                        "stop": "21:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "script.generic_component_climate",
+                                "entity_id": "climate.slaapkamer_radiator",
+                                "service_data": {
+                                    "climate": "climate.slaapkamer_radiator",
+                                    "mode": "Away"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "start": "21:00:00",
+                        "stop": "00:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Home",
+                                "match_type": "is"
+                            },
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "Sleeping",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "script.generic_component_climate",
+                                "entity_id": "climate.slaapkamer_radiator",
+                                "service_data": {
+                                    "climate": "climate.slaapkamer_radiator",
+                                    "mode": "Eco"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": "Slaapkamer Radiator",
+                "enabled": true
             }
         ],
         "tags": [
@@ -660,15 +751,15 @@
                     "687edf",
                     "e84128",
                     "56e54a",
-                    "a0d8fd",
-                    "39d218"
+                    "39d218",
+                    "651e8d"
                 ]
             },
             {
                 "name": "Purifier",
                 "schedules": [
-                    "3c6ace",
-                    "3706eb"
+                    "3706eb",
+                    "070fb0"
                 ]
             }
         ]
