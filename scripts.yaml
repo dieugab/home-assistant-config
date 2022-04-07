@@ -48,7 +48,7 @@ mode_privacy:
     data:
       brightness_pct: 10
     target:
-      entity_id: light.filament_lamps
+      entity_id: light.woonkamer_filament_lamps
   - service: light.turn_off
     target:
       entity_id:
@@ -84,19 +84,23 @@ mode_cinema:
   - service: media_player.turn_on
     target:
       entity_id: media_player.apple_tv
+    data: {}
   - service: cover.close_cover
     target:
       entity_id:
       - cover.keuken_rolgordijnen
+    data: {}
   - service: cover.close_cover
     target:
       entity_id:
       - cover.woonkamer_gordijn
       - cover.achterdeur_gordijn
+    data: {}
   - service: switch.turn_off
     target:
       entity_id:
       - switch.begane_grond_adaptive_lighting
+    data: {}
   - service: light.turn_on
     target:
       entity_id:
@@ -116,9 +120,10 @@ mode_cinema:
   - service: light.turn_off
     target:
       entity_id:
-      - light.filament_lamps
+      - light.woonkamer_filament_lamps
       - light.woonkamer_lamp
-      - light.woonkamer_kastverlichting
+      - light.woonkamer_lightstrip_plus
+    data: {}
   mode: single
   icon: mdi:movie-roll
 dummy:
@@ -529,11 +534,10 @@ home_occupancy_sleeping:
   - service: script.generic_component_climate
     data:
       climate:
-        entity_id:
-        - climate.woonkamer_centrale_verwarming
-        - climate.studiekamer_radiator
-        - climate.kledingkamer_radiator
-        - climate.slaapkamer_radiator
+      - climate.woonkamer_centrale_verwarming
+      - climate.studiekamer_radiator
+      - climate.kledingkamer_radiator
+      - climate.slaapkamer_radiator
       mode: Sleep
   - service: script.turn_on
     target:
@@ -608,11 +612,10 @@ home_occupancy_on_vacation:
       - service: script.generic_component_climate
         data:
           climate:
-            entity_id:
-            - climate.woonkamer_centrale_verwarming
-            - climate.studiekamer_radiator
-            - climate.kledingkamer_radiator
-            - climate.slaapkamer_radiator
+          - climate.woonkamer_centrale_verwarming
+          - climate.studiekamer_radiator
+          - climate.kledingkamer_radiator
+          - climate.slaapkamer_radiator
           mode: Vacation
       - service: fan.turn_off
         target:
@@ -716,113 +719,6 @@ generic_component_motion:
   mode: parallel
   icon: mdi:motion
   max: 100
-generic_component_notifications:
-  alias: Generic Component | Notifications
-  description: Generic component to handle software update notifications
-  fields:
-    software:
-      name: Software
-      required: true
-      selector:
-        text:
-    version:
-      name: Current version
-      required: true
-      selector:
-        text:
-    newest_version:
-      name: Newest version
-      required: true
-      selector:
-        text:
-    url:
-      name: URL
-      required: false
-      selector:
-        text:
-    more_information:
-      name: More information
-      required: false
-      selector:
-        text:
-  sequence:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ software == ''Community Store'' }}'
-      sequence:
-      - service: notify.notify
-        data:
-          title: homeOS
-          message: "{% if is_state('sensor.hacs', '1') %}\n  There is {{ states('sensor.hacs')\
-            \ }} pending community update available.\n{% else %}\n  There are {{ states('sensor.hacs')\
-            \ }} pending community updates available.\n{% endif %}\n"
-          data:
-            subtitle: Software Update
-            group: hacs_update
-            url: '{{ url }}'
-            push:
-              badge: '{{ states(''sensor.software_update_badge'') }}'
-    default:
-    - service: notify.notify
-      data:
-        message: '{{ software }} {{ newest_version }} is available and you are currently
-          on {{ version }}. {{ more_information if more_information is defined }}
-
-          '
-        title: homeOS
-        data:
-          subtitle: Software Update
-          group: update
-          url: '{{ url }}'
-          push:
-            badge: '{{ states(''sensor.software_update_badge'') }}'
-  mode: parallel
-  icon: mdi:checkbox-blank-badge
-  max: 10
-generic_component_climate:
-  alias: Generic Component | Climate
-  description: Generic component to handle climate temperatures switching based on
-    number entities
-  fields:
-    climate:
-      name: Targets
-      description: What should this service use as targeted areas, devices or entities.
-      required: true
-      selector:
-        target:
-          entity:
-            domain: climate
-    mode:
-      name: Mode
-      description: Mode (and temperature) to set the target to.
-      required: true
-      selector:
-        select:
-          options:
-          - Comfort
-          - Eco
-          - Sleep
-          - Away
-          - Vacation
-  sequence:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ mode == ''Vacation'' }}'
-      sequence:
-      - service: climate.turn_off
-        target: '{{ climate }}'
-    default:
-    - service: climate.turn_on
-      target: '{{ climate }}'
-    - service: climate.set_temperature
-      target: '{{ climate }}'
-      data:
-        temperature: '{{ states("input_number.climate_" + mode)|float }}'
-  mode: parallel
-  icon: mdi:thermometer-plus
-  max: 10
 generic_component_scenes:
   alias: Generic Component | Scenes
   sequence:
@@ -910,22 +806,24 @@ action_set_tv_to_earc:
   sequence:
   - service: androidtv.adb_command
     data:
-      entity_id: media_player.sony_bravia_tv
       command: sendevent /dev/input/event3 4 4 787395 && sendevent /dev/input/event3
         1 195 1 && sendevent /dev/input/event3 0 0 0 && sendevent /dev/input/event3
         4 4 787395 && sendevent /dev/input/event3 1 195 0 && sendevent /dev/input/event3
         0 0 0
+    target:
+      entity_id: media_player.sony_bravia_tv
   - service: androidtv.adb_command
     data:
       entity_id: media_player.sony_bravia_tv
       command: DOWN
   - service: androidtv.adb_command
     data:
-      entity_id: media_player.sony_bravia_tv
       command: sendevent /dev/input/event3 4 4 787395 && sendevent /dev/input/event3
         1 195 1 && sendevent /dev/input/event3 0 0 0 && sendevent /dev/input/event3
         4 4 787395 && sendevent /dev/input/event3 1 195 0 && sendevent /dev/input/event3
         0 0 0
+    target:
+      entity_id: media_player.sony_bravia_tv
   - service: media_player.select_source
     data:
       source: TV
@@ -947,9 +845,9 @@ logic_conditional_heating:
       sequence:
       - service: script.generic_component_climate
         data:
-          climate:
-            entity_id: climate.woonkamer_centrale_verwarming
           mode: Eco
+          climate:
+          - climate.woonkamer_centrale_verwarming
     - conditions:
       - condition: state
         entity_id: switch.gabriel_home
@@ -960,9 +858,9 @@ logic_conditional_heating:
       sequence:
       - service: script.generic_component_climate
         data:
-          climate:
-            entity_id: climate.woonkamer_centrale_verwarming
           mode: Comfort
+          climate:
+          - climate.woonkamer_centrale_verwarming
     - conditions:
       - condition: state
         entity_id: switch.gabriel_home
@@ -973,9 +871,9 @@ logic_conditional_heating:
       sequence:
       - service: script.generic_component_climate
         data:
-          climate:
-            entity_id: climate.woonkamer_centrale_verwarming
           mode: Comfort
+          climate:
+          - climate.woonkamer_centrale_verwarming
     default: []
   mode: single
   icon: mdi:source-branch
@@ -994,12 +892,14 @@ logic_easy_entry:
     target:
       entity_id:
       - light.woonkamer_eettafel_lamp
-      - light.filament_lamps
+      - light.woonkamer_filament_lamps
       - light.play_gradient_lightstrip
+    data: {}
   - service: cover.open_cover
     target:
       entity_id:
       - cover.achterdeur_switchbot
+    data: {}
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.achterdeur_sensor
@@ -1026,6 +926,7 @@ logic_easy_entry:
     target:
       entity_id:
       - cover.achterdeur_switchbot
+    data: {}
   mode: restart
   icon: mdi:elevator-passenger
 action_start_backup:
@@ -1135,21 +1036,45 @@ logic_set_sleep_music:
         entity_id: switch.shanna_home
         state: 'off'
       sequence:
-      - service: media_player.select_source
-        data:
-          source: Wellness & Healing ..... Stretching
+      - service: media_player.play_media
         target:
           entity_id: media_player.sonos_roam
+        data:
+          media_content_id: FV:2/37
+          media_content_type: favorite_item_id
+        metadata:
+          title: Wellness & Healing ..... Stretching
+          thumbnail: https://i.scdn.co/image/ab67616d0000b273fe7671c09ac377a0426bf066
+          media_class: album
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: favorites
+            media_content_id: ''
+          - media_content_type: favorites_folder
+            media_content_id: object.container.album.musicAlbum
     - conditions:
       - condition: state
         entity_id: switch.shanna_home
         state: 'on'
       sequence:
-      - service: media_player.select_source
-        data:
-          source: Piano for Sleeping
+      - service: media_player.play_media
         target:
           entity_id: media_player.sonos_roam
+        data:
+          media_content_id: FV:2/39
+          media_content_type: favorite_item_id
+        metadata:
+          title: Piano for Sleeping
+          thumbnail: https://sonosradio.imgix.net/station-images/a16c58da-4cb6-4c09-a6f6-810de32baedd.png?w=200&auto=format,compress
+          media_class: genre
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: favorites
+            media_content_id: ''
+          - media_content_type: favorites_folder
+            media_content_id: object.item.audioItem.audioBroadcast
     default:
     - service: media_player.select_source
       data_template:
@@ -1273,7 +1198,6 @@ action_turn_lights_off:
     target:
       entity_id:
       - light.woonkamer_groep
-      - light.woonkamer_kastverlichting
   - delay:
       hours: 0
       minutes: 0
@@ -1286,6 +1210,7 @@ action_turn_lights_off:
       - light.badkamer_lamp
       - light.kledingkamer_groep
       - light.studiekamer_groep
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -1295,6 +1220,7 @@ action_turn_lights_off:
     target:
       entity_id:
       - light.zolder_groep
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -1305,75 +1231,44 @@ action_turn_lights_off:
       entity_id:
       - light.play_gradient_lightstrip
       - light.woonkamer_play_lichtbalk
+    data: {}
   mode: single
   icon: mdi:lightbulb-group-off
-generic_component_climate_scheduler:
-  alias: Generic Component | Climate | Scheduler
-  sequence:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ mode == ''Vacation'' }}'
-      sequence:
-      - service: climate.turn_off
-        data:
-          entity_id: '{{ climate }}'
-    default:
-    - service: climate.turn_on
-      data:
-        entity_id: '{{ climate }}'
-    - service: climate.set_temperature
-      data_template:
-        entity_id: '{{ climate }}'
-        temperature: '{{ states("input_number.climate_" + mode)|float }}'
-  description: Generic component to handle climate temperatures switching based on
-    number entities
-  fields:
-    climate:
-      name: Targets
-      description: What should this service use as targeted areas, devices or entities.
-      required: true
-      selector:
-        entity:
-          domain: climate
-    mode:
-      name: Mode
-      description: Mode (and temperature) to set the target to.
-      required: true
-      selector:
-        select:
-          options:
-          - Comfort
-          - Eco
-          - Sleep
-          - Away
-          - Vacation
-  mode: parallel
-  icon: mdi:table-clock
-  max: 10
 action_turn_evening_lights_on:
   alias: Action - Turn Evening Lights On
   sequence:
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.woonkamer_kastverlichting
-      - light.woonkamer_groep
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    target:
-      entity_id: light.woonkamer_lamp
-    data:
-      brightness_pct: 10
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.tv_playing_state
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.woonkamer_eettafel_lamp
+          - light.globe_lamp
+    default:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id:
+        - light.woonkamer_groep
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id: light.woonkamer_lamp
+      data:
+        brightness_pct: 10
   mode: single
   icon: mdi:lightbulb-group-outline
 mode_gaming:
-  alias: Mode - Gaming
+  alias: DRAFT_Mode - Gaming
   sequence:
   - choose:
     - conditions:
@@ -1384,6 +1279,7 @@ mode_gaming:
       - service: media_player.turn_on
         target:
           entity_id: media_player.sony_bravia_tv
+        data: {}
       - service: media_player.select_source
         target:
           entity_id: media_player.play_sync_box
@@ -1397,6 +1293,7 @@ mode_gaming:
       - service: media_player.turn_on
         target:
           entity_id: media_player.sony_bravia_tv
+        data: {}
       - service: media_player.select_source
         target:
           entity_id: media_player.play_sync_box
@@ -1406,15 +1303,17 @@ mode_gaming:
     - service: media_player.turn_on
       target:
         entity_id: media_player.sony_bravia_tv
+      data: {}
   - service: light.turn_off
     target:
       entity_id:
-      - light.woonkamer_kastverlichting
       - light.edison_lamp
       - light.tarnaby_lamp
+    data: {}
   - service: light.turn_on
     target:
       entity_id: light.ambilight
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -1542,3 +1441,284 @@ action_force_sleepy_blinds:
           - Close
   mode: restart
   icon: mdi:blinds
+logic_jukebox_randomizer:
+  alias: DRAFT_Logic - Jukebox Randomizer
+  description: Logic to randomize music playback dependant on a set mood
+  fields:
+    mood:
+      name: Mood
+      description: Type of music to play
+      required: true
+      selector:
+        select:
+          options:
+          - Sleep
+          - Privacy
+          - Party
+    count:
+      name: Count
+      description: Number corresponding to the music selection. For random, use a
+        data_template with {{ ["1", "2", "3"] | random }}
+      selector:
+        text:
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mood == ''Privacy'' }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ count == 1 }}'
+          sequence:
+          - service: media_player.play_media
+            target:
+              entity_id: media_player.sonos_arc
+            data:
+              media_content_id: FV:2/28
+              media_content_type: favorite_item_id
+            metadata:
+              title: This Is FKJ
+              thumbnail: https://thisis-images.scdn.co/37i9dQZF1DZ06evO1x7AE9-large.jpg
+              media_class: playlist
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: favorites
+                media_content_id: ''
+              - media_content_type: favorites_folder
+                media_content_id: object.container.playlistContainer
+        - conditions:
+          - condition: template
+            value_template: '{{ count == 2 }}'
+          sequence:
+          - service: media_player.play_media
+            target:
+              entity_id: media_player.sonos_arc
+            data:
+              media_content_id: FV:2/36
+              media_content_type: favorite_item_id
+            metadata:
+              title: This Is Rhye
+              thumbnail: https://thisis-images.scdn.co/37i9dQZF1DZ06evO1tV3kQ-large.jpg
+              media_class: playlist
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: favorites
+                media_content_id: ''
+              - media_content_type: favorites_folder
+                media_content_id: object.container.playlistContainer
+        - conditions:
+          - condition: template
+            value_template: '{{ count == 3 }}'
+          sequence:
+          - service: media_player.play_media
+            target:
+              entity_id: media_player.sonos_arc
+            data:
+              media_content_id: FV:2/5
+              media_content_type: favorite_item_id
+            metadata:
+              title: The Beauty in All
+              thumbnail: https://i.scdn.co/image/ab67616d0000b273f35822a50551c5a7679aaa3b
+              media_class: album
+              children_media_class:
+              navigateIds:
+              - {}
+              - media_content_type: favorites
+                media_content_id: ''
+              - media_content_type: favorites_folder
+                media_content_id: object.container.album.musicAlbum
+        default: []
+    default: []
+  mode: restart
+  icon: mdi:shuffle
+logic_hue_entertainment_area:
+  alias: Logic - Hue Entertainment Area
+  sequence:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.tv_playing_state
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.play_sync_box
+        attribute: entertainment_area
+        state: Whole Room
+      sequence:
+      - service: huesyncbox.set_entertainment_area
+        data:
+          entertainment_area: Front Stage
+        target:
+          entity_id: media_player.play_sync_box
+    default:
+    - service: script.dummy
+      data: {}
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_lamp
+      - light.woonkamer_lightstrip_plus
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: light.edison_lamp
+          state: 'on'
+        - condition: state
+          entity_id: light.tarnaby_lamp
+          state: 'on'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.edison_lamp
+          - light.tarnaby_lamp
+    default:
+    - service: script.dummy
+      data: {}
+  - wait_for_trigger:
+    - platform: template
+      value_template: "{% if state_attr('media_player.apple_tv', 'media_content_type')\
+        \ == None %}\n  true\n{% elif state_attr('media_player.apple_tv', 'media_content_type')\
+        \ == 'music' %}\n  true\n{% else %}\n  false\n{% endif %}"
+      for: 00:00:02
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.tv_playing_state
+  - service: huesyncbox.set_entertainment_area
+    data:
+      entertainment_area: Whole Room
+    target:
+      entity_id: media_player.play_sync_box
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.tarnaby_lamp
+      - light.edison_lamp
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.tarnaby_lamp
+      - light.edison_lamp
+  mode: restart
+  icon: hue:bulb-group-candle-lightstrip
+generic_component_climate:
+  alias: Generic Component | Climate
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mode == ''Vacation'' }}'
+      sequence:
+      - service: climate.turn_off
+        data:
+          entity_id: '{{ climate }}'
+    default:
+    - service: climate.turn_on
+      data:
+        entity_id: '{{ climate }}'
+    - service: climate.set_temperature
+      data_template:
+        entity_id: '{{ climate }}'
+        temperature: '{{ states("input_number.climate_" + mode)|float }}'
+  description: Generic component to handle climate temperatures switching based on
+    number entities
+  fields:
+    climate:
+      name: Targets
+      description: What should this service use as targeted areas, devices or entities.
+      required: true
+      selector:
+        entity:
+          domain: climate
+          multiple: true
+    mode:
+      name: Mode
+      description: Mode (and temperature) to set the target to.
+      required: true
+      selector:
+        select:
+          options:
+          - Comfort
+          - Eco
+          - Sleep
+          - Away
+          - Vacation
+  mode: parallel
+  icon: mdi:thermometer-plus
+  max: 10
+generic_component_software_notifications:
+  alias: Generic Component | Software Notifications
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ software == ''Community Store'' }}'
+      sequence:
+      - service: notify.notify
+        data:
+          title: homeOS
+          message: "{% if is_state('sensor.hacs', '1') %}\n  There is {{ states('sensor.hacs')\
+            \ }} pending community update available.\n{% else %}\n  There are {{ states('sensor.hacs')\
+            \ }} pending community updates available.\n{% endif %}\n"
+          data:
+            subtitle: Software Update
+            group: hacs_update
+            url: '{{ url }}'
+            push:
+              badge: '{{ states(''sensor.software_update_badge'') }}'
+    default:
+    - service: notify.notify
+      data:
+        message: '{{ software }} {{ newest_version }} is available and you are currently
+          on {{ version }}. {{ more_information if more_information is defined }}
+
+          '
+        title: homeOS
+        data:
+          subtitle: Software Update
+          group: update
+          url: '{{ url }}'
+          push:
+            badge: '{{ states(''sensor.software_update_badge'') }}'
+  description: Generic component to handle software update notifications
+  fields:
+    software:
+      name: Software
+      required: true
+      selector:
+        text:
+    version:
+      name: Current version
+      required: true
+      selector:
+        text:
+    newest_version:
+      name: Newest version
+      required: true
+      selector:
+        text:
+    url:
+      name: URL
+      required: false
+      selector:
+        text:
+    more_information:
+      name: More information
+      required: false
+      selector:
+        text:
+  mode: parallel
+  icon: mdi:square-rounded-badge
+  max: 10
