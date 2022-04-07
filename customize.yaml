@@ -13,5 +13,7 @@ device_tracker.gabriel:
   icon: mdi:account-search
 device_tracker.zora:
   icon: mdi:account-search
+  
+#Hue Synx Box for HomeKit
 media_player.play_sync_box:
   device_class: tv
