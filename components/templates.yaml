@@ -8,9 +8,9 @@
         icon: mdi:home-import-outline
         unit_of_measurement: EUR
         device_class: monetary
-        state: "{{ iif(is_state('input_select.energy_stroomtarief', 'Normaaltarief'), '0.32284', '0.25677') }}"
+        state: "{{ iif(is_state('input_select.stroomtarieven', 'Normaaltarief'), '0.32284', '0.25677') }}"
         attributes:
-          actief: "{{ states('input_select.energy_stroomtarief') }}"
+          actief: "{{ states('input_select.stroomtarieven') }}"
           prijs_per_kWh_normaaltarief: "0.32284"
           prijs_per_kWh_daltarief: "0.25677"
 
@@ -71,7 +71,7 @@
             false
           {% else %}
             true
-            {% endif %}
+          {% endif %}
         state: >
           {% set keuken = states('sensor.keuken_klima15_humidity_sensor') | float(default=60) %}
           {% set woonkamer_l = states('sensor.woonkamer_klima10_l_humidity_sensor') | float(default=60) %}
@@ -79,6 +79,43 @@
 
           {{ ((keuken + woonkamer_l + woonkamer_r) / 3) | round(1) }}
 
+# █ █ █▀█ █▀▄▀█ █▀▀ █▄▀ █ ▀█▀ #
+# █▀█ █▄█ █ ▀ █ ██▄ █ █ █  █  #
+
+  - binary_sensor:
+        # Camera motion sensor controlled by HomeKit
+      - name: Woonkamer Cam Motion Sensor
+        unique_id: cam_motion_sensor
+        device_class: motion
+        state: "{{ states('input_boolean.woonkamer_cam_sensor') }}"
+        availability: "{{ states('switch.aqara_g2h') == 'on' }}"
+        attributes:
+          camera_network_access: "{{ states('switch.aqara_g2h') }}"
+
+  - sensor:
+      - name: 'IKEA Starkvind PM 2.5'
+        unique_id: ikea_starkvind_pm_25
+        device_class: pm25
+        unit_of_measurement: µg/m³
+        state: "{{ states('sensor.ikea_starkvind_air_quality') }}"
+      - name: 'Smartmi P1 PM 2.5'
+        unique_id: smartmi_p1_pm_25
+        device_class: pm25
+        unit_of_measurement: µg/m³
+        state: "{{ states('sensor.tuya_smartmi_p1_air_quality') }}"
+
+# █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
+# █ ▀█ █▄█  █  █ █▀   █  #
+
+  - binary_sensor:
+        # Improved HACS Updater
+      - name: HACS Updater
+        unique_id: hacs_updater_v2
+        device_class: update
+        state: "{{ states('sensor.hacs') != '0' }}"
+        attributes:
+          repositories: "{{ state_attr('sensor.hacs', 'repositories') }}"
+  - sensor: 
         # Software Updates Counter Badge
       - name: Software Update Badge
         unique_id: software_update_badge
@@ -94,70 +131,6 @@
             {{ 0 + states('sensor.hacs')|int(0) }}
           {% endif %}
 
-# █ █ █▀█ █▀▄▀█ █▀▀ █▄▀ █ ▀█▀ #
-# █▀█ █▄█ █ ▀ █ ██▄ █ █ █  █  #
-
-  - binary_sensor:
-        # Camera motion sensor controlled by HomeKit
-      - name: Woonkamer Cam Motion Sensor
-        unique_id: cam_motion_sensor
-        device_class: motion
-        state: "{{ states('input_boolean.homekit_cam_motion_sensor') == 'on' }}"
-        availability: "{{ states('switch.aqara_g2h') == 'on' }}"
-        attributes:
-          camera_network_access: "{{ states('switch.aqara_g2h') }}"
-
-  - sensor:
-        # Air purifier AQI sensor controlled by HomeKit
-      - name: 'Smartmi P1 AQI'
-        unique_id: smartmi_p1_aqi
-        device_class: aqi
-        icon: >-
-          {% if is_state('input_select.smartmi_p1_aqi', 'Excellent') %}
-            mdi:emoticon-excited
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Good') %}
-            mdi:emoticon-happy
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Fair') %}
-            mdi:emoticon-neutral
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Inferior') %}
-            mdi:emoticon-sad
-          {% elif is_state('input_select.smartmi_p1_aqi', 'Poor') %}
-            mdi:emoticon-dead
-          {% else %}
-            mdi:cancel
-          {% endif %}    
-        state: "{{ states('input_select.smartmi_p1_aqi') }}"
-
-      - name: 'IKEA Starkvind PM 2.5'
-        unique_id: ikea_starkvind_pm_25
-        device_class: pm25
-        unit_of_measurement: µg/m³
-        state: "{{ states('sensor.ikea_starkvind_air_quality') }}"
-
-# █▄ █ █▀█ ▀█▀ █ █▀▀ █▄█ #
-# █ ▀█ █▄█  █  █ █▀   █  #
-
-  - binary_sensor:
-        # Improved Home Assistant Updater
-      - name: HA Updater
-        unique_id: updater_v2
-        device_class: update
-        state: "{{ states('sensor.latest_version') != states('sensor.current_version') }}"
-        availability: "{{ states('sensor.latest_version') != 'unknown' }}"
-        attributes:
-          current_version: "{{ states('sensor.current_version') }}"
-          latest_version: "{{ states('sensor.latest_version') }}"
-          release_notes: "{{ state_attr('binary_sensor.updater', 'release_notes') }}"
-          last_backup: "{{ state_attr('sensor.samba_backup', 'last_backup') }}"
-
-        # Improved HACS Updater
-      - name: HACS Updater
-        unique_id: hacs_updater_v2
-        device_class: update
-        state: "{{ states('sensor.hacs') != '0' }}"
-        attributes:
-          repositories: "{{ state_attr('sensor.hacs', 'repositories') }}"
-
 # █▀█ █▀▀ █   ▄▀█ ▀█▀ █ █ █ █▀▀   ▀█▀ █ █▀▄▀█ █▀▀ #
 # █▀▄ ██▄ █▄▄ █▀█  █  █ ▀▄▀ ██▄    █  █ █ ▀ █ ██▄ #
 
@@ -167,6 +140,17 @@
         unique_id: samba_relative_backup
         icon: mdi:clipboard-text-clock
         state: "{{ relative_time( strptime(state_attr('sensor.samba_backup', 'last_backup'), '%Y-%m-%d %H:%M', now()) ) }} ago"
+        
+        # Dark or light outside
+      - name: Ambient Light Outside
+        unique_id: ambient_light_outside
+        icon: "{{ iif(is_state('sensor.ambient_light_outside', 'Light'), 'mdi:brightness-5', 'mdi:brightness-1') }}"
+        state: >-
+          {% if is_state('input_select.home_state', 'Morning') or is_state('input_select.home_state', 'Day') %}
+            Light
+          {% elif is_state('input_select.home_state', 'Evening') or is_state('input_select.home_state', 'Night') %}
+            Dark
+          {% endif %}
 
 # █▀█ █▀▀ █▀▀ █ █ █▀█ ▄▀█ █▄ █ █▀▀ █▄█ #
 # █▄█ █▄▄ █▄▄ █▄█ █▀▀ █▀█ █ ▀█ █▄▄  █  #
@@ -189,10 +173,10 @@
       - name: Douche Occupancy
         unique_id: douche_occupancy
         device_class: occupancy
-        state: "{{ is_state('input_boolean.douche_occupancy_state', 'on') }}"
+        state: "{{ is_state('input_boolean.badkamer_douche_sensor', 'on') }}"
         icon: "{{ iif(is_state('binary_sensor.douche_occupancy', 'on'), 'mdi:account-box-multiple', 'mdi:account-box') }}"
         attributes:
-          input_boolean: "{{ states('input_boolean.douche_occupancy_state') }}"
+          input_boolean: "{{ states('input_boolean.badkamer_douche_sensor') }}"
 
         # Badkamer Occupancy
       - name: Badkamer Occupancy
@@ -201,13 +185,13 @@
         state: >-
           {{ is_state('binary_sensor.badkamer_motion_sensor', 'on')
              or is_state('input_boolean.badkamer_control', 'on')
-             or is_state('input_boolean.douche_occupancy_state', 'on')
+             or is_state('input_boolean.badkamer_douche_sensor', 'on')
           }}
         icon: "{{ iif(is_state('binary_sensor.badkamer_occupancy', 'on'), 'mdi:account-box-multiple', 'mdi:account-box') }}"
         attributes:
           motion_sensor: "{{ states('binary_sensor.badkamer_motion_sensor') }}"
           control_switch: "{{ states('input_boolean.badkamer_control') }}"
-          douche_occupancy: "{{ states('input_boolean.douche_occupancy_state') }}"
+          douche_occupancy: "{{ states('input_boolean.badkamer_douche_sensor') }}"
 
         # Kledingkamer Occupancy
       - name: Kledingkamer Occupancy
