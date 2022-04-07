@@ -10,7 +10,7 @@
         availability_template: "{{ states('fan.tuya_whisper_flex') != 'unavailable' }}"
         value_template: "{{ states('fan.tuya_whisper_flex') }}"
         percentage_template: "{{ (state_attr('fan.tuya_whisper_flex', 'percentage') | int) }}"
-#        preset_mode_template: "{{ states('input_select.whisper_flex_preset_modes') }}"
+#        preset_mode_template: "{{ states('input_select.whisper_flex_modes') }}"
         oscillating_template: "{{ states('input_select.whisper_flex_oscillating') }}"
         turn_on:
           - service: fan.turn_on
@@ -28,7 +28,7 @@
 #        set_preset_mode:
 #          - service: input_select.select_option
 #            data:
-#              entity_id: input_select.whisper_flex_preset_modes
+#              entity_id: input_select.whisper_flex_modes
 #              option: '{{ preset_mode }}'
 #          - service: scene.turn_on
 #            data_template:
@@ -51,28 +51,22 @@
       smartmi_p1:
         friendly_name: "Smartmi P1"
         unique_id: fan_smartmi_p1
-        value_template: "{{ states('input_boolean.air_purifier') }}"
-        percentage_template: "{{ states('input_select.smartmi_p1_percentage') }}"
-        preset_mode_template: "{{ states('input_select.smartmi_p1_preset_modes') }}"
+        value_template: "{{ states('fan.tuya_smartmi_p1') }}"
+        preset_mode_template: "{{ state_attr('fan.tuya_smartmi_p1', 'preset_mode')|capitalize }}"
         turn_on:
-          service: input_boolean.turn_on
+          service: fan.turn_on
           target:
-            entity_id: input_boolean.air_purifier
+            entity_id: fan.tuya_smartmi_p1
         turn_off:
-          service: input_boolean.turn_off
+          service: fan.turn_off
           target:
-            entity_id: input_boolean.air_purifier
-        set_percentage:
-          service: input_select.select_option
-          data:
-            entity_id: input_select.smartmi_p1_percentage
-            option: '{{ percentage }}'
+            entity_id: fan.tuya_smartmi_p1
         set_preset_mode:
-          service: input_select.select_option
+          service: fan.set_preset_mode
           data:
-            entity_id: input_select.smartmi_p1_preset_modes
-            option: '{{ preset_mode }}'
-        speed_count: 3
+            entity_id: fan.tuya_smartmi_p1
+            preset_mode: '{{ preset_mode|lower }}'
         preset_modes:
-          - 'Manual'
           - 'Auto'
+          - 'Manual'
+          - 'Strong'
