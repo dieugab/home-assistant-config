@@ -5,7 +5,8 @@
     name: Software Updaters
     icon: mdi:package
     entities:
-      - binary_sensor.ha_updater
-      - binary_sensor.deconz_update_available
-      - binary_sensor.mesa_update_available
-      - binary_sensor.home_assistant_operating_system_update_available
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      - update.deconz_update
+      - update.homedb_dsm_update
