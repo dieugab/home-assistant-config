@@ -99,16 +99,16 @@ views:
     - entities:
       - entity: light.ambilight
         name: TV Ambilight
+        secondary_info: brightness
       - entities:
         - entity: input_select.play_gradient_scenes
           name: Gradient Scenes
-        - entity: light.ambilight
         - entity: light.play_gradient_lightstrip
         - entity: light.woonkamer_play_lichtbalk
           name: Play Lichtbalk
+        - entity: light.woonkamer_lightstrip_plus
+          name: Lightstrip Plus
         - type: divider
-        - entity: light.woonkamer_kastverlichting
-          name: Kastverlichting
         - entity: light.woonkamer_eettafel_lamp
           name: Eettafel Lamp
         - entity: light.woonkamer_lamp
@@ -254,24 +254,25 @@ views:
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
-        entity: binary_sensor.ha_updater
+      - active: '{{ is_state(''update.home_assistant_core_update'', ''on'') }}'
+        entity: update.home_assistant_core_update
         icon: mdi:home-assistant
-        name: Home Assistant ({{states('sensor.current_version')}})
-        secondary: "{% if is_state('binary_sensor.ha_updater', 'on') %} \n  Update\
-          \ available: {{states('sensor.latest_version')}} \n{% else %} \n  Up-to-date\
-          \ \n{% endif %}"
+        name: Home Assistant ({{ state_attr('update.home_assistant_core_update', 'installed_version')
+          }})
+        secondary: "{% if is_state('update.home_assistant_core_update', 'on') %} \n\
+          \  Update available: {{ state_attr('update.home_assistant_core_update',\
+          \ 'latest_version') }}\n{% else %} \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'') }}'
-        entity: binary_sensor.deconz_update_available
+      - active: '{{ is_state(''update.deconz_update'', ''on'') }}'
+        entity: update.deconz_update
         icon: mdi:usb-flash-drive
-        name: deCONZ ({{states('sensor.deconz_version')}})
-        secondary: "{% if is_state('binary_sensor.deconz_update_available', 'on')\
-          \ %} \n  Update available: {{states('sensor.deconz_newest_version')}} \n\
-          {% else %}\n  Up-to-date \n{% endif %}"
+        name: deCONZ ({{ state_attr('update.deconz_update', 'installed_version') }})
+        secondary: "{% if is_state('update.deconz_update', 'on') %} \n  Update available:\
+          \ {{ state_attr('update.deconz_update', 'latest_version') }}\n{% else %}\
+          \ \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
@@ -581,8 +582,7 @@ views:
               action: call-service
               service: script.generic_component_climate
               service_data:
-                climate:
-                  entity_id: climate.woonkamer_centrale_verwarming
+                climate: climate.woonkamer_centrale_verwarming
                 mode: Comfort
           - hold_action:
               action: more-info
@@ -600,8 +600,7 @@ views:
               action: call-service
               service: script.generic_component_climate
               service_data:
-                climate:
-                  entity_id: climate.woonkamer_centrale_verwarming
+                climate: climate.woonkamer_centrale_verwarming
                 mode: Eco
           - hold_action:
               action: more-info
@@ -619,8 +618,7 @@ views:
               action: call-service
               service: script.generic_component_climate
               service_data:
-                climate:
-                  entity_id: climate.woonkamer_centrale_verwarming
+                climate: climate.woonkamer_centrale_verwarming
                 mode: Away
           - hold_action:
               action: more-info
@@ -638,70 +636,135 @@ views:
               action: call-service
               service: script.generic_component_climate
               service_data:
-                climate:
-                  entity_id: climate.woonkamer_centrale_verwarming
+                climate: climate.woonkamer_centrale_verwarming
                 mode: Sleep
           type: custom:paper-buttons-row
         style: "ha-card {\n  margin-bottom: 0px;\n}\n"
         type: entities
       type: custom:vertical-stack-in-card
-    - entities:
-      - entity: fan.whisper_flex
-        extend_paper_buttons_row:
-          buttons:
-          - entity: input_select.whisper_flex_modes
-            layout: icon
-            state_icons:
-              nature mode: mdi:tailwind
-              normal mode: mdi:fan-plus
-              sleep mode: mdi:power-sleep
-            state_styles:
-              normal mode:
+    - card:
+        entities:
+        - entity: climate.tuya_duux_threesixty
+          extend_paper_buttons_row:
+            buttons:
+            - entity: select.tuya_duux_threesixty_temperature_level
+              layout: icon
+              state_icons:
+                '1': mdi:fan-speed-1
+                '2': mdi:fan-speed-2
+                '3': mdi:fan-speed-3
+              state_styles:
+                '2':
+                  button:
+                    color: var(--state-climate-heat-color)
+                '3':
+                  button:
+                    color: var(--label-badge-red)
+              styles:
                 button:
                   background-color: var(--button-shape-color)
+                  border-radius: 25px
                   color: var(--disabled-text-color)
-            styles:
-              button:
-                background-color: var(--button-shape-active-color)
-                border-radius: 25px
-                color: var(--button-icon-active-color)
-                margin-right: 10px
-              icon:
-                --mdc-icon-size: 21px
-        name: Whisper Flex
-        secondary_info: last-changed
-        state_color: true
-        toggle: true
-      - entity: fan.ikea_starkvind
-        extend_paper_buttons_row:
-          buttons:
-          - icon: mdi:brightness-auto
-            layout: icon
-            name: Auto Mode
-            styles:
-              button:
-                background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
-                  \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n\
-                  \ var(--button-shape-color)\n{% endif %}"
-                border-radius: 25px
-                color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto')\
-                  \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
-                  {% endif %}"
-                margin-right: 10px
-                margin-top: 0px
-                padding: 5px
-              icon:
-                --mdc-icon-size: 21px
-            tap_action:
-              action: call-service
-              service: fan.set_preset_mode
-              service_data:
-                entity_id: fan.ikea_starkvind
-                preset_mode: Auto
-        name: IKEA Starkvind
-        secondary_info: last-changed
-        state_color: true
-      type: entities
+                  margin-right: 10px
+          name: Duux ThreeSixty
+          secondary_info: last-changed
+          state_color: true
+        - entity: fan.smartmi_p1
+          extend_paper_buttons_row:
+            buttons:
+            - icon: mdi:brightness-auto
+              layout: icon
+              name: Auto Mode
+              styles:
+                button:
+                  background-color: "{% if is_state_attr('fan.smartmi_p1', 'preset_mode',\
+                    \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n\
+                    \ var(--button-shape-color)\n{% endif %}"
+                  border-radius: 25px
+                  color: "{% if is_state_attr('fan.smartmi_p1', 'preset_mode', 'Auto')\
+                    \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                    {% endif %}"
+                  margin-right: 10px
+                  margin-top: 0px
+                  padding: 5px
+                icon:
+                  --mdc-icon-size: 21px
+              tap_action:
+                action: call-service
+                service: fan.set_preset_mode
+                service_data:
+                  entity_id: fan.smartmi_p1
+                  preset_mode: Auto
+          name: Smartmi P1
+          secondary_info: last-changed
+          state_color: true
+        type: entities
+      conditions:
+      - entity: sensor.ambient_light_outside
+        state: Light
+      type: conditional
+    - card:
+        entities:
+        - entity: fan.whisper_flex
+          extend_paper_buttons_row:
+            buttons:
+            - entity: input_select.whisper_flex_modes
+              layout: icon
+              state_icons:
+                nature mode: mdi:tailwind
+                normal mode: mdi:fan-plus
+                sleep mode: mdi:power-sleep
+              state_styles:
+                normal mode:
+                  button:
+                    background-color: var(--button-shape-color)
+                    color: var(--disabled-text-color)
+              styles:
+                button:
+                  background-color: var(--button-shape-active-color)
+                  border-radius: 25px
+                  color: var(--button-icon-active-color)
+                  margin-right: 10px
+                icon:
+                  --mdc-icon-size: 21px
+          name: Whisper Flex
+          secondary_info: last-changed
+          state_color: true
+          toggle: true
+        - entity: fan.ikea_starkvind
+          extend_paper_buttons_row:
+            buttons:
+            - icon: mdi:brightness-auto
+              layout: icon
+              name: Auto Mode
+              styles:
+                button:
+                  background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
+                    \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n\
+                    \ var(--button-shape-color)\n{% endif %}"
+                  border-radius: 25px
+                  color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto')\
+                    \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                    {% endif %}"
+                  margin-right: 10px
+                  margin-top: 0px
+                  padding: 5px
+                icon:
+                  --mdc-icon-size: 21px
+              tap_action:
+                action: call-service
+                service: fan.set_preset_mode
+                service_data:
+                  entity_id: fan.ikea_starkvind
+                  preset_mode: Auto
+          name: IKEA Starkvind
+          secondary_info: last-changed
+          state_color: true
+        type: entities
+      conditions:
+      - entity: sensor.ambient_light_outside
+        state: Dark
+      type: conditional
     - artwork: cover
       entity: media_player.sonos_arc
       group: false
@@ -1032,7 +1095,6 @@ views:
   path: home
   theme: Backend-selected
   title: home
-  type: custom:masonry-layout
 - badges: []
   cards:
   - cards:
@@ -1168,8 +1230,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.woonkamer_centrale_verwarming
+              climate: climate.woonkamer_centrale_verwarming
               mode: Comfort
         - hold_action:
             action: more-info
@@ -1187,8 +1248,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.woonkamer_centrale_verwarming
+              climate: climate.woonkamer_centrale_verwarming
               mode: Eco
         - hold_action:
             action: more-info
@@ -1206,8 +1266,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.woonkamer_centrale_verwarming
+              climate: climate.woonkamer_centrale_verwarming
               mode: Away
         - hold_action:
             action: more-info
@@ -1225,8 +1284,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.woonkamer_centrale_verwarming
+              climate: climate.woonkamer_centrale_verwarming
               mode: Sleep
         type: custom:paper-buttons-row
       type: entities
@@ -1289,42 +1347,29 @@ views:
     - entity: fan.smartmi_p1
       extend_paper_buttons_row:
         buttons:
-        - entity: sensor.smartmi_p1_aqi
+        - icon: mdi:brightness-auto
           layout: icon
-          state_styles:
-            excellent:
-              button:
-                background-color: rgb(76, 175, 80, 0.2)
-                color: var(--label-badge-green)
-            fair:
-              button:
-                background-color: rgb(223, 194, 113, 0.2)
-                color: var(--label-badge-yellow)
-            good:
-              button:
-                background-color: rgb(76, 175, 80, 0.2)
-                color: var(--label-badge-green)
-            inferior:
-              button:
-                background-color: rgb(255, 129, 0, 0.2)
-                color: var(--state-climate-heat-color)
-            poor:
-              button:
-                background-color: rgb(199, 72, 76, 0.2)
-                color: var(--label-badge-red)
-            unknown:
-              button:
-                background-color: var(--button-shape-color)
-                color: var(--disabled-text-color)
+          name: Auto Mode
           styles:
             button:
-              background-color: var(--primary-background-color)
+              background-color: "{% if is_state_attr('fan.smartmi_p1', 'preset_mode',\
+                \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n var(--button-shape-color)\n\
+                {% endif %}"
               border-radius: 25px
-              margin-bottom: 0px
+              color: "{% if is_state_attr('fan.smartmi_p1', 'preset_mode', 'Auto')\
+                \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+                {% endif %}"
               margin-right: 10px
-              padding: 6px
+              margin-top: 0px
+              padding: 5px
             icon:
               --mdc-icon-size: 21px
+          tap_action:
+            action: call-service
+            service: fan.set_preset_mode
+            service_data:
+              entity_id: fan.smartmi_p1
+              preset_mode: Auto
       name: Smartmi P1
       secondary_info: last-changed
       state_color: true
@@ -1430,8 +1475,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.studiekamer_radiator
+              climate: climate.studiekamer_radiator
               mode: Comfort
         - hold_action:
             action: more-info
@@ -1447,8 +1491,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.studiekamer_radiator
+              climate: climate.studiekamer_radiator
               mode: Eco
         - hold_action:
             action: more-info
@@ -1464,8 +1507,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.studiekamer_radiator
+              climate: climate.studiekamer_radiator
               mode: Away
         - hold_action:
             action: more-info
@@ -1481,8 +1523,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.studiekamer_radiator
+              climate: climate.studiekamer_radiator
               mode: Sleep
         type: custom:paper-buttons-row
       type: entities
@@ -1526,8 +1567,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.slaapkamer_radiator
+              climate: climate.slaapkamer_radiator
               mode: Comfort
         - hold_action:
             action: more-info
@@ -1543,8 +1583,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.slaapkamer_radiator
+              climate: climate.slaapkamer_radiator
               mode: Eco
         - hold_action:
             action: more-info
@@ -1560,8 +1599,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.slaapkamer_radiator
+              climate: climate.slaapkamer_radiator
               mode: Away
         - hold_action:
             action: more-info
@@ -1577,8 +1615,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.slaapkamer_radiator
+              climate: climate.slaapkamer_radiator
               mode: Sleep
         type: custom:paper-buttons-row
       type: entities
@@ -1622,8 +1659,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.kledingkamer_radiator
+              climate: climate.kledingkamer_radiator
               mode: Comfort
         - hold_action:
             action: more-info
@@ -1639,8 +1675,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.kledingkamer_radiator
+              climate: climate.kledingkamer_radiator
               mode: Eco
         - hold_action:
             action: more-info
@@ -1656,8 +1691,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.kledingkamer_radiator
+              climate: climate.kledingkamer_radiator
               mode: Away
         - hold_action:
             action: more-info
@@ -1673,8 +1707,7 @@ views:
             action: call-service
             service: script.generic_component_climate
             service_data:
-              climate:
-                entity_id: climate.kledingkamer_radiator
+              climate: climate.kledingkamer_radiator
               mode: Sleep
         type: custom:paper-buttons-row
       type: entities
@@ -1689,15 +1722,6 @@ views:
     style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
       \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
     type: custom:history-explorer-card
-  - entities:
-    - entity: sensor.smartmi_p1_aqi
-      name: PM10
-    hours_to_show: 120
-    refresh_interval: 0
-    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
-      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
-    title: Air Quality Index
-    type: history-graph
   - entities:
     - entity: sensor.woonkamer_cv_temperature_average
       name: Woonkamer
@@ -1738,6 +1762,17 @@ views:
     type: history-graph
     view_layout:
       position: main
+  - entities:
+    - entity: sensor.smartmi_air_purifier_p1_particulate_matter_2_5_um
+      name: Studiekamer
+    - entity: sensor.ikea_starkvind_pm_2_5
+      name: Slaapkamer
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Air Quality (PM 2.5)
+    type: history-graph
   - entities:
     - entity: sensor.gang_light_sensor
       name: Gang
@@ -1845,7 +1880,7 @@ views:
           actions:
           - icon: mdi:thermostat
             name: Set generic mode[ to {mode}]
-            service: script.generic_component_climate_scheduler
+            service: script.generic_component_climate
             service_data:
               climate: climate.kledingkamer_radiator
             variables:
@@ -1866,7 +1901,7 @@ views:
           actions:
           - icon: mdi:thermostat
             name: Set generic mode[ to {mode}]
-            service: script.generic_component_climate_scheduler
+            service: script.generic_component_climate
             service_data:
               climate: climate.slaapkamer_radiator
             variables:
@@ -1887,7 +1922,7 @@ views:
           actions:
           - icon: mdi:thermostat
             name: Set generic mode[ to {mode}]
-            service: script.generic_component_climate_scheduler
+            service: script.generic_component_climate
             service_data:
               climate: climate.studiekamer_radiator
             variables:
@@ -1908,7 +1943,7 @@ views:
           actions:
           - icon: mdi:thermostat
             name: Set generic mode[ to {mode}]
-            service: script.generic_component_climate_scheduler
+            service: script.generic_component_climate
             service_data:
               climate: climate.woonkamer_centrale_verwarming
             variables:
@@ -1968,30 +2003,31 @@ views:
         entity: binary_sensor.remote_ui
         icon: mdi:image-filter-drama
         name: Home Assistant Cloud
-        secondary: '{% if is_state(''binary_sensor.remote_ui'', ''on'')%} Remote UI
-          connected {% else %} Remote UI disconnected {% endif %}'
+        secondary: '{{ iif(is_state(''binary_sensor.remote_ui'', ''on''), ''Remote
+          UI connected'', ''Remote UI disconnected'') }}'
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state(''binary_sensor.ha_updater'', ''on'') }}'
-        entity: binary_sensor.ha_updater
+      - active: '{{ is_state(''update.home_assistant_core_update'', ''on'') }}'
+        entity: update.home_assistant_core_update
         icon: mdi:home-assistant
-        name: Home Assistant ({{states('sensor.current_version')}})
-        secondary: '{% if is_state(''binary_sensor.ha_updater'', ''on'')%} New update
-          available: {{states(''sensor.latest_version'')}} {% else %} Up-to-date {%
-          endif %}'
+        name: Home Assistant ({{ state_attr('update.home_assistant_core_update', 'installed_version')
+          }})
+        secondary: "{% if is_state('update.home_assistant_core_update', 'on') %} \n\
+          \  Update available: {{ state_attr('update.home_assistant_core_update',\
+          \ 'latest_version') }}\n{% else %} \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state(''binary_sensor.deconz_update_available'', ''on'') }}'
-        entity: binary_sensor.deconz_update_available
+      - active: '{{ is_state(''update.deconz_update'', ''on'') }}'
+        entity: update.deconz_update
         icon: mdi:usb-flash-drive
-        name: deCONZ Add-on ({{states('sensor.deconz_version')}})
-        secondary: '{% if is_state(''binary_sensor.deconz_update_available'', ''on'')%}
-          New update available: {{states(''sensor.deconz_newest_version'')}} {% else
-          %} Up-to-date {% endif %}'
+        name: deCONZ ({{ state_attr('update.deconz_update', 'installed_version') }})
+        secondary: "{% if is_state('update.deconz_update', 'on') %} \n  Update available:\
+          \ {{ state_attr('update.deconz_update', 'latest_version') }}\n{% else %}\
+          \ \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
@@ -2257,47 +2293,48 @@ views:
         \ !important;\n}\n"
       type: markdown
     - entities:
-      - active: '{{ is_state(''binary_sensor.mesa_security_status'', ''on'') }}'
-        entity: binary_sensor.mesa_security_status
+      - active: '{{ is_state(''binary_sensor.homedb_security_status'', ''on'') }}'
+        entity: binary_sensor.homedb_security_status
         icon: mdi:server-security
         name: Security Advisor
-        secondary: '{% if is_state(''binary_sensor.mesa_security_status'', ''on'')%}
+        secondary: '{% if is_state(''binary_sensor.homedb_security_status'', ''on'')%}
           DSM is currently unsafe {% else %} No issues detected {% endif %}'
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
-      - active: '{{ is_state(''binary_sensor.mesa_update_available'', ''on'') }}'
-        entity: binary_sensor.mesa_update_available
-        name: Synology ({{ state_attr('binary_sensor.mesa_update_available', 'installed_version')
+      - active: '{{ is_state(''update.homedb_dsm_update'', ''on'') }}'
+        entity: update.homedb_dsm_update
+        icon: mdi:package
+        name: Synology ({{ state_attr('update.homedb_dsm_update', 'installed_version')
           }})
-        secondary: "{% if is_state('binary_sensor.mesa_update_available', 'on')%}\
-          \ \n  New update available: {{ state_attr('binary_sensor.mesa_update_available',\n\
-          'latest_available_version') }}\n{% else %} \n  Up-to-date \n{% endif %}"
+        secondary: "{% if is_state('update.homedb_dsm_update', 'on') %} \n  Update\
+          \ available: {{ state_attr('update.homedb_dsm_update', 'latest_version')\
+          \ }}\n{% else %} \n  Up-to-date \n{% endif %}"
         state: ''
         tap_action:
           action: more-info
         type: custom:template-entity-row
       - entities:
-        - entity: sensor.mesa_memory_available_real
+        - entity: sensor.homedb_memory_available_real
           name: Free
-        entity: sensor.mesa_memory_available_real
+        entity: sensor.homedb_memory_available_real
         name: Synology Memory
         secondary_info:
-          entity: sensor.mesa_memory_total_real
+          entity: sensor.homedb_memory_total_real
           name: Total
         show_state: false
         state_color: true
         type: custom:multiple-entity-row
       - entities:
-        - entity: sensor.mesa_drive_1_temperature
+        - entity: sensor.homedb_drive_1_temperature
           name: Drive 1
-        - entity: sensor.mesa_drive_2_temperature
+        - entity: sensor.homedb_drive_2_temperature
           name: Drive 2
-        entity: sensor.mesa_volume_1_average_disk_temp
+        entity: sensor.homedb_volume_1_average_disk_temp
         name: Volume Temperature
         secondary_info:
-          entity: sensor.mesa_volume_1_average_disk_temp
+          entity: sensor.homedb_volume_1_average_disk_temp
           name: Average
         show_state: false
         state_color: true
@@ -2305,7 +2342,7 @@ views:
       state_color: true
       type: entities
     - entities:
-      - entity: sensor.mesa_last_boot
+      - entity: sensor.homedb_last_boot
         extend_paper_buttons_row:
           base_config:
             layout: icon
@@ -2320,7 +2357,7 @@ views:
               icon:
                 --mdc-icon-size: 20px
           buttons:
-          - entity: button.mesa_reboot
+          - entity: button.homedb_reboot
             icon: mdi:restart
             tap_action:
               action: call-service
@@ -2328,8 +2365,8 @@ views:
                 text: Reboot NAS?
               service: button.press
               service_data:
-                entity_id: button.mesa_reboot
-          - entity: button.mesa_shutdown
+                entity_id: button.homedb_reboot
+          - entity: button.homedb_shutdown
             icon: mdi:power
             styles:
               button:
@@ -2340,12 +2377,12 @@ views:
                 text: Shut down NAS?
               service: button.press
               service_data:
-                entity_id: button.mesa_shutdown
+                entity_id: button.homedb_shutdown
         format: relative
         icon: mdi:nas
         name: Synology NAS Host
         secondary_info:
-          entity: sensor.mesa_last_boot
+          entity: sensor.homedb_last_boot
           format: date
           name: Last reboot
         show_state: false
@@ -2354,32 +2391,32 @@ views:
       type: entities
     - cards:
       - detail: 2
-        entity: sensor.mesa_download_throughput
+        entity: sensor.homedb_download_throughput
         graph: line
         hours_to_show: 12
         name: Download
         type: sensor
       - detail: 2
-        entity: sensor.mesa_upload_throughput
+        entity: sensor.homedb_upload_throughput
         graph: line
         hours_to_show: 12
         name: Upload
         type: sensor
       type: horizontal-stack
     - entities:
-      - entity: sensor.mesa_volume_1_status
+      - entity: sensor.homedb_volume_1_status
         name: Volume status
-      - entity: sensor.mesa_cpu_load_average_15_min
+      - entity: sensor.homedb_cpu_load_average_15_min
         name: CPU Load
-      - entity: sensor.mesa_volume_1_used_space
+      - entity: sensor.homedb_volume_1_used_space
         name: Storage (used)
-      - entity: sensor.mesa_volume_1_total_size
+      - entity: sensor.homedb_volume_1_total_size
         icon: mdi:harddisk
         name: Storage (total)
       state_color: true
       type: glance
     - cards:
-      - entity: sensor.mesa_cpu_utilization_total
+      - entity: sensor.homedb_cpu_utilization_total
         max: 100
         min: 0
         name: Intel Processor (utilization)
@@ -2389,7 +2426,7 @@ views:
           red: 75
           yellow: 50
         type: gauge
-      - entity: sensor.mesa_memory_usage_real
+      - entity: sensor.homedb_memory_usage_real
         max: 100
         min: 0
         name: Real Memory (used)
@@ -2399,7 +2436,7 @@ views:
           red: 75
           yellow: 50
         type: gauge
-      - entity: sensor.mesa_volume_1_volume_used
+      - entity: sensor.homedb_volume_1_volume_used
         max: 100
         min: 0
         name: Volume Storage (used)
