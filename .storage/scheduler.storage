@@ -742,6 +742,61 @@
                 "repeat_type": "repeat",
                 "name": "Slaapkamer Radiator",
                 "enabled": true
+            },
+            {
+                "schedule_id": "34635e",
+                "timeslots": [
+                    {
+                        "start": "06:00:00",
+                        "stop": "08:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "On vacation",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "switch.turn_on",
+                                "entity_id": "switch.cat_music",
+                                "service_data": {}
+                            }
+                        ]
+                    },
+                    {
+                        "start": "21:00:00",
+                        "stop": "23:00:00",
+                        "conditions": [
+                            {
+                                "entity_id": "input_select.home_state_occupancy",
+                                "attribute": "state",
+                                "value": "On vacation",
+                                "match_type": "is"
+                            }
+                        ],
+                        "condition_type": "or",
+                        "track_conditions": false,
+                        "actions": [
+                            {
+                                "service": "switch.turn_on",
+                                "entity_id": "switch.cat_music",
+                                "service_data": {}
+                            }
+                        ]
+                    }
+                ],
+                "weekdays": [
+                    "daily"
+                ],
+                "start_date": null,
+                "end_date": null,
+                "repeat_type": "repeat",
+                "name": null,
+                "enabled": false
             }
         ],
         "tags": [
