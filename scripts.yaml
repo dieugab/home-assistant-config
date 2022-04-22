@@ -74,8 +74,8 @@ mode_privacy:
     target:
       entity_id: input_select.play_gradient_scenes
     data_template:
-      option: '{{ ["Soho", "Tokyo", "Sundown", "Disturbia", "Tyrell", "Winter beauty"]
-        | random }}'
+      option: '{{ ["Soho", "Tokyo", "Sundown", "Disturbia", "Tyrell", "Winter beauty",
+        "Hal", "Miami"] | random }}'
   mode: single
   icon: mdi:heart-circle
 mode_cinema:
@@ -434,22 +434,24 @@ home_occupancy_away:
   - service: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.security_system
+    data: {}
   - service: script.generic_component_climate
     data:
       climate:
-        entity_id:
-        - climate.woonkamer_centrale_verwarming
-        - climate.studiekamer_radiator
-        - climate.kledingkamer_radiator
-        - climate.slaapkamer_radiator
+      - climate.woonkamer_centrale_verwarming
+      - climate.studiekamer_radiator
+      - climate.kledingkamer_radiator
+      - climate.slaapkamer_radiator
       mode: Away
   - service: climate.turn_off
     target:
       entity_id:
       - climate.tuya_duux_threesixty
+    data: {}
   - service: media_player.turn_off
     target:
       entity_id: media_player.apple_tv
+    data: {}
   - service: media_player.media_pause
     target:
       entity_id:
@@ -457,13 +459,16 @@ home_occupancy_away:
       - media_player.sonos_roam
       - media_player.ikea_symfonisk
       - media_player.homepod_mini
+    data: {}
   - service: fan.turn_off
     target:
       entity_id: fan.whisper_flex
+    data: {}
   - service: script.turn_on
     target:
       entity_id:
       - script.action_turn_lights_off
+    data: {}
   mode: single
   icon: mdi:map-marker-circle
 home_occupancy_home:
@@ -477,6 +482,7 @@ home_occupancy_home:
   - service: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.security_system
+    data: {}
   - service: switch.turn_off
     target:
       entity_id:
@@ -484,6 +490,7 @@ home_occupancy_home:
       - switch.adaptive_lighting_sleep_mode_woonkamer
       - switch.adaptive_lighting_sleep_mode_filaments
       - switch.adaptive_lighting_sleep_mode_slaapkamer
+    data: {}
   - service: climate.turn_on
     target:
       entity_id:
@@ -491,6 +498,7 @@ home_occupancy_home:
       - climate.studiekamer_radiator
       - climate.kledingkamer_radiator
       - climate.slaapkamer_radiator
+    data: {}
   - condition: state
     entity_id: switch.party_mode
     state: 'off'
@@ -498,6 +506,7 @@ home_occupancy_home:
     target:
       entity_id:
       - script.logic_conditional_heating
+    data: {}
   - condition: or
     conditions:
     - condition: state
@@ -509,6 +518,7 @@ home_occupancy_home:
   - service: script.turn_on
     target:
       entity_id: script.action_turn_evening_lights_on
+    data: {}
   mode: single
   icon: mdi:home-circle
 home_occupancy_sleeping:
@@ -1240,8 +1250,11 @@ action_turn_evening_lights_on:
   - choose:
     - conditions:
       - condition: state
-        entity_id: input_boolean.tv_playing_state
-        state: 'on'
+        entity_id: media_player.sony_bravia_tv
+        state: playing
+      - condition: state
+        entity_id: select.hue_entertainment_area
+        state: Front Stage
       sequence:
       - service: light.turn_on
         data: {}
@@ -1535,84 +1548,6 @@ logic_jukebox_randomizer:
     default: []
   mode: restart
   icon: mdi:shuffle
-logic_hue_entertainment_area:
-  alias: Logic - Hue Entertainment Area
-  sequence:
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id: input_boolean.tv_playing_state
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: media_player.play_sync_box
-        attribute: entertainment_area
-        state: Whole Room
-      sequence:
-      - service: huesyncbox.set_entertainment_area
-        data:
-          entertainment_area: Front Stage
-        target:
-          entity_id: media_player.play_sync_box
-    default:
-    - service: script.dummy
-      data: {}
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
-      - light.woonkamer_lamp
-      - light.woonkamer_lightstrip_plus
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: state
-          entity_id: light.edison_lamp
-          state: 'on'
-        - condition: state
-          entity_id: light.tarnaby_lamp
-          state: 'on'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-        target:
-          entity_id:
-          - light.edison_lamp
-          - light.tarnaby_lamp
-    default:
-    - service: script.dummy
-      data: {}
-  - wait_for_trigger:
-    - platform: template
-      value_template: "{% if state_attr('media_player.apple_tv', 'media_content_type')\
-        \ == None %}\n  true\n{% elif state_attr('media_player.apple_tv', 'media_content_type')\
-        \ == 'music' %}\n  true\n{% else %}\n  false\n{% endif %}"
-      for: 00:00:02
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.tv_playing_state
-  - service: huesyncbox.set_entertainment_area
-    data:
-      entertainment_area: Whole Room
-    target:
-      entity_id: media_player.play_sync_box
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
-      - light.tarnaby_lamp
-      - light.edison_lamp
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.tarnaby_lamp
-      - light.edison_lamp
-  mode: restart
-  icon: hue:bulb-group-candle-lightstrip
 generic_component_climate:
   alias: Generic Component | Climate
   sequence:
@@ -1722,3 +1657,153 @@ generic_component_software_notifications:
   mode: parallel
   icon: mdi:square-rounded-badge
   max: 10
+logic_set_hue_entertainment_area:
+  alias: Logic - Set Hue Entertainment Area
+  sequence:
+  - service: select.select_option
+    data:
+      option: Front Stage
+    target:
+      entity_id: select.hue_entertainment_area
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.woonkamer_lamp
+      - light.woonkamer_lightstrip_plus
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: light.edison_lamp
+          state: 'on'
+        - condition: state
+          entity_id: light.tarnaby_lamp
+          state: 'on'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.edison_lamp
+          - light.tarnaby_lamp
+    default:
+    - service: script.dummy
+      data: {}
+  - wait_for_trigger:
+    - platform: template
+      value_template: '{{ state_attr(''media_player.apple_tv'', ''media_content_type'')
+        == None }}'
+      for: 00:00:02
+    - platform: template
+      value_template: '{{ state_attr(''media_player.apple_tv'', ''media_content_type'')
+        == ''music'' }}'
+      for: 00:00:02
+    - platform: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      to: YouTube
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
+    - platform: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      to: Videoland
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
+    - platform: state
+      entity_id: media_player.apple_tv
+      attribute: app_name
+      to: discovery+
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
+  - service: select.select_option
+    data:
+      option: Whole Room
+    target:
+      entity_id: select.hue_entertainment_area
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.tarnaby_lamp
+      - light.edison_lamp
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.home_state
+      state: Evening
+    - condition: state
+      entity_id: input_select.home_state
+      state: Night
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.tarnaby_lamp
+      - light.edison_lamp
+  mode: restart
+  icon: hue:bulb-group-candle-lightstrip
+action_set_cat_music:
+  alias: Action - Set Cat Music
+  sequence:
+  - service: sonos.snapshot
+    data:
+      with_group: false
+      entity_id: media_player.sonos_arc
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.12
+    target:
+      entity_id: media_player.sonos_arc
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_arc
+    data:
+      media_content_id: FV:2/9
+      media_content_type: favorite_item_id
+    metadata:
+      title: Music for Cats Album Two
+      thumbnail: https://i.scdn.co/image/ab67616d0000b273adf8909297eae70bfcf38bad
+      media_class: album
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: favorites
+        media_content_id: ''
+      - media_content_type: favorites_folder
+        media_content_id: object.container.album.musicAlbum
+  - service: media_player.repeat_set
+    data:
+      repeat: all
+    target:
+      entity_id: media_player.sonos_arc
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: media_player.repeat_set
+    data:
+      repeat: 'off'
+    target:
+      entity_id: media_player.sonos_arc
+  - wait_for_trigger:
+    - platform: state
+      entity_id: media_player.sonos_arc
+      from: playing
+    timeout: 00:15:00
+  - service: sonos.restore
+    data:
+      entity_id: media_player.sonos_arc
+      with_group: false
+  mode: restart
+  icon: mdi:cat
