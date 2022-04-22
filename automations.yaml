@@ -917,6 +917,7 @@
       - service: input_select.select_next
         target:
           entity_id: input_select.studiekamer_scenes
+        data: {}
       button_power_hold:
       - choose:
         - conditions:
@@ -927,13 +928,13 @@
           - service: script.generic_component_climate
             data:
               climate:
-                entity_id: climate.studiekamer_radiator
+              - climate.studiekamer_radiator
               mode: Away
         default:
         - service: script.generic_component_climate
           data:
             climate:
-              entity_id: climate.studiekamer_radiator
+            - climate.studiekamer_radiator
             mode: Comfort
 - id: '1627322789979'
   alias: deCONZ - Slaapkamer Hue Dimmer
@@ -952,6 +953,7 @@
         target:
           entity_id:
           - input_select.slaapkamer_scenes
+        data: {}
       button_power_hold:
       - choose:
         - conditions:
@@ -962,13 +964,13 @@
           - service: script.generic_component_climate
             data:
               climate:
-                entity_id: climate.slaapkamer_radiator
+              - climate.slaapkamer_radiator
               mode: Away
         default:
         - service: script.generic_component_climate
           data:
             climate:
-              entity_id: climate.studiekamer_radiator
+            - climate.studiekamer_radiator
             mode: Eco
 - id: '1629971132565'
   alias: '@ Home Assistant Startup'
@@ -2158,7 +2160,7 @@
       - service: script.generic_component_climate
         data:
           climate:
-            entity_id: climate.studiekamer_radiator
+          - climate.studiekamer_radiator
           mode: Away
       - service: climate.turn_off
         target:
@@ -2286,7 +2288,8 @@
   - service: script.turn_on
     data: {}
     target:
-      entity_id: script.logic_hue_entertainment_area
+      entity_id:
+      - script.logic_set_hue_entertainment_area
   mode: restart
 - id: '1649232585398'
   alias: TV - Keep Entertainment Lights Off during Ambilight
