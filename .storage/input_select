@@ -57,7 +57,9 @@
                     "Disturbia",
                     "Tyrell",
                     "Winter beauty",
-                    "Blue Planet"
+                    "Blue Planet",
+                    "Hal",
+                    "Miami"
                 ],
                 "id": "hue_scenes",
                 "icon": "mdi:gradient-horizontal"
