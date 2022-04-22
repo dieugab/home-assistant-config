@@ -24,13 +24,13 @@ CONF_SELECT = "select"
 CONF_SELECT_LIST = "select_list"
 CONF_ATTR = "attribute"
 CONF_SENSOR_ATTRS = "attributes"
-CONF_INDEX = "index"
 CONF_FORM_SUBMIT = "form_submit"
 CONF_FORM_SELECT = "select"
 CONF_FORM_INPUT = "input"
 CONF_FORM_RESOURCE = "resource"
 CONF_FORM_SUBMIT_ONCE = "submit_once"
 CONF_FORM_RESUBMIT_ERROR = "resubmit_on_error"
+CONF_LOG_RESPONSE = "log_response"
 DEFAULT_PARSER = "lxml"
 
 CONF_FIELDS = "fields"
@@ -41,7 +41,7 @@ PLATFORM_IDX = "platform_idx"
 COORDINATOR = "coordinator"
 SCRAPER = "scraper"
 
-SCRAPER_DATA = "scraper_data"
+SCRAPER_DATA = "scraper"
 
 METHODS = ["POST", "GET", "post", "get"]
 
@@ -57,6 +57,7 @@ LOG_LEVELS = {
     "false": False,
     "False": False,
 }
+
 
 DEFAULT_ON_ERROR_LOG = LOG_ERROR
 DEFAULT_ON_ERROR_VALUE = CONF_ON_ERROR_VALUE_NONE

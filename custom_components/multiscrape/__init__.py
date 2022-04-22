@@ -1,9 +1,9 @@
 """The multiscrape component."""
 import asyncio
 import logging
+import os
 from datetime import timedelta
 
-import httpx
 import voluptuous as vol
 from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
 from homeassistant.components.button import DOMAIN as BUTTON_DOMAIN
@@ -23,20 +23,24 @@ from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.const import CONF_TIMEOUT
 from homeassistant.const import CONF_USERNAME
 from homeassistant.const import CONF_VERIFY_SSL
-from homeassistant.const import HTTP_DIGEST_AUTHENTICATION
 from homeassistant.const import SERVICE_RELOAD
-from homeassistant.core import callback
 from homeassistant.core import HomeAssistant
 from homeassistant.core import ServiceCall
 from homeassistant.helpers import discovery
 from homeassistant.helpers.entity_component import EntityComponent
+from homeassistant.helpers.httpx_client import get_async_client
 from homeassistant.helpers.reload import async_reload_integration_platforms
 from homeassistant.helpers.service import async_set_service_schema
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
 from .const import CONF_FIELDS
+from .const import CONF_FORM_INPUT
+from .const import CONF_FORM_RESOURCE
+from .const import CONF_FORM_RESUBMIT_ERROR
+from .const import CONF_FORM_SELECT
 from .const import CONF_FORM_SUBMIT
+from .const import CONF_FORM_SUBMIT_ONCE
+from .const import CONF_LOG_RESPONSE
 from .const import CONF_PARSER
 from .const import COORDINATOR
 from .const import DOMAIN
@@ -44,6 +48,10 @@ from .const import PLATFORM_IDX
 from .const import SCRAPER
 from .const import SCRAPER_DATA
 from .const import SCRAPER_IDX
+from .coordinator import MultiscrapeDataUpdateCoordinator
+from .file import LoggingFileManager
+from .form import FormSubmitter
+from .http import HttpWrapper
 from .schema import CONFIG_SCHEMA  # noqa: F401
 from .scraper import Scraper
 
@@ -57,6 +65,7 @@ COORDINATOR_AWARE_PLATFORMS = [SENSOR_DOMAIN, BINARY_SENSOR_DOMAIN, BUTTON_DOMAI
 
 async def async_setup(hass: HomeAssistant, entry: ConfigEntry):
     """Set up the multiscrape platforms."""
+    _LOGGER.debug("# Start loading multiscrape")
     component = EntityComponent(_LOGGER, DOMAIN, hass)
     _async_setup_shared_data(hass)
 
@@ -72,11 +81,11 @@ async def async_setup(hass: HomeAssistant, entry: ConfigEntry):
     hass.services.async_register(
         DOMAIN, SERVICE_RELOAD, reload_service_handler, schema=vol.Schema({})
     )
+    _LOGGER.debug("# Reload service registered")
 
     return await _async_process_config(hass, entry)
 
 
-@callback
 def _async_setup_shared_data(hass: HomeAssistant):
     """Create shared data for platform config and scraper coordinators."""
     hass.data[DOMAIN] = {
@@ -86,29 +95,69 @@ def _async_setup_shared_data(hass: HomeAssistant):
 
 async def _async_process_config(hass, config) -> bool:
     """Process scraper configuration."""
+
+    _LOGGER.debug("# Start processing config from configuration.yaml")
     if DOMAIN not in config:
+        _LOGGER.debug("# Multiscrape not found in config")
         return True
 
     refresh_tasks = []
     load_tasks = []
+
     for scraper_idx, conf in enumerate(config[DOMAIN]):
-        name = conf.get(CONF_NAME)
-        scan_interval = conf.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
-        resource_template = conf.get(CONF_RESOURCE_TEMPLATE)
-        scraper = create_scraper_data_from_config(hass, conf)
-        coordinator = _scraper_coordinator(
-            hass, scraper, resource_template, scan_interval
+        config_name = conf.get(CONF_NAME)
+        if config_name is None:
+            config_name = f"Scraper_noname_{scraper_idx}"
+            _LOGGER.debug(
+                "# Found no name for scraper, generated a unique name: %s", config_name
+            )
+
+        _LOGGER.debug(
+            "%s # Setting up multiscrape with config:\n %s", config_name, conf
         )
+
+        file_manager = None
+        log_response = conf.get(CONF_LOG_RESPONSE)
+        if log_response:
+            folder = os.path.join(
+                hass.config.config_dir, f"multiscrape/{slugify(config_name)}/"
+            )
+            _LOGGER.debug(
+                "%s # Log responses enabled, creating logging folder: %s",
+                config_name,
+                folder,
+            )
+            file_manager = LoggingFileManager(folder)
+            await hass.async_add_executor_job(file_manager.create_folders)
+
+        form_submit_config = conf.get(CONF_FORM_SUBMIT)
+        form_submitter = None
+        if form_submit_config:
+            form_submit_http = _create_form_submit_http_wrapper(
+                config_name, conf, hass, file_manager
+            )
+            parser = conf.get(CONF_PARSER)
+            form_submitter = _create_form_submitter(
+                config_name,
+                form_submit_config,
+                hass,
+                form_submit_http,
+                file_manager,
+                parser,
+            )
+
+        scraper = _create_scraper(config_name, conf, hass, file_manager)
+        http = _create_scrape_http_wrapper(config_name, conf, hass, file_manager)
+        coordinator = _create_multiscrape_coordinator(
+            config_name, conf, hass, http, file_manager, form_submitter, scraper
+        )
+
         refresh_tasks.append(coordinator.async_refresh())
         hass.data[DOMAIN][SCRAPER_DATA].append(
             {SCRAPER: scraper, COORDINATOR: coordinator}
         )
 
-        if name:
-            target_name = slugify(name)
-        else:
-            target_name = f"noname_{scraper_idx}"
-
+        target_name = slugify(config_name)
         await _register_services(hass, target_name, coordinator)
 
         for platform_domain in COORDINATOR_AWARE_PLATFORMS:
@@ -164,69 +213,111 @@ async def async_get_config_and_coordinator(hass, platform_domain, discovery_info
     conf = hass.data[DOMAIN][platform_domain][discovery_info[PLATFORM_IDX]]
     coordinator = shared_data[COORDINATOR]
     scraper = shared_data[SCRAPER]
-    if scraper.data is None:
+    if not scraper.has_data:
         await coordinator.async_request_refresh()
     return conf, coordinator, scraper
 
 
-def _scraper_coordinator(hass, scraper, resource_template, update_interval):
-    """Wrap a DataUpdateCoordinator around the scraper object."""
-    if resource_template:
-
-        async def _async_refresh_with_resource_template():
-            scraper.set_url(resource_template.async_render(parse_result=False))
-            await scraper.async_update()
-
-        update_method = _async_refresh_with_resource_template
-    else:
-        update_method = scraper.async_update
-
-    return DataUpdateCoordinator(
-        hass,
-        _LOGGER,
-        name="scraper data",
-        update_method=update_method,
-        update_interval=update_interval,
-    )
-
-
-def create_scraper_data_from_config(hass, config):
-    """Create RestData from config."""
-    resource = config.get(CONF_RESOURCE)
-    resource_template = config.get(CONF_RESOURCE_TEMPLATE)
-    method = config.get(CONF_METHOD).lower()
-    payload = config.get(CONF_PAYLOAD)
+def _create_scrape_http_wrapper(config_name, config, hass, file_manager):
     verify_ssl = config.get(CONF_VERIFY_SSL)
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
+    auth_type = config.get(CONF_AUTHENTICATION)
+    timeout = config.get(CONF_TIMEOUT)
+    data = config.get(CONF_PAYLOAD)
     headers = config.get(CONF_HEADERS)
     params = config.get(CONF_PARAMS)
-    parser = config.get(CONF_PARSER)
+
+    client = get_async_client(hass, verify_ssl)
+    http = HttpWrapper(
+        config_name,
+        hass,
+        client,
+        file_manager,
+        timeout,
+        data=data,
+        params=params,
+        request_headers=headers,
+    )
+    if username and password:
+        http.set_authentication(username, password, auth_type)
+    return http
+
+
+def _create_form_submit_http_wrapper(config_name, config, hass, file_manager):
+    verify_ssl = config.get(CONF_VERIFY_SSL)
     timeout = config.get(CONF_TIMEOUT)
-    form_submit = config.get(CONF_FORM_SUBMIT)
+    headers = config.get(CONF_HEADERS)
+    params = config.get(CONF_PARAMS)
+
+    client = get_async_client(hass, verify_ssl)
+    http = HttpWrapper(
+        config_name,
+        hass,
+        client,
+        file_manager,
+        timeout,
+        params=params,
+        request_headers=headers,
+    )
+    return http
+
+
+def _create_form_submitter(config_name, config, hass, http, file_manager, parser):
+    resource = config.get(CONF_FORM_RESOURCE)
+    select = config.get(CONF_FORM_SELECT)
+    input_values = config.get(CONF_FORM_INPUT)
+    resubmit_error = config.get(CONF_FORM_RESUBMIT_ERROR)
+    submit_once = config.get(CONF_FORM_SUBMIT_ONCE)
+
+    return FormSubmitter(
+        config_name,
+        hass,
+        http,
+        file_manager,
+        resource,
+        select,
+        input_values,
+        submit_once,
+        resubmit_error,
+        parser,
+    )
+
+
+def _create_multiscrape_coordinator(
+    config_name, conf, hass, http, file_manager, form_submitter, scraper
+):
+    _LOGGER.debug("%s # Initializing coordinator", config_name)
+
+    method = conf.get(CONF_METHOD).lower()
+    scan_interval = conf.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    resource = conf.get(CONF_RESOURCE)
+    resource_template = conf.get(CONF_RESOURCE_TEMPLATE)
 
     if resource_template is not None:
         resource_template.hass = hass
-        resource = resource_template.async_render(parse_result=False)
 
-    if username and password:
-        if config.get(CONF_AUTHENTICATION) == HTTP_DIGEST_AUTHENTICATION:
-            auth = httpx.DigestAuth(username, password)
-        else:
-            auth = (username, password)
-    else:
-        auth = None
+    return MultiscrapeDataUpdateCoordinator(
+        config_name,
+        hass,
+        http,
+        file_manager,
+        form_submitter,
+        scraper,
+        scan_interval,
+        resource,
+        resource_template,
+        method,
+    )
+
+
+def _create_scraper(config_name, config, hass, file_manager):
+    _LOGGER.debug("%s # Initializing scraper", config_name)
+    parser = config.get(CONF_PARSER)
 
     return Scraper(
+        config_name,
         hass,
-        method,
-        resource,
-        auth,
-        headers,
-        params,
-        payload,
-        verify_ssl,
+        file_manager,
         parser,
-        form_submit,
-        timeout,
     )

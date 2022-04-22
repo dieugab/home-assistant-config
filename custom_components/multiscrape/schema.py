@@ -42,7 +42,7 @@ from .const import CONF_FORM_RESUBMIT_ERROR
 from .const import CONF_FORM_SELECT
 from .const import CONF_FORM_SUBMIT
 from .const import CONF_FORM_SUBMIT_ONCE
-from .const import CONF_INDEX
+from .const import CONF_LOG_RESPONSE
 from .const import CONF_ON_ERROR
 from .const import CONF_ON_ERROR_DEFAULT
 from .const import CONF_ON_ERROR_LOG
@@ -94,6 +94,7 @@ INTEGRATION_SCHEMA = {
     vol.Optional(CONF_PARSER, default=DEFAULT_PARSER): cv.string,
     vol.Optional(CONF_NAME): cv.string,
     vol.Optional(CONF_SCAN_INTERVAL): cv.time_period,
+    vol.Optional(CONF_LOG_RESPONSE, default=False): cv.boolean,
 }
 
 ON_ERROR_SCHEMA = {
@@ -114,7 +115,6 @@ SELECTOR_SCHEMA = {
     vol.Optional(CONF_SELECT): cv.template,
     vol.Optional(CONF_SELECT_LIST): cv.template,
     vol.Optional(CONF_ATTR): cv.string,
-    vol.Optional(CONF_INDEX, default=0): cv.positive_int,
     vol.Optional(CONF_VALUE_TEMPLATE): cv.template,
     vol.Optional(CONF_ON_ERROR): vol.Schema(ON_ERROR_SCHEMA),
 }
