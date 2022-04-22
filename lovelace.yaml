@@ -98,6 +98,28 @@ views:
       type: entities
     - entities:
       - entity: light.ambilight
+        extend_paper_buttons_row:
+          base_config:
+            layout: icon
+            state_styles:
+              'on':
+                button:
+                  background-color: var(--button-shape-active-color)
+                  color: var(--button-icon-active-color)
+            styles:
+              button:
+                background-color: var(--button-shape-color)
+                border-radius: 25px
+                color: var(--disabled-text-color)
+                margin-right: 10px
+                padding: 6px
+              icon:
+                --mdc-icon-size: 21px
+          buttons:
+          - entity: select.hue_entertainment_area
+            styles:
+              button:
+                margin-right: 10px
         name: TV Ambilight
         secondary_info: brightness
       - entities:
@@ -739,13 +761,13 @@ views:
               name: Auto Mode
               styles:
                 button:
-                  background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
+                  background-color: "{% if is_state_attr('fan.ikea_starkvind', 'preset_mode',\
                     \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n\
                     \ var(--button-shape-color)\n{% endif %}"
                   border-radius: 25px
-                  color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto')\
-                    \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
-                    {% endif %}"
+                  color: "{% if is_state_attr('fan.ikea_starkvind', 'preset_mode',\
+                    \ 'Auto') %} \n var(--button-icon-active-color)\n{% else %} \n\
+                    \ var(--disabled-text-color)\n{% endif %}"
                   margin-right: 10px
                   margin-top: 0px
                   padding: 5px
@@ -775,15 +797,23 @@ views:
       type: custom:mini-media-player
       volume_stateless: false
     - cards:
-      - entities:
-        - entity: media_player.sonos_roam
-          name: Roam
-        state_color: false
-        type: entities
-      - entities:
-        - entity: media_player.ikea_symfonisk
-          name: Symfonisk
-        type: entities
+      - entity: media_player.sonos_roam
+        media_controls:
+        - play_pause_stop
+        name: Roam
+        type: custom:mushroom-media-player-card
+        use_media_artwork: true
+        use_media_info: false
+        volume_controls:
+        - volume_set
+      - entity: media_player.ikea_symfonisk
+        media_controls:
+        - play_pause_stop
+        name: Symfonisk
+        type: custom:mushroom-media-player-card
+        use_media_artwork: true
+        volume_controls:
+        - volume_set
       columns: 2
       square: false
       type: grid
@@ -1381,12 +1411,12 @@ views:
           name: Auto Mode
           styles:
             button:
-              background-color: "{% if is_state_attr('fan.ikea_starkvind', 'speed',\
+              background-color: "{% if is_state_attr('fan.ikea_starkvind', 'preset_mode',\
                 \ 'Auto') %} \n var(--button-shape-active-color)\n{% else %} \n var(--button-shape-color)\n\
                 {% endif %}"
               border-radius: 25px
-              color: "{% if is_state_attr('fan.ikea_starkvind', 'speed', 'Auto') %}\
-                \ \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
+              color: "{% if is_state_attr('fan.ikea_starkvind', 'preset_mode', 'Auto')\
+                \ %} \n var(--button-icon-active-color)\n{% else %} \n var(--disabled-text-color)\n\
                 {% endif %}"
               margin-right: 10px
               margin-top: 0px
@@ -1400,10 +1430,6 @@ views:
               entity_id: fan.ikea_starkvind
               preset_mode: Auto
       name: IKEA Starkvind
-      secondary_info: last-changed
-      state_color: true
-    - entity: switch.woonhuisventilatie
-      name: Woonhuisventilatie
       secondary_info: last-changed
       state_color: true
     type: entities
@@ -1763,17 +1789,6 @@ views:
     view_layout:
       position: main
   - entities:
-    - entity: sensor.smartmi_air_purifier_p1_particulate_matter_2_5_um
-      name: Studiekamer
-    - entity: sensor.ikea_starkvind_pm_2_5
-      name: Slaapkamer
-    hours_to_show: 120
-    refresh_interval: 0
-    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
-      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
-    title: Air Quality (PM 2.5)
-    type: history-graph
-  - entities:
     - entity: sensor.gang_light_sensor
       name: Gang
     - entity: sensor.woonkamer_light_sensor
@@ -1790,6 +1805,17 @@ views:
     type: history-graph
     view_layout:
       position: main
+  - entities:
+    - entity: sensor.smartmi_air_purifier_p1_particulate_matter_2_5_um
+      name: Studiekamer
+    - entity: sensor.ikea_starkvind_pm_2_5
+      name: Slaapkamer
+    hours_to_show: 120
+    refresh_interval: 0
+    style: "h1.card-header {\n  font-size: 1.5em;\n  font-weight: var(--mcg-title-font-weight,\
+      \ 500);\n  opacity: 0.65;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n"
+    title: Air Quality (PM 2.5)
+    type: history-graph
   icon: mdi:thermometer-lines
   path: temperature
   title: Temperature
