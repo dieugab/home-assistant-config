@@ -1,3 +1,20 @@
+# █▀▀ █▀▀ █▄ █ █▀▀ █▀█ ▄▀█ █   #
+# █▄█ ██▄ █ ▀█ ██▄ █▀▄ █▀█ █▄▄ #
+
+  - select:
+        # Switcher for Hue Entertainment Area
+      - name: "Hue Entertainment Area"
+        unique_id: hue_entertainment_area
+        icon: mdi:sync-circle
+        state: "{{ state_attr('media_player.play_sync_box', 'entertainment_area') }}"
+        options: "{{ state_attr('media_player.play_sync_box', 'entertainment_area_list') }}"
+        select_option:
+          service: huesyncbox.set_entertainment_area
+          target:
+            entity_id: media_player.play_sync_box
+          data:
+            entertainment_area: "{{ option }}"
+
 # █▀▀ ▄▀█ █   █▀▀ █ █ █   ▄▀█ ▀█▀ █▀▀ █▀▄ #
 # █▄▄ █▀█ █▄▄ █▄▄ █▄█ █▄▄ █▀█  █  ██▄ █▄▀ #
 
