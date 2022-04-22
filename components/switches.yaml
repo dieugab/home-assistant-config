@@ -17,20 +17,6 @@
           service: switch.turn_off
           entity_id: switch.keuken_smart_plug
 
-      # Ventilation system @ zolder
-      woonhuisventilatie:
-        friendly_name: Woonhuisventilatie
-        unique_id: woonhuisventilatie
-        value_template: "{{ is_state('switch.zolder_plug', 'on') }}"
-        availability_template: "{{ states('switch.zolder_plug') != 'unavailable' }}"
-        icon_template: mdi:home-export-outline
-        turn_on:
-          service: switch.turn_on
-          entity_id: switch.zolder_plug
-        turn_off:
-          service: switch.turn_off
-          entity_id: switch.zolder_plug
-
       # Security cam @ woonkamer
       security_cam:
         friendly_name: Security Cam
@@ -45,6 +31,20 @@
           service: switch.turn_off
           entity_id: switch.aqara_g2h
 
+      # Music for cat
+      cat_music:
+        friendly_name: Cat Music
+        unique_id: cat_music
+        value_template: "{{ iif(is_state_attr('media_player.sonos_arc', 'media_album_name', 'Music for Cats Album Two') and is_state('media_player.sonos_arc', 'playing'), 'on', 'off') }}"
+        availability_template: "{{ states('music_player.sonos_arc') != 'unavailable' }}"
+        icon_template: mdi:cat
+        turn_on:
+          service: script.turn_on
+          entity_id: script.action_set_cat_music
+        turn_off:
+          service: media_player.media_stop
+          entity_id: media_player.sonos_arc
+  
     # Adaptive Lighting for woonkamer area
   - platform: template
     switches:
